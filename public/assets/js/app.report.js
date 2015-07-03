@@ -73,14 +73,15 @@
 
     var initFields = function () {
         $("#query-form input[name='date']").datetimepicker({ allowBlank: false, value: new Date().dateFormat('Y-m-d') });
-        $("#query-form select[name='type']").select2({ minimumResultsForSearch: -1 });
+        $("#query-form select[name='consumable_type']").select2({ minimumResultsForSearch: -1 });
+        $("#query-form").submit(function (e) {
+            e.preventDefault();
+            loadReportList();
+        });
     };
 
     var tpReportItem = $("#tempDataItem").html();
     var loadReportList = function () {
-        $('#query-form').serialize()
-
-        $("#gridData tbody").empty();
         $.get(oUrlReportList, $('#query-form').serialize(), function (data) {
             $.each(data.rows, function (i, n) {
                 $("#gridData tbody").append(App.template(tpReportItem, n));

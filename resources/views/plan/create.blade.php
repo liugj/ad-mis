@@ -11,12 +11,12 @@
     </div>
     <div class="form-group">
         <div class="label">
-            <label for="budget">费用预算</label>
+            <label for="budget">预算</label>
         </div>
         <div class="field">
             <div class="input-group">
                 <input type="text" class="input text-right" name="budget" value="{{ $plan->budget}}" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="费用预算不能为空" />
-                <span class="addon">分/天</span>
+                <span class="addon">元/天</span>
             </div>
         </div>
     </div>

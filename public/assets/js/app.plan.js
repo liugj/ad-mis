@@ -3,13 +3,13 @@
     var urlPlanList = "/plan/lists"; //GET, Json, 左侧2级列表数据
     var urlPlanEdit = "/plan/edit/"; //GET, Html, 计划编辑表单
     var urlPlanCreate = "/plan/create/"; //GET, Html, 计划编辑表单
-    var urlPlanDelete = "/plan/deletePlan.json?id="; //POST, Json，计划删除动作
+    var urlPlanDelete = "/plan/destroy/"; //POST, Json，计划删除动作
     var urlPlanView = "/plan/show/"; //GET, Html, 计划详情
 
     var urlUnitEdit = "/idea/edit/"; //GET, Html, 单元编辑表单, 如果是添加操作，还会传人planId参数
     var urlUnitCreate = "/idea/create/"; //GET, Html, 单元编辑表单, 如果是添加操作，还会传人planId参数
     var urlUnitView = "/idea/show/"; //GET, Html, 单元详情
-    var urlUnitDelete = "/unit/deleteUnit.json?id="; //POST, Json，计划删除动作
+    var urlUnitDelete = "/idea/destroy/"; //POST, Json，计划删除动作
 
     var urlIdeaList = "/idea/listIdea.json?unitId="; //GET, Json, 创意列表数据, unitId:单元ID
     var urlIdeaView = "/idea/viewIdea.html?id="; //GET, Html, 创意详情
@@ -37,15 +37,23 @@
 
             $("#viewInfo .doc-h3").text(text);
             if (type == "plan") {
-                $("#viewInfo .view").empty().append('<img src="/assets/img/ajax-loading.gif" />').load(urlPlanView + id);
+                loadPlanView(id);
             }
             if (type == "idea") {
-                $("#viewInfo .view").empty().append('<img src="/assets/img/ajax-loading.gif" />').load(urlUnitView + id, function () {
-                    $("#timerange").weekdaypicker({ editable: false });
-                });              
+                loadUnitView(id);
             }
         });
     };
+
+    function loadPlanView(id) {
+        $("#viewInfo .view").empty().append('<img src="/assets/img/ajax-loading.gif" />').load(urlPlanView + id);
+    }
+
+    function loadUnitView(id) {
+        $("#viewInfo .view").empty().append('<img src="/assets/img/ajax-loading.gif" />').load(urlUnitView + id, function () {
+            $("#timerange").weekdaypicker({ editable: false });
+        });
+    }
 
     function resetView() {
         var oldTitle = $("#viewInfo .doc-h3").data("title");
@@ -111,19 +119,20 @@
             success: function () {
                 $("#formPlan [data-inputmask]").inputmask();
                 $("#formPlan").ajaxFormExt({
-                    success: function () {
+                    success: function (response) {
                         $("#dialogPlan").dialog("close");
                         loadPlanList();
-                        $("#viewInfo .view").empty().append('<img src="/assets/img/ajax-loading.gif" />').load(urlPlanView + id);
+                        loadPlanView(response.id);
                     }
                 });
             }
         });
     };
 
-    var deletePlan = function (id) {
-        confirm("确定要删除这个计划吗？", function () {
+    var deletePlan = function (id, status) {
+        confirm(status ==1 ?"确定要停止这个计划吗？": "确定要启动这个计划吗？", function () {
             App.ajaxDelete(urlPlanDelete + id, {
+                data:{'status': status},
                 success: function () {
                     loadPlanList();
                     resetView();
@@ -161,19 +170,20 @@
                 });
 
                 $("#formUnit").ajaxFormExt({
-                    success: function () {
+                    success: function (response) {
                         $("#dialogUnit").dialog("close");
                         loadPlanList();
-                        $("#viewInfo .view").empty().append('<img src="/assets/img/ajax-loading.gif" />').load(urlUnitView + id);
+                        loadUnitView(response.id);
                     }
                 });
             }
         });
     }
 
-    var deleteUnit = function (id) {
-        confirm("确定要删除这个单元吗？", function () {
+    var deleteUnit = function (id, status) {
+        confirm(status ? "确定要停止这个广告创意吗？" : '确定要投放这个广告创意吗？', function () {
             App.ajaxDelete(urlUnitDelete + id, {
+                data: {'status':status},
                 success: function () {
                     loadPlanList();
                     resetView();                    
@@ -254,14 +264,14 @@
         editPlan: function (id) {
             editPlan(id);
         },
-        deletePlan: function (id) {
-            deletePlan(id);
+        deletePlan: function (id, status) {
+            deletePlan(id, status);
         },
         editUnit: function (id, planId) {
             editUnit(id, planId);
         },
-        deleteUnit: function (id) {
-            deleteUnit(id);
+        deleteUnit: function (id, status) {
+            deleteUnit(id, status);
         },
         editIdea: function (id) {
             editIdea(id);

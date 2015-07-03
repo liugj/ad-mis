@@ -23,7 +23,7 @@ use App\Plan;
 use Auth;
 use App\Http\Requests\IdeaRequest;
 use App\Http\Requests\PlanRequest;
-
+use App\Type;
 class IdeaController extends Controller
 {
     /**
@@ -82,6 +82,7 @@ class IdeaController extends Controller
                 'operators'  => $operators,
                 'classification'  => $classification,
                 'plan_id'          => $request->input('plan_id'),
+                'types' => Type::all(),
                 ]
                 ); 
     }
@@ -91,14 +92,14 @@ class IdeaController extends Controller
      *
      * @return Response
      */
-    public function store(PlanRequest $request)
+    public function store(IdeaRequest $request)
     {
         $id = $request->input('id');
         $this->validate($request, [
                 'name'    => 'required|max:128|unique:ideas'. ($id>0? sprintf(',name,%d', $id): ''),
                 'plan_id' => 'required|numeric|min:1',
-                'bid' => 'required|numeric|min:1',
-                'budget' => 'required|numeric|min:1',
+                'bid' => 'required|numeric|min:0',
+                'budget' => 'required|numeric|min:0',
                 'type' => 'required|max:64',
                 //'status' => 'required|numeric',
                 'pay_type' => 'required|numeric',
@@ -111,11 +112,11 @@ class IdeaController extends Controller
         //
         if ($id) {
             return  response()->json(['success' => Idea ::find($id)->update($request->all()),
-                      'message'=> '']
+                      'message'=> '', 'id'=>$id]
                     );
         }else{
             $idea = Idea :: create(array('user_id'=>$request->user()->id) + $request->all());
-            return response()->json(['success' => TRUE,
+            return response()->json(['success' => TRUE, 'id'=>$idea->id,
                     'message'=>'']
             );
         }
@@ -186,6 +187,7 @@ class IdeaController extends Controller
         $ages = Age :: all();
         $operators = Operator :: all();
         $regions = Region :: all();
+        $types = Type :: all();
         $classification = Classification:: all();
         $plans          = Plan :: where('user_id', Auth ::id())->get();
 
@@ -203,6 +205,7 @@ class IdeaController extends Controller
                 'operators'  => $operators,
                 'classification'  => $classification,
                 'plans'          => $plans,
+                'types'          => $types,
                 ]
                 ); 
     }
@@ -226,9 +229,13 @@ class IdeaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(IdeaRequest $request, $id)
     {
         //
+        return [
+            'success'=> Idea :: where('id', $id)->update($request->all()),
+            'message' => $request->input('status') ==1 ?'广告创意停止成功': '广告创意投放成功'
+        ];
 
     }
 }

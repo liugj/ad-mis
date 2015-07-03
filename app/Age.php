@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Age extends Model
 {
     //
-protected $table='ages';
+    protected $table='ages';
+    public function consumption_daily()
+    {
+        return $this->morphMany('App\ConsumptionDaily', 'consumable');
+    }
 }

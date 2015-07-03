@@ -154,13 +154,14 @@
                     <h3 class="doc-h3">
                         还没有账号？注册 <i class="fa fa-arrow-circle-right"></i>
                     </h3>
-                    <form id="formRegister" class="form-x x12" action="/account/reg" method="post" novalidate="novalidate">
+                    <form id="formRegister" class="form-x x12" action="/register" method="post" novalidate="novalidate">
+                          {!! csrf_field() !!}
                         <div class="form-group">
                             <div class="label">
                                 <label for="username">登录账号</label>
                             </div>
                             <div class="field">
-                                <input type="text" class="input" name="username" data-val="true" data-val-required="登录账号不能为空" data-val-regexp="账号格式不正确，只能为大小写英文字母、数字和下划线" data-val-regexp-rule="^\w+$">
+                                <input type="text" class="input" name="name" data-val="true" data-val-required="登录账号不能为空" data-val-regexp="账号格式不正确，只能为大小写英文字母、数字和下划线" data-val-regexp-rule="^\w+$">
                             </div>
                         </div>
                         <div class="form-group">
@@ -184,7 +185,7 @@
                                 <label for="password_confirm">密码确认</label>
                             </div>
                             <div class="field">
-                                <input type="password" class="input" name="password_confirm" data-val="true" data-val-equalto="两次输入的密码不一致" data-val-equalto-other="password">
+                                <input type="password" class="input" name="password_confirmation" data-val="true" data-val-equalto="两次输入的密码不一致" data-val-equalto-other="password">
                             </div>
                         </div>
                         <div class="form-group">
@@ -200,7 +201,7 @@
                                 <label for="company_name">公司名称</label>
                             </div>
                             <div class="field">
-                                <input type="text" class="input" name="company_name" data-val="true" data-val-required="公司名称不能为空">
+                                <input type="text" class="input" name="company" data-val="true" data-val-required="公司名称不能为空">
                             </div>
                         </div>
                         <div class="form-group">
@@ -280,7 +281,8 @@
                 message: false,
                 success: function (data) {
                     if (data.success) {
-                        $("#formRegister .form-button .alert").removeClass("alert-red").addClass("alert-green").html("<strong>注册成功：</strong>" + data.message).show();
+                        //$("#formRegister .form-button .alert").removeClass("alert-red").addClass("alert-green").html("<strong>注册成功：</strong>" + data.message).show();
+                        window.location = "/home";
                     } else {
                         $("#formRegister .form-button .alert").removeClass("alert-green").addClass("alert-red").html("<strong>注册失败：</strong>" + data.message).show();
                     }

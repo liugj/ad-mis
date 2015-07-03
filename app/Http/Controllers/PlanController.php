@@ -66,9 +66,10 @@ class PlanController extends Controller
                 ]);
         //
         if ($id <=0 ) {
-            return Plan :: create($request->all()+array('user_id'=>$request->user()->id));
+            $plan = Plan :: create($request->all()+array('user_id'=>$request->user()->id));
+            return response()->json(['success'=>TRUE, 'id'=>$plan->id]);
         } else{
-           return response()->json(['success'=>Plan :: find($id)->update($request->all()), 'message'=>'修改计划成功！']);
+           return response()->json(['success'=>Plan :: find($id)->update($request->all()), 'message'=>'修改计划成功！', 'id'=>$id]);
         }
 
     }
@@ -117,8 +118,12 @@ class PlanController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy(PlanRequest $request, $id)
 	{
 		//
+        return [
+            'success'=> Plan :: where('id', $id)->update($request->all()),
+            'message' => $request->input('status') ==1 ?'计划停止成功': '计划启动成功'
+        ];
 	}
 }

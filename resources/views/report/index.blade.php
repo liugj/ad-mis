@@ -71,15 +71,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                           <button class="button" type="submit"><i class="fa fa-search"></i></button>
+                                        </div>
                                     </form>
                                 </div>
                                 <table id="gridData" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>时间</th>
+                                            <th></th>
                                             <th>展现次数</th>
                                             <th>点击次数</th>
-                                            <th>消费金额</th>
+                                            <th>消费金额(元)</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -95,9 +99,10 @@
 <script id="tempDataItem" type="text/template">
         <tr>
             <td class="text-center">{datetime}</td>
+            <td class="text-center">{consumable}</td>
             <td class="text-center">{exhibition_total}</td>
             <td class="text-right">{click_total}</td>
-            <td class="text-right">{exhibition_total}</td>
+            <td class="text-right">{consumption_total}</td>
         </tr>
     </script>
 

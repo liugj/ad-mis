@@ -1,9 +1,12 @@
 ﻿App.Index = (function ($) {
-    var urlLoadData = "/report/listReport.json";
+    var urlLoadData = "/report/summary";
 
 	var initFields = function () {
 	    $("#query-form input[name='date']").datetimepicker({ allowBlank: false, value: new Date().dateFormat('Y-m-d') });
-	    $("#query-form select[name='type']").select2({ minimumResultsForSearch: -1 });
+        $("#query-form").submit(function (e) {
+            e.preventDefault();
+            loadData();
+        });
 	};
 
 	var tempDataItem = $('#tempDataItem').html();

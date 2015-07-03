@@ -34,7 +34,8 @@
                         <i class="fa fa-user"></i> 账户信息
                     </h3>
                     <p>
-                        余额：{{$basic->balance}}<br>
+                        用户名：{{$user->name}}<br>
+                        余额：{{$basic->total - $basic->consumption_total}}元<br>
                         邮箱：{{$user->email}}<br>
                         电话：{{$basic->phone}}<br>
                         公司：{{$basic->company}}<br>
@@ -51,20 +52,23 @@
                     <div class="panel-body">      
                         <div class="panel-tbar">
                             <form id="query-form" class="form-inline query">
+                               <!--
                                 <div class="form-group">
                                     <div class="field">
-                                        <select name="type" style="width:120px;">
-                                            <option value="1">地域</option>
-                                            <option value="2">兴趣</option>
-                                            <option value="3">时段</option>
-                                            <option value="4">行业</option>
-                                            <option value="5">app类型</option>
-                                            <option value="6">运营商</option>
-                                            <option value="7">网络类型</option>
-                                            <option value="8">设备类型</option>
-                                        </select>
+                                      <select name="consumable_type" style="width:120px;">
+                                          <option value="App\Region">地域</option>
+                                          <option value="App\Category">兴趣</option>
+                                          <option value="App\Industry">行业</option>
+                                          <option value="App\Classification">app类型</option>
+                                          <option value="App\Operator">运营商</option>
+                                          <option value="App\NetWork">网络类型</option>
+                                          <option value="App\Device">设备类型</option>
+                                          <option value="App\Os">操作系统</option>
+                                          <option value="App\Age">年龄</option>
+                                      </select>
                                     </div>
                                 </div>
+                                -->
                                 <div class="form-group">
                                     <div class="field">
                                         <div class="input-group">
@@ -73,17 +77,19 @@
                                         </div>
                                     </div>
                                 </div>                                
+                                <div class="form-group">
+                                  <button class="button" type="submit"><i class="fa fa-search"></i></button>
+                                </div>
                             </form>                            
                         </div>
                         <table id="gridData" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>名称</th>
-                                    <th>状态</th>
-                                    <th>点击次数</th>
-                                    <th>点击率</th>
-                                    <th>平均点击价格</th>
-                                    <th>总费用</th>
+                                  <th>时间</th>
+                                  <th></th>
+                                  <th>展现次数</th>
+                                  <th>点击次数</th>
+                                  <th>消费金额(元)</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -91,12 +97,11 @@
 
                         <script id="tempDataItem" type="text/template">
                             <tr>
-                                <td class="text-center">{name}</td>
-                                <td class="text-center">{state_name}</td>
-                                <td class="text-right">{click_count}</td>
-                                <td class="text-right">{click_rate}</td>
-                                <td class="text-right">{click_aveprice}</td>
-                                <td class="text-right">{total_money}</td>
+                             <td class="text-center">{datetime}</td>
+                             <td class="text-center">{consumable}</td>
+                             <td class="text-center">{exhibition_total}</td>
+                             <td class="text-right">{click_total}</td>
+                             <td class="text-right">{consumption_total}</td>
                             </tr>
                         </script>
                     </div>

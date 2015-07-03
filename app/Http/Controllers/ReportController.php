@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\ConsumptionDaily;
 use App\Industry;
-
+use DB;
 class ReportController extends Controller
 {
     /**
@@ -21,22 +21,49 @@ class ReportController extends Controller
     public function index()
     {
         //
-       // $consumptionsDaily =  ConsumptionDaily ::with(['idea'=>function ($query){return $query->select(['id','name']);}])
-         //   ->where('user_id', Auth::id())
-           // ->orderBy('updated_at', 'DESC')
-           // ->paginate(10);
         return view('report.index');
     }
-    function lists(ReportRequest $request){
+    public function summary(Request $request) 
+    {
+        $results = array();
+        $rows =  ConsumptionDaily :: where('user_id', Auth::id())
+           ->where('date', $request->input('date'))
+           //->where('consumable_type', $request->input('consumable_type'))
+           ->select('consumable_type', 'datetime', 'consumable_id', 
+                       DB::raw('sum(click_total) as click_total'), 
+                       DB::raw('sum(exhibition_total) as exhibition_total'),
+                       DB::raw('sum(consumption_total) as consumption_total')
+                       )
+           ->groupBy('datetime')
+          ->groupBy('consumable_id')
+          ->orderBy('datetime', 'DESC')
+          ->get()
+          ;
+        foreach ($rows as $row) {
+            $result = $row->toArray();
+            $result['consumable'] = $row->consumable->name;
+            $results[] = $result;
+        }
+        return ['total'=>$rows->count(), 'rows'=> $results];    
+    }
+    public function lists(ReportRequest $request)
+    {
         $planId = $request->input('plan_id');
         $ideaId = $request->input('idea_id');
         if ($ideaId>0 || $planId >0 ) {
+            $results = array();
             $rows =  ConsumptionDaily:: where($ideaId >0 ? 'idea_id':'plan_id', $ideaId>0? $ideaId: $planId)
                 ->where('user_id', Auth::id())
                 ->where('consumable_type', $request->input('consumable_type'))
                 ->where('date', $request->input('date'))
                 ->get();
-            return ['total'=>$rows->count(), 'rows'=> $rows];    
+            foreach ($rows as $row) {
+                $result = $row->toArray();
+                $result['consumable'] = $row->consumable->name;
+                $result['consumption_total'] /= 100; 
+                $results[] = $result;
+            }
+            return ['total'=>$rows->count(), 'rows'=> $results];    
 
         }
         return ['rows'=>[], 'total'=>0];
@@ -74,7 +101,7 @@ class ReportController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
+     4*
      * @param  int  $id
      * @return Response
      */

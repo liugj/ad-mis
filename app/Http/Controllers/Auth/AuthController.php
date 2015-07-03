@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Auth;
+use App\Basic;
 class AuthController extends Controller
 {
     /*
@@ -48,6 +49,21 @@ class AuthController extends Controller
         ]);
     }
 
+    public function postRegister(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        Auth::login($this->create($request->all()));
+        return response()->json(['success'=> TRUE ]);
+        #return redirect($this->redirectPath());
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -56,12 +72,26 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+       $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+       Basic:: create([
+       'phone'   => $data['phone'],
+       'address' => $data['address'],
+       'company' => $data['company'],
+       'id' =>$user->id,
+       ]);
+       return $user;
     }
+    /**
+     * postLogin 
+     * 
+     * @param Request $request 
+     * @access public
+     * @return mixed
+     */
     public function postLogin(Request $request){
         $this->validate($request, [
                 'email' => 'required|email', 'password' => 'required',

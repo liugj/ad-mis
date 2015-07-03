@@ -27,7 +27,7 @@ class PlanRequest extends Request
 
             }
         }
-        return false;
+        return TRUE;
     }
 
         /**

@@ -30,39 +30,14 @@
                 <label for="size_id">图片尺寸</label>
             </div>
             <div class="field" id="ideaSize">
-                <div class="banner_iphone">
-                    <label class="i-radio"><input type="radio" name="size_id" value="1" checked="checked" /><i></i>320x50</label>
+               @foreach($types as $type)
+                <?php if($type->name_en=='banner_text') continue;  ?>
+                <div class="{{$type->name_en}}">
+                   @foreach($type->sizes()->get() as $size)
+                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" /><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
+                  @endforeach
                 </div>
-                <div class="banner_ipad">
-                    <label class="i-radio"><input type="radio" name="size_id" value="2" /><i></i>300x250</label>
-                </div>
-                <div class="banner_android">
-                    <label class="i-radio"><input type="radio" name="size_id" value="3" /><i></i>320x50</label>
-                </div>
-                <div class="plaqueX_iphone">
-                    <label class="i-radio"><input type="radio" name="size_id" value="4" /><i></i>700x480</label>
-                </div>
-                <div class="plaqueX_ipad">
-                    <label class="i-radio"><input type="radio" name="size_id" value="5" /><i></i>750x560</label>
-                </div>
-                <div class="plaqueX_android">
-                    <label class="i-radio"><input type="radio" name="size_id" value="6" /><i></i>657x369</label>
-                    <label class="i-radio"><input type="radio" name="size_id" value="7" /><i></i>700x480</label>
-                    <label class="i-radio"><input type="radio" name="size_id" value="8" /><i></i>738x415</label>
-                    <label class="i-radio"><input type="radio" name="size_id" value="9" /><i></i>738x492</label>
-                </div>
-                <div class="plaqueY_iphone">
-                    <label class="i-radio"><input type="radio" name="size_id" value="10" /><i></i>480x700</label>
-                </div>
-                <div class="plaqueY_ipad">
-                    <label class="i-radio"><input type="radio" name="size_id" value="11" /><i></i>560x750</label>
-                </div>
-                <div class="plaqueY_android">
-                    <label class="i-radio"><input type="radio" name="size_id" value="12" /><i></i>369x657</label>
-                    <label class="i-radio"><input type="radio" name="size_id" value="13" /><i></i>415x738</label>
-                    <label class="i-radio"><input type="radio" name="size_id" value="14" /><i></i>480x700</label>
-                    <label class="i-radio"><input type="radio" name="size_id" value="15" /><i></i>492x738</label>
-                </div>
+               @endforeach
             </div>
         </div>
         <div class="form-group img">
@@ -128,21 +103,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="label">
-                        <label for="display_type">展示类型</label>
-                    </div>
-                    <div class="field">
-                        <label class="i-radio">
-                            <input type="radio" name="display_type" value="0" @if($idea->display_type =0)  checked="checked" @endif /><i></i>
-                            轮选
-                        </label>
-                        <label class="i-radio">
-                            <input type="radio" name="display_type" value="1" @if($idea->display_type =1)  checked="checked" @endif/><i></i>
-                            优选
-                        </label>
-                    </div>
-                </div>
             <!--
                 <div class="form-group">
                     <div class="label">
@@ -174,10 +134,7 @@
                     </div>
                     <div class="field">
                         <label class="i-radio">
-                            <input type="radio" name="pay_type" value="0" @if($idea->pay_type =0)  checked="checked" @endif/><i></i>cpc
-                        </label>
-                        <label class="i-radio">
-                            <input type="radio" name="pay_type" value="1" @if($idea->pay_type =1)  checked="checked" @endif /><i></i>cpm
+                            <input type="radio" name="pay_type" value="0" checked="checked" /><i></i>cpc
                         </label>
                     </div>
                 </div>
@@ -190,7 +147,7 @@
                     <div class="field">
                         <div class="input-group">
                             <input type="text" class="input text-right" name="bid" value="{{$idea->bid}}" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空" />
-                            <span class="addon">元</span>
+                            <span class="addon">元/点击</span>
                         </div>
                     </div>
                 </div>
@@ -199,7 +156,7 @@
                         <label for="frequency">频次控制</label>
                     </div>
                     <div class="field">
-                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" data-val="true" data-val-required="频次控制不能为空" />
+                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" data-val="true" data-val-required="频次控制不能为空" data-val-regexp-rule="^\d+$" />
                     </div>
                 </div>
             </div>

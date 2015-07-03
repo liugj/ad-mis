@@ -27,7 +27,6 @@ Route::group(['namespace'=>'Auth'], function() {
         Route::post('login', 'AuthController@postLogin');
         Route::get('logout', 'AuthController@getLogout');
 
-        Route::get('register', 'AuthController@getRegister');
         Route::post('register', 'AuthController@postRegister');
         });
 
@@ -47,6 +46,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/idea/edit/{id}',  [
             'as' => 'idea', 'uses' => 'IdeaController@edit'
             ])->where('id','[0-9]+');
+        Route::post('/idea/destroy/{id}',  [
+            'as' => 'idea', 'uses' => 'IdeaController@destroy'
+            ])->where('id','[0-9]+');
         Route::post('/idea/store',  [
             'as' => 'idea', 'uses' => 'IdeaController@store'
             ]);
@@ -59,9 +61,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', ['as'=>'home', 'uses'=>'UserController@profile']);
         Route::get('/report', ['as'=>'report', 'uses'=>'ReportController@index']);
         Route::get('/report/lists', ['as'=>'report', 'uses'=>'ReportController@lists']);
+        Route::get('/report/summary', ['as'=>'report', 'uses'=>'ReportController@summary']);
 
         Route::get('/plan', ['as'=>'plan', 'uses'=>'PlanController@index']);
-        Route::get('/plan/show/{id}', ['as'=>'plan', 'uses'=>'PlanController@show']);
+        Route::get('/plan/show/{id}', ['as'=>'plan', 'uses'=>'PlanController@show'])->where('id','[0-9]+');
+        Route::post('/plan/destroy/{id}', ['as'=>'plan', 'uses'=>'PlanController@destroy'])->where('id','[0-9]+');
         Route::get('/plan/lists', ['as'=>'plan', 'uses'=>'PlanController@lists']);
         Route::post('/plan/store', ['as'=>'plan', 'uses'=>'PlanController@store']);
         Route::get('/plan/create', ['as'=>'plan', 'uses'=>'PlanController@create']);

@@ -15,5 +15,7 @@ class VerifyCsrfToken extends BaseVerifier
         //
         'idea/upload',
         'idea/crop',
+        'plan/destroy/*',
+        'idea/destroy/*',
     ];
 }

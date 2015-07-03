@@ -6,14 +6,10 @@
                 <span>{{$idea->name}}</span>
                 <label>费用预算：</label>
                 <span>{{$idea->budget}}元/天</span>
-                <label>是否启用：</label>
-                <span>启用</span>
                 <label>频次控制：</label>
                 <span>{{$idea->frequency}}</span>
-                <label>展示类型：</label>
-                <span>@if($idea->display_type ==1) 优选 @else 轮选 @endif</span>
                 <label>出价金额：</label>
-                <span>{{$idea->bid}}元</span>
+                <span>{{$idea->bid}}元/点击</span>
                 <label>结算方式：</label>
                 <span>@if ($idea->pay_type==1) cpm @else cpc @endif  </span>
                 <label>创建时间：</label>
@@ -92,6 +88,10 @@
     </blockquote>
     <div class="margin-top">
         <button class="button" onclick="App.Plan.editUnit({{$idea->id}});">编辑</button>
-        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}});">删除</button>
+        @if ($idea->status ==0)
+        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 1);">停止</button>
+        @else
+        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 0);">投放</button>
+        @endif
     </div>
 </div>
