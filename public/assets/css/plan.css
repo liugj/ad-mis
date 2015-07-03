@@ -1,0 +1,36 @@
+﻿.adv-list { padding: 0; margin: 0; }
+.adv-list .adv-list { padding-left: 30px; }
+.adv-list .adv-item { list-style: none; display: block; position: relative; }
+.adv-list .adv-item .adv-handle { position: relative; background: none repeat scroll 0 0 #f8faff; border: 1px solid #dae2ea; color: #7c9eb2; display: block; font-weight: bold; margin: 5px 0; min-height: 38px; padding: 8px 12px 8px 40px; text-decoration: none; }
+.adv-list .adv-item .adv-item .adv-handle { background-color: #fff; }
+.adv-list .adv-item.active > .adv-handle { background-color: #6fb3e0; color: #fff; border-color: #6fb3e0; }
+.adv-list .adv-item > .adv-state { color: #aaa; font-size: 12px; position: absolute; right: 8px; top: 10px; z-index: 1; }
+.adv-list .adv-item .adv-handle > i { background-color: #ebedf2; border-right: 1px solid #dee4ea; bottom: 0; left: 0; line-height: 37px; position: absolute; text-align: center; top: 0; width: 32px; }
+.adv-list .adv-item.active > .adv-handle > i { background-color: #6fb3e0; border-color: #fff; }
+.adv-list .adv-item.active > .adv-state { color: #fff; }
+.doc-h3 button { float: right; font-size: 14px; }
+
+.adv-item .adv-item-icon:before { content: "\f146"; }
+/*.adv-item > .adv-list .adv-item-icon:before { content: "\f0fe"; }*/
+/*.adv-item > .adv-list > .open .adv-item-icon:before { content: "\f146"; }*/
+
+.view .height-big > label, .view .x4 > label, .view .x8 > label { float: left; width: 100px; text-align: right; color: #888; }
+.view .height-big > span, .view .x4 > span, .view .x8 > span { display: block; overflow: hidden; line-height: 30px; min-height: 30px; }
+.view .idea label { width: 140px; }
+.view .weekdaypicker-handler { padding: 0; }
+
+.unit-info { padding-bottom: 20px; float: left; width: 100%; }
+
+.adv-list .adv-item > .idea-list { display: none; }
+.adv-list .adv-item.open > .idea-list { display: block; }
+
+.idea-list { padding: 5px 10px; margin: 0; border: 1px solid #dae2ea; max-height: 180px; overflow-y: auto; }
+.idea-list ul { padding: 0; margin: 0; }
+.idea-list .idea-item { list-style: none; position: relative; padding: 1px; }
+.idea-list .idea-item + .idea-item { border-top: 1px dotted #dae2ea; }
+.idea-list .idea-item .idea-handle { position: relative; color: #7c9eb2; display: block; font-weight: bold; padding: 5px 12px; text-decoration: none; }
+.idea-list .idea-item.active > .idea-handle { background-color: #6fb3e0; color: #fff; }
+.idea-list .idea-item > .idea-state { color: #aaa; font-size: 12px; position: absolute; right: 0; top: 5px; z-index: 1; }
+
+.formIdea .label { width: 23%; }
+.formIdea .field { width: 77%; }
