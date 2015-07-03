@@ -6,6 +6,7 @@
                 <span>{{$idea->name}}</span>
                 <label>费用预算：</label>
                 <span>{{$idea->budget}}元/天</span>
+                <label>消费：</label><span>{{$idea->consumeTotalByDate(date('Y-m-d'))}}元/天</span>
                 <label>频次控制：</label>
                 <span>{{$idea->frequency}}</span>
                 <label>出价金额：</label>

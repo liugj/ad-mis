@@ -140,4 +140,13 @@ class Idea extends Model
     {
         return ucfirst($value);
     }
+    public  function consumeTotalByDate($date)
+    {
+        $consumption =  \App\Consumption ::  where ('idea_id', $this->id)
+            -> where('date', $date)
+            -> select (\DB :: raw('sum( price ) as consume'))
+            //-> groupBy('date')
+            -> first();
+        return $consumption ?  $consumption->consume : 0 ;    
+    }
 }
