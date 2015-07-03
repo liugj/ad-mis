@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\ConsumptionHourly::class,
     ];
 
     /**
@@ -24,7 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('consumption_hourly')
+            ->everyMinute()
+            ->sendOutputTo('/home/work/class');
+        //    $schedule->command('inspire')
+        //      ->hourly();
+        $schedule->call(function () {
+                var_dump('eeeee');
+                })->everyMinute()
+        ->sendOutputTo('/home/work/output.txt');
     }
 }
