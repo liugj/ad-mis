@@ -34,7 +34,7 @@
                 <?php if($type->name_en=='banner_text') continue;  ?>
                 <div class="{{$type->name_en}}">
                    @foreach($type->sizes()->get() as $size)
-                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" /><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
+                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" @if ($idea->size_id == $size->id) checked @endif /><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
                   @endforeach
                 </div>
                @endforeach
@@ -55,7 +55,7 @@
                 <label for="text">文字</label>
             </div>
             <div class="field">
-                <textarea name="text" class="input" data-val="true" data-val-required="文字不能为空">{{$idea->alt}}</textarea>
+                <textarea name="alt" class="input" data-val="true" data-val-required="文字不能为空">{{$idea->alt}}</textarea>
             </div>
         </div>
 
@@ -103,31 +103,6 @@
                         </div>
                     </div>
                 </div>
-            <!--
-                <div class="form-group">
-                    <div class="label">
-                        <label for="account">单元名称</label>
-                    </div>
-                    <div class="field">
-                        <input type="text" name="name" class="input" value="" data-val="true" data-val-required="单元名称不能为空" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="label">
-                        <label for="status">是否启用</label>
-                    </div>
-                    <div class="field">
-                        <label class="i-radio">
-                            <input type="radio" name="status" value="1" checked="checked" /><i></i>
-                            启用
-                        </label>
-                        <label class="i-radio">
-                            <input type="radio" name="status" value="0" /><i></i>
-                            不启用
-                        </label>
-                    </div>
-                </div>
-            -->
                 <div class="form-group">
                     <div class="label">
                         <label for="pay_type">结算方式</label>
@@ -156,7 +131,10 @@
                         <label for="frequency">频次控制</label>
                     </div>
                     <div class="field">
+                    <!--
                         <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" data-val="true" data-val-required="频次控制不能为空" data-val-regexp-rule="^\d+$" />
+                        -->
+                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" />
                     </div>
                 </div>
             </div>

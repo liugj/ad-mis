@@ -197,7 +197,12 @@
         $("#ideaSize div:not(." + type + ")").hide();
 
         var showDiv = $("#ideaSize div." + type).show();
-        showDiv.find(":radio:first").prop("checked", true);
+
+        if (showDiv.find(":radio:checked").length){
+           showDiv.find(":radio:checked").prop("checked", true);
+        }else{
+           showDiv.find(":radio:first").prop("checked", true);
+        }
 
         if (type == "banner_text") {
             $(".form-group.text").show();

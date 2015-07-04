@@ -12,6 +12,8 @@ class Idea extends Model
     protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link',
                             'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','start_time','end_time'
                             ];
+    protected $appends = ['state'];                        
+
     public function update(array $attributes=[]) {
         list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
        $update =  parent :: update($attributes);
@@ -148,5 +150,9 @@ class Idea extends Model
             //-> groupBy('date')
             -> first();
         return $consumption ?  $consumption->consume : 0 ;    
+    }
+    public function getStateAttribute()
+    {
+        return $this->attributes['status'] == 1 ? '停止' : '投放中';
     }
 }

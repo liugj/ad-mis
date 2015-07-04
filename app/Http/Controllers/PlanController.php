@@ -28,7 +28,7 @@ class PlanController extends Controller
     }
     public function lists() {
         return Plan :: with(['ideas' => function($query){
-                $query->select(['id','name','status as state', 'plan_id'])
+                $query->select(['id','name','status', 'plan_id'])
                          ->orderBy('updated_at', 'desc');
                 }
                 ]
@@ -36,7 +36,7 @@ class PlanController extends Controller
             ->where('user_id', Auth::id())
             ->orderBy('status',  'ASC')
             ->orderBy('updated_at', 'ASC')
-            ->select(['id', 'name', 'status as state'])
+            ->select(['id', 'name', 'status'])
             ->get();
     }
 

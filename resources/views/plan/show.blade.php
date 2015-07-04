@@ -11,7 +11,7 @@
     @if ($plan->status ==0)
     <button class="button" onclick="App.Plan.deletePlan({{$plan->id}}, 1);">停止</button>
     @else 
-    <button class="button" onclick="App.Plan.deletePlan({{$plan->id}}, 0);">启动</button>
+    <button class="button" onclick="App.Plan.deletePlan({{$plan->id}}, 0);">启用</button>
     @endif
     <button class="button" onclick="App.Plan.editUnit(0, {{$plan->id}});">添加广告</button>
 </div>

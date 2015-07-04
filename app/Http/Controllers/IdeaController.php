@@ -24,6 +24,8 @@ use Auth;
 use App\Http\Requests\IdeaRequest;
 use App\Http\Requests\PlanRequest;
 use App\Type;
+use Validator;
+use Cache;
 class IdeaController extends Controller
 {
     /**
@@ -55,17 +57,18 @@ class IdeaController extends Controller
     {
         //
         $idea = new Idea();
-        $groups = Group :: all();
-        $industries = Industry :: all();
-        $clickActions = ClickAction :: all();
-        $categories = Category :: all();
-        $devices = Device :: all();
-        $networks = Network :: all();
-        $oss = Os :: all();
-        $ages = Age :: all();
-        $operators = Operator :: all();
-        $regions = Region :: all();
-        $classification = Classification:: all();
+        $groups       =  Cache:: rememberForever('groups', function(){  return Group :: all();});
+        $industries   =  Cache:: rememberForever('industries', function(){ return Industry :: all();});
+        $clickActions =  Cache:: rememberForever('ClickActions', function(){ return ClickAction :: all();});
+        $categories   =  Cache:: rememberForever('categories', function(){ return Category :: all();});
+        $devices      =  Cache:: rememberForever('devices', function(){ return  Device :: all();});
+        $networks     =  Cache:: rememberForever('networks', function(){ return Network :: all();});
+        $oss          =  Cache:: rememberForever('oss', function(){ return  Os :: all();});
+        $ages         =  Cache:: rememberForever('ages', function(){ return  Age :: all();});
+        $operators    =  Cache:: rememberForever('operators', function(){ return  Operator :: all();});
+        $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all();});
+        $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
+        $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
     //    $plans          = Plan :: where('user_id', Auth ::id())->get();
 
         return view('idea.create', [
@@ -82,7 +85,7 @@ class IdeaController extends Controller
                 'operators'  => $operators,
                 'classification'  => $classification,
                 'plan_id'          => $request->input('plan_id'),
-                'types' => Type::all(),
+                'types' => $types,
                 ]
                 ); 
     }
@@ -95,31 +98,39 @@ class IdeaController extends Controller
     public function store(IdeaRequest $request)
     {
         $id = $request->input('id');
-        $this->validate($request, [
+        $v  =  Validator::make($request->all(), [
                 'name'    => 'required|max:128|unique:ideas'. ($id>0? sprintf(',name,%d', $id): ''),
                 'plan_id' => 'required|numeric|min:1',
                 'bid' => 'required|numeric|min:0',
                 'budget' => 'required|numeric|min:0',
                 'type' => 'required|max:64',
-                //'status' => 'required|numeric',
                 'pay_type' => 'required|numeric',
-                'display_type' => 'required|numeric',
-                'size_id' => 'required|numeric',
-                'frequency' => 'required|numeric',
                 'click_action_id' => 'required|numeric',
                 'link' => 'required|max:65535',
                 ]);
+        $v->sometimes('alt', 'required|max:128|min:1', function($input){
+                return   $input->type == 'banner_text';
+                });
+        $v->sometimes('size_id', 'required|min:1', function($input){
+                return   $input->type != 'banner_text';
+                });
+        $v->sometimes('src', 'required|max:255', function($input){
+                return   $input->type != 'banner_text';
+                });
         //
-        if ($id) {
-            return  response()->json(['success' => Idea ::find($id)->update($request->all()),
-                      'message'=> '', 'id'=>$id]
-                    );
-        }else{
-            $idea = Idea :: create(array('user_id'=>$request->user()->id) + $request->all());
-            return response()->json(['success' => TRUE, 'id'=>$idea->id,
-                    'message'=>'']
-            );
+        if (!$v->fails()) {
+            if ($id) {
+                return  response()->json(['success' => Idea ::find($id)->update($request->all()),
+                        'message'=> '', 'id'=>$id]
+                        );
+            }else{
+                $idea = Idea :: create(array('user_id'=>$request->user()->id) + $request->all());
+                return response()->json(['success' => TRUE, 'id'=>$idea->id,
+                        'message'=>'']
+                        );
+            }
         }
+        $this->throwValidationException($request, $v);
     }
     public function test()
     {
@@ -147,7 +158,7 @@ class IdeaController extends Controller
             $$v = $request->input($v);
         }
         $imagick = new \Imagick(public_path(). $imgUrl);
-        $imagick->cropImage($cropH, $cropH, $imgX1, $imgY1);
+        $imagick->cropImage($cropW, $cropH, $imgX1, $imgY1);
         $cropFileName  = str_replace('/images/', '/resizeImages/', public_path() . $imgUrl);
         $cropPath = substr($cropFileName, 0, strrpos($cropFileName, '/'));
         file_exists($cropPath) ?: mkdir($cropPath, 0755, TRUE);
@@ -177,18 +188,18 @@ class IdeaController extends Controller
     {
         //
         $idea = Idea ::find($id);
-        $groups = Group :: all();
-        $industries = Industry :: all();
-        $clickActions = ClickAction :: all();
-        $categories = Category :: all();
-        $devices = Device :: all();
-        $networks = Network :: all();
-        $oss = Os :: all();
-        $ages = Age :: all();
-        $operators = Operator :: all();
-        $regions = Region :: all();
-        $types = Type :: all();
-        $classification = Classification:: all();
+        $groups       =  Cache:: rememberForever('groups', function(){  return Group :: all();});
+        $industries   =  Cache:: rememberForever('industries', function(){ return Industry :: all();});
+        $clickActions =  Cache:: rememberForever('ClickActions', function(){ return ClickAction :: all();});
+        $categories   =  Cache:: rememberForever('categories', function(){ return Category :: all();});
+        $devices      =  Cache:: rememberForever('devices', function(){ return  Device :: all();});
+        $networks     =  Cache:: rememberForever('networks', function(){ return Network :: all();});
+        $oss          =  Cache:: rememberForever('oss', function(){ return  Os :: all();});
+        $ages         =  Cache:: rememberForever('ages', function(){ return  Age :: all();});
+        $operators    =  Cache:: rememberForever('operators', function(){ return  Operator :: all();});
+        $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all();});
+        $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
+        $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
         $plans          = Plan :: where('user_id', Auth ::id())->get();
 
         return view('idea.create', [

@@ -9,6 +9,7 @@ class Plan extends Model
     //
     protected $table ='plans';
     protected $fillable = ['name', 'budget', 'user_id'];
+    protected $appends = ['state'];
 
 
     public function  ideas() 
@@ -23,6 +24,10 @@ class Plan extends Model
             //-> groupBy('date')
             -> first();
         return $consumption ?  $consumption->consume : 0 ;    
+    }
+    public function getStateAttribute()
+    {
+        return $this->attributes['status'] == 1 ? '停止' : '启用';
     }
 
 }
