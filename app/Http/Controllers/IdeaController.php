@@ -66,7 +66,7 @@ class IdeaController extends Controller
         $oss          =  Cache:: rememberForever('oss', function(){ return  Os :: all();});
         $ages         =  Cache:: rememberForever('ages', function(){ return  Age :: all();});
         $operators    =  Cache:: rememberForever('operators', function(){ return  Operator :: all();});
-        $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all();});
+        $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all()->sortBy('parent');});
         $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
         $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
     //    $plans          = Plan :: where('user_id', Auth ::id())->get();
@@ -98,8 +98,9 @@ class IdeaController extends Controller
     public function store(IdeaRequest $request)
     {
         $id = $request->input('id');
+        $user_id  = $request->user()->id;
         $v  =  Validator::make($request->all(), [
-                'name'    => 'required|max:128|unique:ideas'. ($id>0? sprintf(',name,%d', $id): ''),
+                'name'    => 'required|max:128|unique:ideas,name,' .($id>0?$id: 'NULL') . ',id,user_id,'. $user_id,
                 'plan_id' => 'required|numeric|min:1',
                 'bid' => 'required|numeric|min:0',
                 'budget' => 'required|numeric|min:0',
@@ -197,7 +198,7 @@ class IdeaController extends Controller
         $oss          =  Cache:: rememberForever('oss', function(){ return  Os :: all();});
         $ages         =  Cache:: rememberForever('ages', function(){ return  Age :: all();});
         $operators    =  Cache:: rememberForever('operators', function(){ return  Operator :: all();});
-        $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all();});
+        $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all()->sortBy('parent');});
         $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
         $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
         $plans          = Plan :: where('user_id', Auth ::id())->get();

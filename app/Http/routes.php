@@ -20,8 +20,8 @@ Route::get('/crop', function()
 
         });
 Route::get('/', function () {
-		return view('welcome');
-		});
+    return Auth:: check()?  redirect('/home') :  view('welcome');
+        });
 Route::group(['namespace'=>'Auth'], function() {
         Route::get('login',  'AuthController@getLogin');
         Route::post('login', 'AuthController@postLogin');

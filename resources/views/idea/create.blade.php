@@ -204,10 +204,10 @@
                 </div>
                 <div class="form-group">
                     <div class="label">
-                        <label for="ages[]">年龄段</label>
+                        <label for="age[]">年龄段</label>
                     </div>
                     <div class="field">
-                        <select class="select2"  style="width:240px;" multiple  name="ages[]">
+                        <select class="select2"  style="width:240px;" multiple  name="age[]">
                         @foreach ($ages as $age)
                             <option  @if($idea->age->contains($age->id) ) selected @endif  value="{{$age->id}}">{{$age->name}}</option>
                         @endforeach    
@@ -253,7 +253,7 @@
                         <label for="operator[]">运营商</label>
                     </div>
                     <div class="field">
-                        <select class="select2"  style="width:240px;" multiple  name="operatori[]">
+                        <select class="select2"  style="width:240px;" multiple  name="operator[]">
                         @foreach ($operators as $operator)
                             <option  @if($idea->operators->contains($operator->id) ) selected @endif  value="{{$operator->id}}">{{$operator->name}}</option>
                         @endforeach    

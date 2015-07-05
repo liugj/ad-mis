@@ -29,6 +29,7 @@ class PlanController extends Controller
     public function lists() {
         return Plan :: with(['ideas' => function($query){
                 $query->select(['id','name','status', 'plan_id'])
+                         ->orderBy('status', 'asc')
                          ->orderBy('updated_at', 'desc');
                 }
                 ]
@@ -58,9 +59,10 @@ class PlanController extends Controller
 	 */
 	public function store(PlanRequest $request)
     {
-        $id = $request->input('id', 0) ;
+        $id      = $request->input('id', 0) ;
+        $user_id  = $request->user()->id;
         $this->validate($request, [
-                'name'    => 'required|max:128|unique:plans' . ($id > 0 ? sprintf(',name,%d', $id): ''),
+                'name'    => 'required|max:128|unique:plans,name,' .($id>0?$id: 'NULL') . ',id,user_id,'. $user_id , #. ($id > 0 ? sprintf(',id,%d', $id): ''),
                 //'status' => 'required|numeric',
                 'budget' => 'required|numeric|min:1',
                 ]);

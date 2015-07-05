@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         //      ->hourly();
         $schedule->call(function () {
                 var_dump('eeeee');
-                })->everyMinute()
+                })->hourly()
         ->sendOutputTo('/home/work/output.txt');
     }
 }

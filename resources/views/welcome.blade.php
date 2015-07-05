@@ -158,7 +158,7 @@
                           {!! csrf_field() !!}
                         <div class="form-group">
                             <div class="label">
-                                <label for="username">登录账号</label>
+                                <label for="username">名称</label>
                             </div>
                             <div class="field">
                                 <input type="text" class="input" name="name" data-val="true" data-val-required="登录账号不能为空" data-val-regexp="账号格式不正确，只能为大小写英文字母、数字和下划线" data-val-regexp-rule="^\w+$">
@@ -166,7 +166,7 @@
                         </div>
                         <div class="form-group">
                             <div class="label">
-                                <label for="email">邮箱地址</label>
+                                <label for="email">登录邮箱</label>
                             </div>
                             <div class="field">
                                 <input type="text" class="input" name="email" data-val="true" data-val-required="邮箱地址不能为空" data-val-email="邮箱格式不正确，例：abc@qq.com">

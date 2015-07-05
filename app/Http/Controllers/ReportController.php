@@ -28,7 +28,7 @@ class ReportController extends Controller
         $results = array();
         $rows =  ConsumptionDaily :: where('user_id', Auth::id())
            ->where('date', $request->input('date'))
-           //->where('consumable_type', $request->input('consumable_type'))
+           ->where('consumable_type', 'App\Industry')
            ->select('consumable_type', 'datetime', 'consumable_id', 
                        DB::raw('sum(click_total) as click_total'), 
                        DB::raw('sum(exhibition_total) as exhibition_total'),

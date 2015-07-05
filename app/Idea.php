@@ -135,12 +135,8 @@ class Idea extends Model
     public function  click_action(){
         return $this->belongsTo('App\ClickAction');
     }
-    //public function  type_name(){
-    //    return $this->belongsTo('App\Type', 'type');
-    //}
-    public function getNameAttribute($value)
-    {
-        return ucfirst($value);
+    public function  size(){
+        return $this->belongsTo('App\Size');
     }
     public  function consumeTotalByDate($date)
     {
