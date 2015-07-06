@@ -35,18 +35,22 @@
             </div>
             <hr />
             <div class="x4">
+<!--
                 <label>性别：</label>
                 <span><?php $gender= array('U'=>'不限', 'M'=>'男', 'F'=>'女'); echo isset($gender[$idea->gender]) ? $gender[$idea->gender]: '不限';?></span>
+-->
                 <?php $industries = $idea->industries()->get(); ?>
                 @if ($industries->count())
                 <label>行业：</label>
                 <span>@foreach($industries as $industry) {{$industry->name}} @endforeach </span>
                 @endif 
+<!--
                 <?php $categories  = $idea->categories()->get(); ?>
                 @if ($categories->count())
                 <label>兴趣：</label>
                 <span> @foreach ($categories as $category) {{$category->name}} @endforeach</span>
                 @endif
+-->
                 <?php  $bans = $idea->ban()->get(); ?>
                 @if ($bans->count())
                 <label>APP黑名单：</label>
@@ -57,11 +61,13 @@
                 <label>操作系统：</label>
                 <span>@foreach ($oss as $os) {{$os->name}} @endforeach</span>
                @endif
+<!--
                 <?php  $ages = $idea->age()->get(); ?>
                 @if ($ages->count())
                 <label>年龄段：</label>
                 <span> @foreach($ages as $age)  {{$age->name}} @endforeach</span>
                 @endif
+-->
             </div>
             <div class="x8">
                 <label>时间：</label>

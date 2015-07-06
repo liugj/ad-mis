@@ -142,6 +142,7 @@
         <hr />
         <div class="line">
             <div class="x6">
+               <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="gender">性别</label>
@@ -154,6 +155,7 @@
                     <?php endforeach ?>
                     </div>
                 </div>
+                -->
                 <div class="form-group">
                     <div class="label">
                         <label for="industry[]">行业</label>
@@ -166,6 +168,7 @@
                         </select>
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="category[]">兴趣</label>
@@ -178,6 +181,7 @@
                         </select>
                     </div>
                 </div>
+                -->
                 <div class="form-group">
                     <div class="label">
                         <label for="ban[]">APP黑名单</label>
@@ -202,6 +206,7 @@
                         </select>
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="age[]">年龄段</label>
@@ -214,6 +219,7 @@
                         </select>
                     </div>
                 </div>
+                -->
             </div>
             <div class="x6">
                 <div class="form-group">
