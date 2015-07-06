@@ -26,13 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('consumption_hourly')
-            ->everyMinute()
-            ->sendOutputTo('/home/work/class');
-        //    $schedule->command('inspire')
-        //      ->hourly();
-        $schedule->call(function () {
-                var_dump('eeeee');
-                })->hourly()
-        ->sendOutputTo('/home/work/output.txt');
+            ->hourly()
+            ->sendOutputTo(storage_path(). '/logs/cron.log');
     }
 }

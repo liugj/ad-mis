@@ -11,8 +11,7 @@
 .doc-h3 button { float: right; font-size: 14px; }
 
 .adv-item .adv-item-icon:before { content: "\f146"; }
-/*.adv-item > .adv-list .adv-item-icon:before { content: "\f0fe"; }*/
-/*.adv-item > .adv-list > .open .adv-item-icon:before { content: "\f146"; }*/
+.adv-item .adv-item-icon.fold:before { content: "\f0fe"; }
 
 .view .height-big > label, .view .x4 > label, .view .x8 > label { float: left; width: 100px; text-align: right; color: #888; }
 .view .height-big > span, .view .x4 > span, .view .x8 > span { display: block; overflow: hidden; line-height: 30px; min-height: 30px; }

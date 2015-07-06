@@ -86,7 +86,7 @@ class ConsumptionHourly extends Command implements SelfHandling
             }
 
         }
-        Log :: info('ok.', ['datetime'=>$dateTime]);
+        Log :: info(__CLASS__. ' ok.', ['datetime'=>$dateTime]);
 
     }
 }

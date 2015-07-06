@@ -43,6 +43,14 @@
                 loadUnitView(id);
             }
         });
+       $("#listAdv").on("click", ".adv-handle > .adv-item-icon", function (e) {
+            e.stopPropagation();
+            var sub = $(this).parent().next('ul');
+            if (sub.length > 0) {
+                sub.toggle();
+                $(this).toggleClass('fold');
+            }            
+        });
     };
 
     function loadPlanView(id) {
