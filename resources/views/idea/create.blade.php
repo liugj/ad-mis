@@ -142,6 +142,18 @@
         <hr />
         <div class="line">
             <div class="x6">
+                <div class="form-group">
+                    <div class="label">
+                        <label for="region[]">地域</label>
+                    </div>
+                    <div class="field">
+                        <select class="select2" style="min-width:100px;" name="region[]"  style="width:240px;" multiple  data-placeholder="空白表示不限">
+                        @foreach ($regions as $region)
+                            <option  @if($idea->regions->contains($region->id) ) selected @endif  value="{{$region->id}}">{{$region->name}}</option>
+                        @endforeach    
+                        </select>
+                    </div>
+                </div>
                <!--
                 <div class="form-group">
                     <div class="label">
@@ -184,6 +196,18 @@
                 -->
                 <div class="form-group">
                     <div class="label">
+                        <label for="classify[]">APP类型</label>
+                    </div>
+                    <div class="field">
+                        <select class="select2"  style="width:240px;" multiple  name="classify[]">
+                        @foreach ($classification as $classify)
+                            <option  @if($idea->classification->contains($classify->id) ) selected @endif  value="{{$classify->id}}">{{$classify->name}}</option>
+                        @endforeach    
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">
                         <label for="ban[]">APP黑名单</label>
                     </div>
                     <div class="field">
@@ -194,6 +218,7 @@
                         </select>
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="os[]">操作系统</label>
@@ -206,7 +231,6 @@
                         </select>
                     </div>
                 </div>
-                <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="age[]">年龄段</label>
@@ -244,36 +268,12 @@
                 </div>
                 <div class="form-group">
                     <div class="label">
-                        <label for="region[]">地域</label>
-                    </div>
-                    <div class="field">
-                        <select class="select2" style="min-width:100px;" name="region[]"  style="width:240px;" multiple  data-placeholder="空白表示不限">
-                        @foreach ($regions as $region)
-                            <option  @if($idea->regions->contains($region->id) ) selected @endif  value="{{$region->id}}">{{$region->name}}</option>
-                        @endforeach    
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="label">
                         <label for="operator[]">运营商</label>
                     </div>
                     <div class="field">
                         <select class="select2"  style="width:240px;" multiple  name="operator[]">
                         @foreach ($operators as $operator)
                             <option  @if($idea->operators->contains($operator->id) ) selected @endif  value="{{$operator->id}}">{{$operator->name}}</option>
-                        @endforeach    
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="label">
-                        <label for="classify[]">APP类型</label>
-                    </div>
-                    <div class="field">
-                        <select class="select2"  style="width:240px;" multiple  name="classify[]">
-                        @foreach ($classification as $classify)
-                            <option  @if($idea->classification->contains($classify->id) ) selected @endif  value="{{$classify->id}}">{{$classify->name}}</option>
                         @endforeach    
                         </select>
                     </div>

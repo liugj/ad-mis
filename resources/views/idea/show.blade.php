@@ -35,6 +35,12 @@
             </div>
             <hr />
             <div class="x4">
+                <?php  $regions = $idea->regions()->get(); ?>
+                @if ($regions->count())
+                <label>地域：</label>
+                <span>@foreach ($regions as $region) {{$region->name}} @endforeach </span>
+                @endif
+                <?php $operators = $idea->operators()->get() ; ?>
 <!--
                 <label>性别：</label>
                 <span><?php $gender= array('U'=>'不限', 'M'=>'男', 'F'=>'女'); echo isset($gender[$idea->gender]) ? $gender[$idea->gender]: '不限';?></span>
@@ -51,16 +57,23 @@
                 <span> @foreach ($categories as $category) {{$category->name}} @endforeach</span>
                 @endif
 -->
+                <?php  $classification = $idea->classification()->get(); ?>
+                @if ($classification->count())
+                <label>APP类型：</label>
+                <span>@foreach($classification as $classify)  {{$classify->name}} @endforeach</span>
+                @endif
                 <?php  $bans = $idea->ban()->get(); ?>
                 @if ($bans->count())
                 <label>APP黑名单：</label>
                 <span>@foreach($bans as $classify)  {{$classify->name}} @endforeach</span>
                 @endif
+                <!--
                <?php $oss = $idea->os()->get(); ?>
                @if ($oss->count())
                 <label>操作系统：</label>
                 <span>@foreach ($oss as $os) {{$os->name}} @endforeach</span>
                @endif
+               -->
 <!--
                 <?php  $ages = $idea->age()->get(); ?>
                 @if ($ages->count())
@@ -81,21 +94,10 @@
                     <!--值以','符号分隔，表示0-167的可选时间点-->
                     <input type="hidden" id="timerange" value="{{$idea->timerange}}" />
                 </span>
-                <?php  $regions = $idea->regions()->get(); ?>
-                @if ($regions->count())
-                <label>地域：</label>
-                <span>@foreach ($regions as $region) {{$region->name}} @endforeach </span>
-                @endif
-                <?php $operators = $idea->operators()->get() ; ?>
                 @if ($operators->count())
                 <label>运营商：</label>
                 <span>@foreach ($operators as $operator) {{$operator->name}} @endforeach</span>
                 @endif 
-                <?php  $classification = $idea->classification()->get(); ?>
-                @if ($classification->count())
-                <label>APP类型：</label>
-                <span>@foreach($classification as $classify)  {{$classify->name}} @endforeach</span>
-                @endif
                 <?php $networks = $idea->network()->get(); ?>
                 @if($networks->count())
                 <label>网络类型：</label>
