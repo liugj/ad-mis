@@ -34,7 +34,7 @@ class AdminAuthenticate
      */
     public function handle($request, Closure $next)
     {
-        if (Auth :: admin()->guest()) {
+        if (Auth ::admin()->guest()) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
