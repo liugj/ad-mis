@@ -42,7 +42,7 @@ class IdeaController extends Controller
                 $query->select(['id', 'name']);
                 }]
                 )
-            ->where('user_id', Auth::id())
+            ->where('user_id', Auth::user()->id())
             ->orderby('updated_at', 'desc')
             ->paginate(10);
         return view('idea.index', ['ideas'=>$ideas]); 
@@ -69,7 +69,6 @@ class IdeaController extends Controller
         $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all()->sortBy('parent');});
         $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
         $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
-    //    $plans          = Plan :: where('user_id', Auth ::id())->get();
 
         return view('idea.create', [
                 'idea'          => $idea, 
@@ -98,7 +97,7 @@ class IdeaController extends Controller
     public function store(IdeaRequest $request)
     {
         $id = $request->input('id');
-        $user_id  = $request->user()->id;
+        $user_id  =  Auth::user()->id();
         $v  =  Validator::make($request->all(), [
                 'name'    => 'required|max:128|unique:ideas,name,' .($id>0?$id: 'NULL') . ',id,user_id,'. $user_id,
                 'plan_id' => 'required|numeric|min:1',
@@ -125,7 +124,7 @@ class IdeaController extends Controller
                         'message'=> '', 'id'=>$id]
                         );
             }else{
-                $idea = Idea :: create(array('user_id'=>$request->user()->id) + $request->all());
+                $idea = Idea :: create(array('user_id'=>$user_id) + $request->all());
                 return response()->json(['success' => TRUE, 'id'=>$idea->id,
                         'message'=>'']
                         );
@@ -145,7 +144,7 @@ class IdeaController extends Controller
      * @return mixed
      */
     public function upload(Request $request) {
-        $imagePath = sprintf('/images/%d/', Auth:: id()/1000);
+        $imagePath = sprintf('/images/%d/', Auth::user()->id()/1000);
         file_exists(public_path().$imagePath)?'': mkdir(public_path(). $imagePath, 0755, TRUE);
         $fileName = sprintf('%s%s.%s',str_random(10), microtime(TRUE), $request->file('img')->getClientOriginalExtension() );
         $request->file('img')->move(public_path(). $imagePath, $fileName);
@@ -201,7 +200,6 @@ class IdeaController extends Controller
         $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all()->sortBy('parent');});
         $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
         $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
-        $plans          = Plan :: where('user_id', Auth ::id())->get();
 
         return view('idea.create', [
                 'idea'          => $idea, 
@@ -216,7 +214,7 @@ class IdeaController extends Controller
                 'ages'  => $ages,
                 'operators'  => $operators,
                 'classification'  => $classification,
-                'plans'          => $plans,
+          //      'plans'          => $plans,
                 'types'          => $types,
                 ]
                 ); 

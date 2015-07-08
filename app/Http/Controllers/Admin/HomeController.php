@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
-use App\Basic;
 use Auth;
 class HomeController extends Controller
 {
@@ -19,24 +17,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         //
-        $basic = Basic ::find(Auth::user()->id());
-        return view('home.index',['basic'=> $basic, 'user'=> Auth::user()->get()]);
-    }
-    public function chart(Request $request) {
-        return [
-         [
-            "day"   => "2014-09-05",
-            "flow"  => 758,
-            "click" => 349,
-            "change"=> 235
-         ],
-         [
-            "day"   => "2014-09-06",
-            "flow"  => 758,
-            "click" => 3490,
-            "change"=> 235
-         ]
-       ];
+        return view('admin.home.index');
     }
 
     /**

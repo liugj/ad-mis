@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
-use App\User;
+use App\Admin;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Auth;
-use App\Basic;
 class AuthController extends Controller
 {
     /*
@@ -59,7 +58,7 @@ class AuthController extends Controller
             );
         }
 
-        Auth::user()->login($this->create($request->all()));
+        Auth::admin()->login($this->create($request->all()));
         return response()->json(['success'=> TRUE ]);
         #return redirect($this->redirectPath());
     }
@@ -72,24 +71,18 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-       $user =  User::create([
+       $user =  Admin::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
-       Basic:: create([
-       'phone'   => $data['phone'],
-       'address' => $data['address'],
-       'company' => $data['company'],
-       'id' =>$user->id,
-       ]);
        return $user;
     }
     public function getLogout()
     {
-        Auth::user()->logout();
+        Auth::admin()->logout();
 
-        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/admin');
     }
     /**
      * postLogin 
@@ -104,7 +97,7 @@ class AuthController extends Controller
                 ]);
 
         $credentials = $this->getCredentials($request);
-        if (Auth::user()->attempt($credentials, $request->has('remember'))) {
+        if (Auth::admin()->attempt($credentials, $request->has('remember'))) {
             return response()->json(['success'=> TRUE, 'message'=>'登录成功！']);
             // return redirect()->intended($this->redirectPath());
         }

@@ -9,7 +9,7 @@ class Idea extends Model
     //
     protected $table      = 'ideas';
     protected $primaryKey = 'id';
-    protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link',
+    protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link','link_text',
                             'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','start_time','end_time'
                             ];
     protected $appends = ['state'];                        

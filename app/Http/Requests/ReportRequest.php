@@ -19,12 +19,12 @@ class ReportRequest extends Request
         $planId =  $this->input('plan_id', 0 );
         if ($planId) {
             return  Plan::where('id', $planId)
-                ->where('user_id', Auth::id())->exists();
+                ->where('user_id', Auth::user()->id())->exists();
         }else{
             $ideaId =  $this->input('idea_id', 0 );
             if ($ideaId) {
                 return  Idea::where('id', $ideaId)
-                    ->where('user_id', Auth::id())->exists();
+                    ->where('user_id', Auth::user()->id())->exists();
             }
         }
         return false;

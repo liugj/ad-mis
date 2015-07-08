@@ -20,8 +20,11 @@ Route::get('/crop', function()
 
         });
 Route::get('/', function () {
-    return Auth:: check()?  redirect('/home') :  view('welcome');
+    return Auth:: user()->check()?  redirect('/home') :  view('welcome');
         });
+Route::get('/admin', function () {
+    return Auth:: admin()->check()?  redirect('/admin/home') :  view('admin.welcome');
+});
 Route::group(['namespace'=>'Auth'], function() {
         Route::get('login',  'AuthController@getLogin');
         Route::post('login', 'AuthController@postLogin');
@@ -73,3 +76,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/plan/update/{id}', ['as'=>'plan', 'uses'=>'PlanController@update'])->where('id','[1-9][0-9]*');
         }
         );
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
+      Route::group(['namespace'=>'Auth'], function() {
+          Route::post('login', 'AuthController@postLogin');
+          Route::get('logout', 'AuthController@getLogout');
+        });
+
+    Route::group(['middleware' => 'admin'], function() {
+        Route::get('/home', ['as'=>'adminHome', 'uses'=>'HomeController@index']); 
+        Route::get('/users', ['as'=>'users', 'uses'=>'UserController@index']); 
+        Route::get('/user/lists', ['as'=>'users', 'uses'=>'UserController@lists']); 
+        Route::get('/recharge/create', ['as'=>'recharge', 'uses'=>'RechargeController@create']); 
+        Route::post('/recharge/store', ['as'=>'recharge', 'uses'=>'RechargeController@store']); 
+    });
+});

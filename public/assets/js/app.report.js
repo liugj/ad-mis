@@ -91,6 +91,7 @@
     var tpReportItem = $("#tempDataItem").html();
     var loadReportList = function () {
         $.get(oUrlReportList, $('#query-form').serialize(), function (data) {
+            $("#gridData tbody").replaceWith('<tbody></tbody>');
             $.each(data.rows, function (i, n) {
                 $("#gridData tbody").append(App.template(tpReportItem, n));
             });

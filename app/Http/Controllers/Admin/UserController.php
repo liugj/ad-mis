@@ -1,42 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
-use App\Basic;
+
 use Auth;
-class HomeController extends Controller
+use App\Basic;
+use App\User;
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
         //
-        $basic = Basic ::find(Auth::user()->id());
-        return view('home.index',['basic'=> $basic, 'user'=> Auth::user()->get()]);
-    }
-    public function chart(Request $request) {
-        return [
-         [
-            "day"   => "2014-09-05",
-            "flow"  => 758,
-            "click" => 349,
-            "change"=> 235
-         ],
-         [
-            "day"   => "2014-09-06",
-            "flow"  => 758,
-            "click" => 3490,
-            "change"=> 235
-         ]
-       ];
+        return view('admin.user.index');
     }
 
     /**
@@ -47,6 +31,17 @@ class HomeController extends Controller
     public function create()
     {
         //
+    }
+    public function lists(Request $request) {
+        $status = $request->input('status', 0);
+        $users = User ::with('basic')
+            ->where('status', $status)
+            ->orderBy ('updated_at', 'DESC')
+            ->paginate(10)
+            ->toArray();
+        $users['rows'] = $users['data'];
+        unset($users['data']);
+        return $users;
     }
 
     /**

@@ -1,6 +1,25 @@
 <?php
 
 return [
+       'multi-auth' => [
+            'user' => [
+              'driver' => 'eloquent',
+               'model'  => App\User::class
+               ],
+            'admin' => [
+                'driver' => 'eloquent',
+                'model'  => App\Admin::class
+            ],
+       ],
+       'password' => [
+          'email' => 'emails.password',
+          'table' => 'password_resets',
+          'expire' => 60,
+       ],
+];
+
+
+[
 
     /*
     |--------------------------------------------------------------------------

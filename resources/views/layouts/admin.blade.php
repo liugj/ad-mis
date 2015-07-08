@@ -14,24 +14,16 @@
             <div class="navbar padding-big">
                 <div class="navbar-head">
                     <button class="button icon-navicon" data-target="#navMain"></button>
-                    <a class="logo" title="Ad Mobile" href="/home"> <img src="/assets/img/logo.png" /></a>
+                    <a class="logo" title="Ad Mobile" href="/admin/home"> <img src="/assets/img/logo.png" /></a>
                 </div>
-               @if (Auth::user()->check())
+               @if (Auth::admin()->check())
                @section('sidebar')
-               <div class="navbar-body nav-navicon" id="navMain">
-                    <ul class="nav nav-inline nav-pills border-main nav-big">
-                        <li data-index="0"><a href="/home">首页</a></li>
-                        <li data-index="1"><a href="/plan">广告管理</a></li>
-                        <li data-index="2"><a href="/report">统计报表</a></li>
-                    </ul>
+               <div class="navbar-body nav-navicon">
                     <ul class="nav nav-menu nav-inline navbar-right">
                         <li>
-                            <a href="#">欢迎您，{{{Auth::user()->get()->name}}} <i class="arrow"></i></a>
+                            <a href="#">欢迎您，{{{Auth::admin()->get()->name}}} <i class="arrow"></i></a>
                             <ul class="drop-menu pull-right">
-                                <li><a href="/auth/edit"><i class="fa fa-user"></i> 修改信息</a></li>
-                                <li><a href="/change_password"><i class="fa fa-key"></i> 修改密码</a></li>
-                                <li class="divider"></li>
-                                <li><a href="/logout"><i class="fa fa-power-off"></i> 退出</a></li>
+                                <li><a href="/admin/logout"><i class="fa fa-power-off"></i> 退出</a></li>
                             </ul>
                         </li>
                     </ul>

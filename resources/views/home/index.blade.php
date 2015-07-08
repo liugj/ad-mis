@@ -1,18 +1,18 @@
 @extends('layouts.mis')
 @section('title', '广告列表')
 @section('link')
-    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
-    <link href="assets/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
-    <link href="assets/plugins/select2/select2.css" rel="stylesheet" />
-    <link href="assets/css/site.css" rel="stylesheet" />
-    <link href="assets/css/index.css" rel="stylesheet" />
+    <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
+    <link href="/assets/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="/assets/plugins/select2/select2.css" rel="stylesheet" />
+    <link href="/assets/css/site.css" rel="stylesheet" />
+    <link href="/assets/css/index.css" rel="stylesheet" />
 
-    <script src="assets/plugins/jquery-1.11.1.min.js"></script>
-    <script src="assets/plugins/pintuer/pintuer.js"></script>
+    <script src="/assets/plugins/jquery-1.11.1.min.js"></script>
+    <script src="/assets/plugins/pintuer/pintuer.js"></script>
     <!--[if lt IE 9]>
-    <script src="assets/plugins/respond.min.js"></script>
-    <script src="assets/plugins/selectivizr-min.js"></script>
+    <script src="/assets/plugins/respond.min.js"></script>
+    <script src="/assets/plugins/selectivizr-min.js"></script>
     <![endif]-->
     <script>
         var NavIndex = 0;

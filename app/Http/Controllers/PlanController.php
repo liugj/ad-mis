@@ -34,7 +34,7 @@ class PlanController extends Controller
                 }
                 ]
                 )
-            ->where('user_id', Auth::id())
+            ->where('user_id', Auth::user()->get()->id)
             ->orderBy('status',  'ASC')
             ->orderBy('updated_at', 'ASC')
             ->select(['id', 'name', 'status'])
@@ -60,7 +60,7 @@ class PlanController extends Controller
 	public function store(PlanRequest $request)
     {
         $id      = $request->input('id', 0) ;
-        $user_id  = $request->user()->id;
+        $user_id  = Auth::user()->get()->id;
         $this->validate($request, [
                 'name'    => 'required|max:128|unique:plans,name,' .($id>0?$id: 'NULL') . ',id,user_id,'. $user_id , #. ($id > 0 ? sprintf(',id,%d', $id): ''),
                 //'status' => 'required|numeric',
@@ -68,7 +68,7 @@ class PlanController extends Controller
                 ]);
         //
         if ($id <=0 ) {
-            $plan = Plan :: create($request->all()+array('user_id'=>$request->user()->id));
+            $plan = Plan :: create($request->all()+array('user_id'=>$user_id));
             return response()->json(['success'=>TRUE, 'id'=>$plan->id]);
         } else{
            return response()->json(['success'=>Plan :: find($id)->update($request->all()), 'message'=>'修改计划成功！', 'id'=>$id]);

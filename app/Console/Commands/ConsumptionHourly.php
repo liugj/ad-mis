@@ -46,9 +46,9 @@ class ConsumptionHourly extends Command implements SelfHandling
         $startTime   = date('Y-m-d H:00:00' , $time - 3600);
         $dateTime    = date('Y-m-d H',  $time - 3600);
         $date        = date('Y-m-d',  $time - 3600);
-        foreach (['industry_id'=>'App\Industry', 'interest'=>'App\Category', 'age'=>'App\Age',
+        foreach ([/*'industry_id'=>'App\Industry', 'interest'=>'App\Category', 'age'=>'App\Age',*/
                   'region_id'=>'App\Region', 'operator_id'=>'App\Operator', 'network'=>'App\Network',
-                  'os' =>'App\Os', 'gender'=>'App\Gender', 'device' =>'App\Device', 'app_type'=>'App\Classification'
+                  /*'os' =>'App\Os', 'gender'=>'App\Gender',*/ 'device' =>'App\Device', 'app_type'=>'App\Classification'
           ] as $groupByField =>$consumableType) {
             $consumption_daily = collect([]);
             foreach(['updated_at'=>'exhibition', 'clicked_at'=>'click', 'consumed_at'=> 'consumption',
@@ -61,29 +61,32 @@ class ConsumptionHourly extends Command implements SelfHandling
                     ->groupBy('idea_id') 
                     ->groupBy($groupByField) 
                     ->get();
+                log :: info('stat', [$groupByField, $consumableType, $startTime, $endTime, $whereField]);
                 foreach ($collections as $c) {
                     $daily = [];
                     $daily['consumable_id']  = $c->$groupByField;
                     $daily['idea_id']      = $c->idea_id;
                     $daily['plan_id']      = $c->plan_id;
                     $daily['user_id']      = $c->user_id;
-                    $daily[$total]         = $c->total;
+                    $daily[$total.'_total']         = $c->total;
                     $key = sprintf('%d_%s_%d', $c->idea_id, $consumableType, $c->$groupByField);
                     if ($consumption_daily->has($key)){
                         $consumption_daily->get($key)->put('consumable_id', $c->$groupByField);
                     }else{
                         $consumption_daily->put($key, collect($daily));
                     }
+                    unset($daily);
                 }
             }
             foreach ($consumption_daily as $consumption) {
-                ConsumptionDaily :: where('idea_id'        ,  $consumption->idea_id)
+                ConsumptionDaily :: where('idea_id'        ,  $consumption->get('idea_id'))
                     -> where('consumable_type',  $consumableType) 
-                    -> where('consumable_id'  ,  $consumption->consumable_id)
+                    -> where('consumable_id'  ,  $consumption->get('consumable_id'))
                     -> where('datetime'       ,  $dateTime)
                     ->delete(); 
                 ConsumptionDaily ::create($consumption->all() + array('datetime'=>$dateTime, 'consumable_type'=>$consumableType, 'date'=>$date));
             }
+            unset($consumption_daily);
 
         }
         Log :: info(__CLASS__. ' ok.', ['datetime'=>$dateTime]);

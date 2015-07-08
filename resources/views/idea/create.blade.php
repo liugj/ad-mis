@@ -80,6 +80,14 @@
                 <input id="link" name="link" class="input" value="{{$idea->link}}"/>
             </div>
         </div>
+        <div class="form-group link_text">
+            <div class="label">
+                <label for="link_text">应用名称</label>
+            </div>
+            <div class="field">
+                <input id="link_text" name="link_text" class="input" value="{{$idea->link_text}}"/>
+            </div>
+        </div>
 
         <div class="form-button">
             <button class="button" type="button" data-handler="close">取消</button>
@@ -167,7 +175,6 @@
                     <?php endforeach ?>
                     </div>
                 </div>
-                -->
                 <div class="form-group">
                     <div class="label">
                         <label for="industry[]">行业</label>
@@ -180,6 +187,7 @@
                         </select>
                     </div>
                 </div>
+                -->
                 <!--
                 <div class="form-group">
                     <div class="label">

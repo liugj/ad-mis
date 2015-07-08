@@ -28,6 +28,8 @@
                 <span>{{$idea->click_action->name}}</span>
                 <label>link值：</label>
                 <span>{{$idea->link}}</span>
+                <label>应用名称：</label>
+                <span>{{$idea->link_text}}</span>
                 <label>频次控制：</label>
                 <span>{{$idea->frequency}}</span>
                 <label>更新时间：</label>
@@ -44,12 +46,12 @@
 <!--
                 <label>性别：</label>
                 <span><?php $gender= array('U'=>'不限', 'M'=>'男', 'F'=>'女'); echo isset($gender[$idea->gender]) ? $gender[$idea->gender]: '不限';?></span>
--->
                 <?php $industries = $idea->industries()->get(); ?>
                 @if ($industries->count())
                 <label>行业：</label>
                 <span>@foreach($industries as $industry) {{$industry->name}} @endforeach </span>
                 @endif 
+-->
 <!--
                 <?php $categories  = $idea->categories()->get(); ?>
                 @if ($categories->count())

@@ -18,12 +18,12 @@ class PlanRequest extends Request
         $planId = $this->route('id') ?: $this->input('id');
         if ($planId > 0 ) {
             return Plan::where('id', $planId)
-                ->where('user_id', Auth::id())->exists();
+                ->where('user_id', Auth::user()->id())->exists();
         }else {
             $planId = $this->input('plan_id');
             if ($planId > 0 ) {
                 return Plan::where('id', $planId)
-                    ->where('user_id', Auth::id())->exists();
+                    ->where('user_id', Auth::user()->id())->exists();
 
             }
         }

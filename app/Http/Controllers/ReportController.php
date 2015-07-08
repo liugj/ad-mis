@@ -26,7 +26,7 @@ class ReportController extends Controller
     public function summary(Request $request) 
     {
         $results = array();
-        $rows =  ConsumptionDaily :: where('user_id', Auth::id())
+        $rows =  ConsumptionDaily :: where('user_id', Auth::user()->id())
            ->where('date', $request->input('date'))
            ->where('consumable_type', 'App\Industry')
            ->select('consumable_type', 'datetime', 'consumable_id', 
@@ -41,7 +41,8 @@ class ReportController extends Controller
           ;
         foreach ($rows as $row) {
             $result = $row->toArray();
-            $result['consumable'] = $row->consumable->name;
+           // $result['consumable'] = $row->consumable->name;
+                $result['consumable'] = $row->consumable ?$row->consumable->name: '';
             $results[] = $result;
         }
         return ['total'=>$rows->count(), 'rows'=> $results];    
@@ -53,13 +54,13 @@ class ReportController extends Controller
         if ($ideaId>0 || $planId >0 ) {
             $results = array();
             $rows =  ConsumptionDaily:: where($ideaId >0 ? 'idea_id':'plan_id', $ideaId>0? $ideaId: $planId)
-                ->where('user_id', Auth::id())
+                ->where('user_id', Auth::user()->id())
                 ->where('consumable_type', $request->input('consumable_type'))
                 ->where('date', $request->input('date'))
                 ->get();
             foreach ($rows as $row) {
                 $result = $row->toArray();
-                $result['consumable'] = $row->consumable->name;
+                $result['consumable'] = $row->consumable ?$row->consumable->name: '';
                 $result['consumption_total'] /= 100; 
                 $results[] = $result;
             }

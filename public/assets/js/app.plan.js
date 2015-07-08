@@ -226,6 +226,11 @@
         if (opt.length > 0) {
             var placeholder = opt.attr("data-placeholder");
             $("#link").attr("placeholder", placeholder);
+            var value = opt.attr("value");
+            $(".form-group.link_text").hide();
+            if (value==2) {
+                 $(".form-group.link_text").show();
+            }
         }
     }
 

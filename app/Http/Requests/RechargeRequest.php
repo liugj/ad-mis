@@ -3,10 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Idea;
-use Auth;
+use App\User;
 
-class IdeaRequest extends Request
+class RechargeRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,11 +14,9 @@ class IdeaRequest extends Request
      */
     public function authorize()
     {
-        $ideaId = $this->route('id')?: $this->input('id');
+        $userId = $this->input('user_id');
 
-        return $ideaId >0 ? Idea::where('id', $ideaId)
-            ->where('user_id', Auth::user()->id())->exists()
-            : TRUE ;
+        return User::where('id', $userId)->exists();
     }
 
     /**

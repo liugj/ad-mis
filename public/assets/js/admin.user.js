@@ -1,8 +1,9 @@
 ﻿Admin = {};
 
 Admin.User = (function ($) {
-    var urlUserList = "/admin/user/listUser.json"; //GET参数: state (0:未审核，1:已审核, 2:已禁用, -1:全部); account (用户名查询)
+    var urlUserList = "/admin/user/lists"; //GET参数: status (0:未审核，1:已审核, 2:已禁用, -1:全部); account (用户名查询)
     var urlUserAudit = "/admin/user/auditUser.json?id="; //GET id:用户Id
+    var urlUserRecharge = "/admin/recharge/create?user_id="; //GET id:用户Id
     var urlUserDelete = "/admin/user/deleteUser.json?id=";
     var urlUserLock = "/admin/user/lockUser.json?id="; //GET参数：id(用户Id)；lock(0:禁用，1:开启)
 
@@ -20,11 +21,11 @@ Admin.User = (function ($) {
     };
 
     var initState = function () {
-        $("[data-state]").on("click", function () {
-            $("[data-state]").removeClass("active");
+        $("[data-status]").on("click", function () {
+            $("[data-status]").removeClass("active");
             $(this).addClass("active");
-            var state = $(this).attr("data-state");
-            userState = state;
+            var status = $(this).attr("data-status");
+            userState = status;
             $("#pageUserBt").pager("load");
         });
     };
@@ -35,21 +36,23 @@ Admin.User = (function ($) {
             url: urlUserList,
             size: 10,
             data: function () {
-                return { state: userState };
+                return { status: userState };
             },
             onLoad: function (data) {
                 var temp = $("#tempUserItem").html();
                 $("#gridUser tbody").empty();
                 $.each(data, function (i, n) {
-                    if (n.state == 0) {
+                    n.recharge_button= '';
+                    if (n.status == 0) {
                         n.tool_action = "Admin.User.auditUser(" + n.id + ");";
+                        n.tool_text = "禁用";
+                        n.recharge_button= '<a href="javascript:;" class="text-main" onclick="Admin.User.rechargeUser(' + n.id+ ');">充值</a>';
+                    }
+                    if (n.status == 1) {
+                        n.tool_action = "Admin.User.lockUser(" + n.id + ");";
                         n.tool_text = "审核";
                     }
-                    if (n.state == 1) {
-                        n.tool_action = "Admin.User.lockUser(" + n.id + ");";
-                        n.tool_text = "禁用";
-                    }
-                    if (n.state == 2) {
+                    if (n.status == 2) {
                         n.tool_action = "Admin.User.unlockUser(" + n.id + ");";
                         n.tool_text = "开启";
                     }
@@ -69,6 +72,20 @@ Admin.User = (function ($) {
                     $("#pageUserBt").pager("load");
                 }
             });
+        });
+    };
+    var rechargeUser = function (id) {
+        $("#dialogBalance").dialog("open", {
+            url: urlUserRecharge + id,
+            success: function () {
+                $("#formBalance [data-inputmask]").inputmask();
+                $("#formBalance").ajaxFormExt({
+                    success: function () {
+                        $("#dialogBalance").dialog("close");
+                        $("#pageUserBt").pager("load");
+                    }
+                });
+            }
         });
     };
 
@@ -106,6 +123,9 @@ Admin.User = (function ($) {
         },
         auditUser: function (id) {
             auditUser(id);
+        },
+        rechargeUser: function (id) {
+            rechargeUser(id);
         },
         deleteUser: function (id) {
             deleteUser(id);

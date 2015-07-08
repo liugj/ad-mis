@@ -1,42 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use App\Http\Requests\RechargeRequest;
 use App\Http\Controllers\Controller;
-use App\User;
-use App\Basic;
+use App\Recharge;
 use Auth;
-class HomeController extends Controller
+use DB;
+use App\Basic;
+class RechargeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
         //
-        $basic = Basic ::find(Auth::user()->id());
-        return view('home.index',['basic'=> $basic, 'user'=> Auth::user()->get()]);
-    }
-    public function chart(Request $request) {
-        return [
-         [
-            "day"   => "2014-09-05",
-            "flow"  => 758,
-            "click" => 349,
-            "change"=> 235
-         ],
-         [
-            "day"   => "2014-09-06",
-            "flow"  => 758,
-            "click" => 3490,
-            "change"=> 235
-         ]
-       ];
     }
 
     /**
@@ -44,9 +27,10 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(RechargeRequest $request)
     {
         //
+        return view('admin.recharge.create',['user_id'=>$request->input('user_id')]);
     }
 
     /**
@@ -54,9 +38,21 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(RechargeRequest $request)
     {
         //
+        $this->validate($request, [
+          'user_id'=>'required|min:1',
+          'money'  => 'required|numeric'
+        ]);
+        $administrator_id = Auth ::admin()->id();
+        $recharge = $request->all() + array('administrator_id'=>$administrator_id);
+        DB::transaction(function () use($recharge){
+                Recharge ::create ($recharge);
+                Basic :: where ('id', $recharge['user_id'])->increment('total', $recharge['money']);
+                
+                });
+        return ['success'=>true, 'message'=>''];
     }
 
     /**
