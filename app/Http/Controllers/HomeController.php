@@ -23,6 +23,7 @@ class HomeController extends Controller
         return view('home.index',['basic'=> $basic, 'user'=> Auth::user()->get()]);
     }
     public function chart(Request $request) {
+        echo   bcrypt('admin%shoozen#com'); exit;
         return [
          [
             "day"   => "2014-09-05",

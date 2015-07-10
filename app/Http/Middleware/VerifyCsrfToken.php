@@ -17,5 +17,6 @@ class VerifyCsrfToken extends BaseVerifier
         'idea/crop',
         'plan/destroy/*',
         'idea/destroy/*',
+        'admin/idea/destroy/*',
     ];
 }

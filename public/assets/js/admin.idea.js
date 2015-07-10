@@ -1,8 +1,8 @@
 ﻿Admin = {};
 
 Admin.Idea = (function ($) {
-    var urlIdeaList = "/admin/idea/listIdea.json"; //GET参数: state (0:未审核，1:已审核, 2:已禁用, -1:全部); name (创意名称查询)
-    var urlIdeaAudit = "/admin/idea/auditIdea.json?id="; //GET id:用户Id
+    var urlIdeaList = "/admin/idea/lists"; //GET参数: status (0:未审核，1:已审核, 2:已禁用, -1:全部); name (创意名称查询)
+    var urlIdeaAudit = "/admin/idea/destroy/"; //GET id:用户Id
     var urlIdeaLock = "/admin/idea/lockIdea.json?id="; //GET参数：id(用户Id)；lock(0:禁用，1:开启)
 
     var initSearch = function () {
@@ -19,43 +19,50 @@ Admin.Idea = (function ($) {
     };
 
     var initState = function () {
-        $("[data-state]").on("click", function () {
-            $("[data-state]").removeClass("active");
+        $("[data-status]").on("click", function () {
+            $("[data-status]").removeClass("active");
             $(this).addClass("active");
-            var state = $(this).attr("data-state");
-            ideaState = state;
+            var status = $(this).attr("data-status");
+            ideaState = status;
             $("#pageIdeaBt").pager("load");
         });
     };
 
-    var ideaState = 0;
+    var ideaState = 1;
     var initIdeaList = function () {
         $("#pageIdeaBt").pager({
             url: urlIdeaList,
             size: 10,
             data: function () {
-                return { state: ideaState };
+                return { status: ideaState };
             },
             onLoad: function (data) {
                 var temp = $("#tempIdeaItem").html();
                 $("#gridIdea tbody").empty();
                 $.each(data, function (i, n) {
-                    if (n.state == 0) {
-                        n.tool_action = "Admin.Idea.auditIdea(" + n.id + ");";
-                        n.tool_text = "审核";
+                    n.operators = '';
+                    if (n.status == 0) {
+                        n.tool_action = "Admin.Idea.auditIdea(" + n.id +",2,'确认审核不通过？');";
+                        n.tool_text = "不通过";
                     }
-                    if (n.state == 1) {
-                        n.tool_action = "Admin.Idea.lockIdea(" + n.id + ");";
-                        n.tool_text = "禁用";
+                    if (n.status == 1) {
+                        n.tool_action = "Admin.Idea.auditIdea(" + n.id + ",0, '确认审核通过？');";
+                        n.tool_text = "通过";
+                        n.operators = '<a href="javascript:;" class="text-main" onclick=Admin.Idea.auditIdea(' + n.id + ',2,"确认审核不通过？");>不通过</a>'
                     }
-                    if (n.state == 2) {
-                        n.tool_action = "Admin.Idea.unlockIdea(" + n.id + ");";
-                        n.tool_text = "开启";
+                    if (n.status == 2) {
+                        n.tool_action = "Admin.Idea.auditIdea(" + n.id + ",0, '确认审核通过？');";
+                        n.tool_text = "通过";
                     }
-                    if (n.idea_type == "banner_text") {
-                        n.content = n.text;
+                    if (n.status == 3) {
+                        n.tool_action = "Admin.Idea.auditIdea(" + n.id + ",4,'确定暂停投放?');";
+                        n.tool_text = "暂停投放";
+                    }
+                    if (n.type == "banner_text") {
+                        n.content = '<a href="' +n.link + '" alt="'+ n.alt + '" target="_blank">' +n.alt+ '</a>';
                     } else {
-                        n.content = '<a href="' + n.img + '" target="_blank" class="text-main"><i class="fa fa-photo"></i> 查看图片</a>';
+                        n.content= '<a href="' +n.link + '" alt="'+ n.alt + '" target="_blank"> <img src="' + n.src + '"/> </a>';
+                        n.type = n.type + "(" + n.size.width +'x'+ n.size.height +")";
                     }
 
                     $("#gridIdea tbody").append(App.template(temp, n));
@@ -64,9 +71,10 @@ Admin.Idea = (function ($) {
         });
     };
 
-    var auditIdea = function (id) {
-        confirm("确定要审核通过吗？", function () {
+    var auditIdea = function (id, status, s) {
+        confirm(s, function () {
             App.ajaxAction(urlIdeaAudit + id, {
+                data:{'status': status},
                 message: {
                     success: "审核已通过"
                 },
@@ -99,8 +107,8 @@ Admin.Idea = (function ($) {
             initSearch();
             initState();
         },
-        auditIdea: function (id) {
-            auditIdea(id);
+        auditIdea: function (id, status, confirm) {
+            auditIdea(id, status, confirm);
         },
         lockIdea: function (id) {
             lockIdea(id, 0);

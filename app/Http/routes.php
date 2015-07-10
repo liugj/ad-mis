@@ -84,8 +84,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
 
     Route::group(['middleware' => 'admin'], function() {
         Route::get('/home', ['as'=>'adminHome', 'uses'=>'HomeController@index']); 
+
         Route::get('/users', ['as'=>'users', 'uses'=>'UserController@index']); 
         Route::get('/user/lists', ['as'=>'users', 'uses'=>'UserController@lists']); 
+        Route::get('/ideas', ['as'=>'users', 'uses'=>'IdeaController@index']); 
+        Route::get('/idea/lists', ['as'=>'users', 'uses'=>'IdeaController@lists']); 
+        Route::post('/idea/destroy/{id}', ['as'=>'users', 'uses'=>'IdeaController@destroy']); 
+
         Route::get('/recharge/create', ['as'=>'recharge', 'uses'=>'RechargeController@create']); 
         Route::post('/recharge/store', ['as'=>'recharge', 'uses'=>'RechargeController@store']); 
     });

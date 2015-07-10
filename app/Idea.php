@@ -13,9 +13,17 @@ class Idea extends Model
                             'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','start_time','end_time'
                             ];
     protected $appends = ['state'];                        
+    static  $arrStatus = [
+        1=>'待审核',
+        0=>'审核通过',
+        2=>'审核未通过',
+        3=>'投放中',
+        4=>'停止投放'
+    ];
 
     public function update(array $attributes=[]) {
         list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
+        $attributes['end_time']  = sprintf('%s 23:59:59', trim($attributes['end_time']));
        $update =  parent :: update($attributes);
 
         $this->industries()->detach();
@@ -62,6 +70,7 @@ class Idea extends Model
     }
     public static function create(array $attributes=[]) {
         list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
+        $attributes['end_time']  = sprintf('%s 23:59:59', trim($attributes['end_time']));
         $idea = parent :: create($attributes);
         if (isset($attributes['industry'])) {
             $idea->industries()->attach($attributes['industry']);
@@ -149,6 +158,6 @@ class Idea extends Model
     }
     public function getStateAttribute()
     {
-        return $this->attributes['status'] == 1 ? '停止' : '投放中';
+        return self :: $arrStatus[$this->attributes['status']];
     }
 }

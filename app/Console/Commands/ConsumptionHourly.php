@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
-use App\Exhibition;
 use App\ConsumptionDaily;
+use App\Idea;
 use DB;
 use Log;
 class ConsumptionHourly extends Command implements SelfHandling
@@ -32,7 +32,105 @@ class ConsumptionHourly extends Command implements SelfHandling
    // {
    //     //
    // }
+   protected  function _charge($dateHour) 
+   {
+       $results = array();
+       $chargeFile = sprintf('/opt/log/charge/charge_python.%s.log', $dateHour);
+       if (file_exists($chargeFile)) {
+           $fp = fopen($chargeFile , 'r');
+           if ($fp) {
+               while(!feof($fp)) {
+                   $line  =  fgets($fp, 8192);
+                   if (!$line) break;
+                   if (preg_match('#CHARGE:.*?"price":(?P<price>.*?),.*?"impid":\s"(?P<id>.*?)"#', $line, $matches)){
+                       $results [$matches['id']] = $matches['price'];
+                   }
+               }
+           }
+       }
 
+       return $results;
+   }
+    protected function _stat($hour)
+    {
+        $p = '#^(?P<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s-\s(.*)\s\[(?P<datetime>.*)\]\s\"(?P<request>.*?)"\s(\d{3,})\s(\d+)\s\"([^\s]*)\"\s\"(.*?)\"\s\"(.*)\"$#ui' ;
+        $accessLogs = glob(sprintf('/opt/log/nginx/%s*_monitor.shoozen.net.access.log', $hour));
+        $items =  [];
+        foreach ($accessLogs as $accessLog) {
+            $fp = fopen($accessLog, 'r');
+            while(!feof($fp)) {
+                $line  =  fgets($fp, 8192);
+                if (!$line) break;
+                if(preg_match($p, $line, $matches)){
+                    if (preg_match('#GET /track.gif\?(.*?)HTTP#i', $matches[4], $matches1)){
+                        $item = array();
+                        foreach (explode('$$$', $matches1[1]) as $s){
+                            if (strpos($s, '*') === false||$s[strlen($s)-1] == '*' ) continue;
+                            list($key, $value) = explode('*', $s);
+                            $item[$key] = trim($value);
+                        }
+                        if (!isset($item['id']) || !isset($item['type'])) continue;
+                        $id = $item['id'];
+                        if (isset($items[$id])) {
+                            if ($item['type'] =='win_notice'){
+                            }
+                            else $items[$id][$item['type']] = 1;
+                            foreach (['region', 'classification', 'operator', 'device', 'network'] as $key) {
+                                if (isset($item[$key]) && !isset($items[$id][$key]))  $items[$id][$key] = $item[$key] ;
+                            }
+                        }else{
+                            unset($item['id']);
+                            $items [$id] = $item;
+                            $items[$id][$item['type']] = 1;
+                        }
+                    }
+                }
+            }
+            fclose($fp);
+        }
+        $charges = $this->_charge($hour);
+        foreach ($charges as $sessionId =>$price) {
+            $items [$sessionId]['price'] = $price;
+        }
+        $stats = [];
+        foreach ($items  as $item) {
+            foreach (['App\Region'=>'region', 'App\Classification'=>'classification', 'App\Operator'=>'operator', 'App\Device'=>'device', 'App\Network'=>'network'] as $consumable_type=>$consumable_key) {
+                $consumable_value = isset($item[$consumable_key]) && $item[$consumable_key]!= 'None' ? $item[$consumable_key] : '0' ;
+                $stat_key = sprintf('%d_%s_%s', $item['idea_id'], $consumable_type, $consumable_value); 
+                if (isset($stats[$stat_key])) {
+                    foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'open'=>'open_total', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
+                        if (isset($item[$key]) && $key == 'price') {
+                             $stats[$stat_key][$value] += $item['price'];
+                        }elseif (isset($item[$key])){
+                            $stats[$stat_key][$value] += 1;
+                        }
+                    }
+                }else{
+                    $stats[$stat_key] = ['idea_id' => $item['idea_id'], 'consumable_id'=> $consumable_value, 'consumable_type'=>$consumable_type ];
+                    if ($consumable_key == 'region') {
+                        if (strpos($consumable_value, ',') == false) {
+                             $consumable_id = $consumable_value;
+                             $parent_id     = 0;
+                        }else{
+                            list($parent_id, $consumable_id) = explode(',', $consumable_value);
+                        }
+                        $stats[$stat_key]['consumable_id'] = $consumable_id;
+                        $stats[$stat_key]['parent_id']    = $parent_id;
+                    }
+                    foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'open'=>'open_total', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
+                        if (isset($item[$key]) && $key == 'price') {
+                             $stats[$stat_key][$value] = $item['price'];
+                        }elseif (isset($item[$key])){
+                            $stats[$stat_key][$value] = 1;
+                        }else{
+                            $stats[$stat_key][$value] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return $stats;
+    }
     /**
      * Execute the command.
      *
@@ -40,53 +138,27 @@ class ConsumptionHourly extends Command implements SelfHandling
      */
     public function handle()
     {
-        //
         $time        =      time();
         $endTime     = date('Y-m-d H:00:00');
         $startTime   = date('Y-m-d H:00:00' , $time - 3600);
         $dateTime    = date('Y-m-d H',  $time - 3600);
         $date        = date('Y-m-d',  $time - 3600);
-        foreach ([/*'industry_id'=>'App\Industry', 'interest'=>'App\Category', 'age'=>'App\Age',*/
-                  'region_id'=>'App\Region', 'operator_id'=>'App\Operator', 'network'=>'App\Network',
-                  /*'os' =>'App\Os', 'gender'=>'App\Gender',*/ 'device' =>'App\Device', 'app_type'=>'App\Classification'
-          ] as $groupByField =>$consumableType) {
-            $consumption_daily = collect([]);
-            foreach(['updated_at'=>'exhibition', 'clicked_at'=>'click', 'consumed_at'=> 'consumption',
-                    'open_at'=>'open_total', 'install_at'=>'install_total', 'download_at'=>'download_total'] as $whereField=>$total) {
+        $lastDateHour = date('YmdH', $time - 3600);
+        $stats        = $this->_stat($lastDateHour);
 
-                $exhibition  =  new Exhibition();
-                $collections = $exhibition-> where($whereField, '>=', $startTime)
-                    ->where($whereField, '<', $endTime)
-                    ->select($groupByField, 'plan_id', 'idea_id', 'user_id', DB::raw($whereField == 'consumed_at' ? 'sum(price) as total':'count(1) as total'))
-                    ->groupBy('idea_id') 
-                    ->groupBy($groupByField) 
-                    ->get();
-                log :: info('stat', [$groupByField, $consumableType, $startTime, $endTime, $whereField]);
-                foreach ($collections as $c) {
-                    $daily = [];
-                    $daily['consumable_id']  = $c->$groupByField;
-                    $daily['idea_id']      = $c->idea_id;
-                    $daily['plan_id']      = $c->plan_id;
-                    $daily['user_id']      = $c->user_id;
-                    $daily[$total.'_total']         = $c->total;
-                    $key = sprintf('%d_%s_%d', $c->idea_id, $consumableType, $c->$groupByField);
-                    if ($consumption_daily->has($key)){
-                        $consumption_daily->get($key)->put('consumable_id', $c->$groupByField);
-                    }else{
-                        $consumption_daily->put($key, collect($daily));
-                    }
-                    unset($daily);
-                }
-            }
-            foreach ($consumption_daily as $consumption) {
-                ConsumptionDaily :: where('idea_id'        ,  $consumption->get('idea_id'))
-                    -> where('consumable_type',  $consumableType) 
-                    -> where('consumable_id'  ,  $consumption->get('consumable_id'))
-                    -> where('datetime'       ,  $dateTime)
-                    ->delete(); 
-                ConsumptionDaily ::create($consumption->all() + array('datetime'=>$dateTime, 'consumable_type'=>$consumableType, 'date'=>$date));
-            }
-            unset($consumption_daily);
+        $ideaCollections     = Idea ::where ('id', array_unique(array_column($stats, 'idea_id')))->select(['id', 'user_id', 'plan_id', 'status'])->get();
+        $ideas  = array();
+        foreach ($ideaCollections as $c) {
+            $ideas[$c->id]= $c->toArray();
+        }
+        foreach ($stats  as $stat) {
+            $consumption =  collect($stat+$ideas[$stat['idea_id']]);
+            ConsumptionDaily :: where('idea_id'        ,  $consumption->get('idea_id'))
+                -> where('consumable_type',  $consumption->get('consumable_type')) 
+                -> where('consumable_id'  ,  $consumption->get('consumable_id'))
+                -> where('datetime'       ,  $dateTime)
+                ->delete(); 
+            ConsumptionDaily ::create($consumption->all() + array('datetime'=>$dateTime, 'date'=>$date));
 
         }
         Log :: info(__CLASS__. ' ok.', ['datetime'=>$dateTime]);

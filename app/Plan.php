@@ -27,7 +27,7 @@ class Plan extends Model
     }
     public function getStateAttribute()
     {
-        return $this->attributes['status'] == 1 ? '停止' : '启用';
+        return isset($this->attributes['status']) && $this->attributes['status'] == 1 ? '停止' : '启用';
     }
 
 }

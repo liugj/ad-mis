@@ -4,6 +4,8 @@
             <div class="x4">
                 <label>名称：</label>
                 <span>{{$idea->name}}</span>
+                <label>状态：</label>
+                <span> {{$idea->state}}</span>
                 <label>费用预算：</label>
                 <span>{{$idea->budget}}元/天</span>
                 <label>消费：</label><span>{{number_format($idea->consumeTotalByDate(date('Y-m-d')),2)}}元/天</span>
@@ -28,8 +30,10 @@
                 <span>{{$idea->click_action->name}}</span>
                 <label>link值：</label>
                 <span>{{$idea->link}}</span>
+                @if ($idea->click_action->id ==2)
                 <label>应用名称：</label>
                 <span>{{$idea->link_text}}</span>
+                @endif
                 <label>频次控制：</label>
                 <span>{{$idea->frequency}}</span>
                 <label>更新时间：</label>
@@ -115,10 +119,10 @@
     </blockquote>
     <div class="margin-top">
         <button class="button" onclick="App.Plan.editUnit({{$idea->id}});">编辑</button>
-        @if ($idea->status ==0)
-        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 1);">停止</button>
-        @else
-        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 0);">投放</button>
+        @if ($idea->status ==3)
+        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 4);">停止</button>
+        @elseif ($idea->status == 0|| $idea->status==4)
+        <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 3);">投放</button>
         @endif
     </div>
 </div>
