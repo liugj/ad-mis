@@ -55,7 +55,7 @@ form { position: relative; }
 .i-radio > input[type="radio"] { position: absolute; opacity: 0; filter: alpha(opacity=0); z-index: -1; }
 
 .i-check > input[type="checkbox"] + i,
-.i-radio > input[type="radio"] + i { float: left; margin: 5px 5px 0 0; cursor: pointer; width: 14px; height: 14px; background: url("../img/check.png") no-repeat 0 0; }
+.i-radio > input[type="radio"] + i { float: left; margin: 5px 5px 0 0; cursor: pointer; width: 14px; height: 14px; background: url("/assets/img/check.png") no-repeat 0 0; }
 
 .i-check > input[type="checkbox"]:hover + i { background-position: -14px 0; }
 .i-check > input[type="checkbox"]:checked + i { background-position: -28px 0; }
