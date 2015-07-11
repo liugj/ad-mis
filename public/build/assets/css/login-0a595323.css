@@ -1,0 +1,4 @@
+.browser h4 { padding: 10px 0; }
+.browser a { display: inline-block; line-height: 32px; margin-right: 10px; }
+.tab .tab-nav .active a { border-top: 2px solid #438eb9; }
+.register { padding-left: 80px; width: 550px; }
