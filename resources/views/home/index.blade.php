@@ -5,8 +5,8 @@
     <link href="/assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
     <link href="/assets/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
     <link href="/assets/plugins/select2/select2.css" rel="stylesheet" />
-    <link href="/assets/css/site.css" rel="stylesheet" />
-    <link href="/assets/css/index.css" rel="stylesheet" />
+    <link href="{{elixir('assets/css/site.css') }}" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/index.css') }}" rel="stylesheet" />
 
     <script src="/assets/plugins/jquery-1.11.1.min.js"></script>
     <script src="/assets/plugins/pintuer/pintuer.js"></script>
@@ -86,7 +86,6 @@
                             <thead>
                                 <tr>
                                   <th>时间</th>
-                                  <th></th>
                                   <th>展现次数</th>
                                   <th>点击次数</th>
                                   <th>下载次数</th>
@@ -101,7 +100,6 @@
                         <script id="tempDataItem" type="text/template">
                             <tr>
                              <td class="text-center">{datetime}</td>
-                             <td class="text-center">{consumable}</td>
                              <td class="text-center">{exhibition_total}</td>
                              <td class="text-right">{click_total}</td>
                              <td class="text-right">{download_total}</td>
@@ -121,7 +119,7 @@
     <script src="/assets/plugins/juqery.validate.ext.js"></script>
     <script src="/assets/plugins/datetimepicker/jquery.datetimepicker.js"></script>
     <script src="/assets/plugins/select2/select2.min.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/app.index.js"></script>
+    <script src="{{elixir('assets/js/app.js') }}"></script>
+    <script src="{{elixir('assets/js/app.index.js') }}"></script>
 
 @endsection

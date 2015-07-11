@@ -28,21 +28,24 @@ class ReportController extends Controller
         $results = array();
         $rows =  ConsumptionDaily :: where('user_id', Auth::user()->id())
            ->where('date', $request->input('date'))
-           ->where('consumable_type', 'App\Industry')
-           ->select('consumable_type', 'datetime', 'consumable_id', 
+           ->where('consumable_type', 'App\Region')
+           ->select('consumable_type', 'datetime', 
+                       DB::raw('sum(open_total) as open_total'), 
+                       DB::raw('sum(install_total) as install_total'), 
+                       DB::raw('sum(download_total) as download_total'), 
                        DB::raw('sum(click_total) as click_total'), 
                        DB::raw('sum(exhibition_total) as exhibition_total'),
                        DB::raw('sum(consumption_total) as consumption_total')
                        )
            ->groupBy('datetime')
-          ->groupBy('consumable_id')
           ->orderBy('datetime', 'DESC')
           ->get()
           ;
         foreach ($rows as $row) {
             $result = $row->toArray();
-           // $result['consumable'] = $row->consumable->name;
-                $result['consumable'] = $row->consumable ?$row->consumable->name: '';
+            // $result['consumable'] = $row->consumable->name;
+            $result['consumable'] = $row->consumable ?$row->consumable->name: '';
+            $result['consumption_total'] /= 100; 
             $results[] = $result;
         }
         return ['total'=>$rows->count(), 'rows'=> $results];    

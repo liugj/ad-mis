@@ -4,8 +4,8 @@
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
     <link href="/assets/plugins/toastr/toastr.min.css" rel="stylesheet" />
-    <link href="/assets/css/site.css" rel="stylesheet" />
-    <link href="/assets/css/admin.css" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/site.css') }}" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/admin.css') }}" rel="stylesheet" />
 
     <script src="/assets/plugins/jquery-1.11.1.min.js"></script>
     <script src="/assets/plugins/pintuer/pintuer.js"></script>
@@ -93,8 +93,8 @@
     <script src="/assets/plugins/jquery.validate.min.js"></script>
     <script src="/assets/plugins/juqery.validate.ext.js"></script>
     <script src="/assets/plugins/jquery.pager.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/admin.user.js"></script>
+    <script src="{{ elixir('assets/js/app.js') }}"></script>
+    <script src="{{ elixir('assets/js/admin.user.js') }}"></script>
     <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.js"></script>
     <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.numeric.extensions.js"></script>
 

@@ -3,8 +3,8 @@
 @section('link')
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
-    <link href="/assets/css/site.css" rel="stylesheet" />
-    <link href="/assets/css/admin.css" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/site.css') }}" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/admin.css') }}" rel="stylesheet" />
 
     <script src="/assets/plugins/jquery-1.11.1.min.js"></script>
     <script src="/assets/plugins/pintuer/pintuer.js"></script>
@@ -22,13 +22,13 @@
            @include('admin.left_siderbar')
             <div class="admin-right">
                 <blockquote>
-                    <p>用户总数：50</p>
-                    <p>今日新增：10</p>
+                    <p>用户总数：</p>
+                    <p>今日新增：</p>
                 </blockquote>
             </div>
         </div>
     </div>
     <script src="/assets/plugins/jquery.validate.min.js"></script>
     <script src="/assets/plugins/juqery.validate.ext.js"></script>
-    <script src="/assets/js/app.js"></script>
+    <script src="{{ elixir('assets/js/app.js') }}"></script>
 @endsection

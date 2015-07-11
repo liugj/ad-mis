@@ -8,10 +8,7 @@
     <link href="/assets/plugins/croppic/css/croppic.css" rel="stylesheet" />
     <link href="/assets/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
     <link href="/assets/plugins/weekdaypicker/weekdaypicker.css" rel="stylesheet" />
-    <link href="/assets/css/site.css" rel="stylesheet" />
-    <link href="/assets/css/plan.css" rel="stylesheet" />
-    <link href="/assets/css/index.css" rel="stylesheet" />
-    
+    <link rel="stylesheet" href="{{ elixir('assets/css/site.css') }}"> 
     <script src="/assets/plugins/jquery-1.11.1.min.js"></script>
     <script src="/assets/plugins/pintuer/pintuer.js"></script>
     <script src="/assets/plugins/toastr/toastr.min.js"></script>
@@ -228,7 +225,7 @@
     <script src="/assets/plugins/jquery.form.min.js"></script>
     <script src="/assets/plugins/jquery.validate.min.js"></script>
     <script src="/assets/plugins/juqery.validate.ext.js"></script>
-    <script src="/assets/js/app.js"></script>
+    <script src="{{elixir('assets/js/app.js')}}"></script>
     <script>
         $(function () {
             var agent = navigator.userAgent;

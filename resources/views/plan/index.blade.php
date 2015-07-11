@@ -8,8 +8,8 @@
     <link href="/assets/plugins/croppic/css/croppic.css" rel="stylesheet" />
     <link href="/assets/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
     <link href="/assets/plugins/weekdaypicker/weekdaypicker.css" rel="stylesheet" />
-    <link href="/assets/css/site.css" rel="stylesheet" />
-    <link href="/assets/css/plan.css" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/site.css') }}" rel="stylesheet" />
+    <link href="{{ elixir('assets/css/plan.css') }}" rel="stylesheet" />
 
     <script src="/assets/plugins/jquery-1.11.1.min.js"></script>
     <script src="/assets/plugins/pintuer/pintuer.js"></script>
@@ -102,7 +102,7 @@
     <script src="/assets/plugins/daterangepicker/moment.min.js"></script>
     <script src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="/assets/plugins/weekdaypicker/weekdaypicker.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/app.plan.js"></script>
+    <script src="{{ elixir('assets/js/app.js') }}"></script>
+    <script src="{{ elixir('assets/js/app.plan.js') }}"></script>
 
 @endsection
