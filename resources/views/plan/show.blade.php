@@ -3,6 +3,12 @@
     <label>计划名称：</label><span>{{$plan->name}}</span>
     <label>预算：</label><span>{{$plan->budget}} 元/天</span>
     <label>消费：</label><span>{{ number_format($plan->consumeTotalByDate(date('Y-m-d')),2)}} 元/天</span>
+    <label>日期：</label>
+                <span><?php $daterange = array(); 
+                          if (strtotime($plan->start_time)>0) $daterange[] = date('Y-m-d', strtotime($plan->start_time));
+                          if (strtotime($plan->end_time)>0) $daterange[] = date('Y-m-d', strtotime($plan->end_time));
+                          if ($daterange) echo implode(' 至 ', $daterange); else echo '不限';
+                ?></span>
     <label>创建时间：</label><span>{{$plan->created_at}}</span>
     <label>更新时间：</label><span>{{$plan->updated_at}}</span>
 </blockquote>

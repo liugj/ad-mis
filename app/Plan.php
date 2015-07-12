@@ -8,7 +8,7 @@ class Plan extends Model
 {
     //
     protected $table ='plans';
-    protected $fillable = ['name', 'budget', 'user_id'];
+    protected $fillable = ['name', 'budget', 'user_id', 'start_time', 'end_time'];
     protected $appends = ['state'];
 
 

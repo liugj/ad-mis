@@ -69,7 +69,7 @@
     <div id="dialogUnit" class="dialog">
         <div class="dialog-head">
             <span class="close" data-handler="close"></span>
-            广告单元
+            广告
         </div>
         <div class="dialog-body"></div>
     </div>
@@ -85,7 +85,7 @@
     <div id="dialogImage" class="dialog">
         <div class="dialog-head">
             <span class="close" data-handler="close"></span>
-            图片上传
+            上传图片
         </div>
         <div class="dialog-body">
             <div id="croppic"></div>

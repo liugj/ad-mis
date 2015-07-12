@@ -26,6 +26,8 @@ use App\Http\Requests\PlanRequest;
 use App\Type;
 use Validator;
 use Cache;
+use App\PayType;
+use App\Location;
 class IdeaController extends Controller
 {
     /**
@@ -67,6 +69,7 @@ class IdeaController extends Controller
         $ages         =  Cache:: rememberForever('ages', function(){ return  Age :: all();});
         $operators    =  Cache:: rememberForever('operators', function(){ return  Operator :: all();});
         $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all()->sortBy('parent');});
+        $locations      =  Cache:: rememberForever('locations', function(){ return  Location :: all();});
         $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
         $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
 
@@ -77,6 +80,7 @@ class IdeaController extends Controller
                 'industries'  => $industries,
                 'categories'  => $categories,
                 'regions'  => $regions,
+                'locations'  => $locations,
                 'oss'  => $oss,
                 'devices'  => $devices,
                 'networks'  => $networks,
@@ -85,6 +89,7 @@ class IdeaController extends Controller
                 'classification'  => $classification,
                 'plan_id'          => $request->input('plan_id'),
                 'types' => $types,
+                'payTypes' => PayType::$names,
                 ]
                 ); 
     }
@@ -188,6 +193,7 @@ class IdeaController extends Controller
     {
         //
         $idea = Idea ::find($id);
+        $locations      =  Cache:: rememberForever('locations', function(){ return  Location :: all();});
         $groups       =  Cache:: rememberForever('groups', function(){  return Group :: all();});
         $industries   =  Cache:: rememberForever('industries', function(){ return Industry :: all();});
         $clickActions =  Cache:: rememberForever('ClickActions', function(){ return ClickAction :: all();});
@@ -204,6 +210,7 @@ class IdeaController extends Controller
         return view('idea.create', [
                 'idea'          => $idea, 
                 'groups'        => $groups, 
+                'locations'        => $locations, 
                 'clickActions'  => $clickActions,
                 'industries'  => $industries,
                 'categories'  => $categories,
@@ -216,6 +223,7 @@ class IdeaController extends Controller
                 'classification'  => $classification,
           //      'plans'          => $plans,
                 'types'          => $types,
+                'payTypes' => PayType::$names,
                 ]
                 ); 
     }

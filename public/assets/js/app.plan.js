@@ -126,6 +126,7 @@
             url: id>0 ? urlPlanEdit + id:urlPlanCreate,
             success: function () {
                 $("#formPlan [data-inputmask]").inputmask();
+                $("#formPlan [name='daterange']").daterangepicker();
                 $("#formPlan").ajaxFormExt({
                     success: function (response) {
                         $("#dialogPlan").dialog("close");
@@ -164,7 +165,6 @@
             success: function () {
                 $("#formUnit [data-inputmask]").inputmask();
                 $("#formUnit .select2").select2({ minimumResultsForSearch: 20 });
-                $("#formUnit [name='daterange']").daterangepicker();
                 $("#formUnit [name='timerange']").weekdaypicker();
 
                 setIdeaType();
@@ -226,6 +226,7 @@
         if (opt.length > 0) {
             var placeholder = opt.attr("data-placeholder");
             $("#link").attr("placeholder", placeholder);
+            $("#linkLabel").text(placeholder);
             var value = opt.attr("value");
             $(".form-group.link_text").hide();
             if (value==2) {

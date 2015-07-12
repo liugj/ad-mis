@@ -147,6 +147,7 @@
             </div>
 
             <div class="main-right">
+            <!--
                 <div class="register line">
                     <h3 class="doc-h3">
                         还没有账号？注册 <i class="fa fa-arrow-circle-right"></i>
@@ -218,7 +219,7 @@
                         </div>
                     <div class="form-modal" style="display: none;"><img src="/assets/img/ajax-loading.gif" class="loading"></div></form>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
     <script src="/assets/plugins/jquery.cookie.min.js"></script>
@@ -228,11 +229,11 @@
     <script src="{{elixir('assets/js/app.js')}}"></script>
     <script>
         $(function () {
-            var agent = navigator.userAgent;
-            if (agent.indexOf('MSIE 6') > 0 || agent.indexOf('MSIE 7') > 0 || agent.indexOf('MSIE 8') > 0) {
-                var bAlert = $('<div class="alert alert-red"></div>').html("您的浏览器版本过低，可能无法正常使用系统。");
-                $("#browserAlert").append(bAlert);
-            }
+            //var agent = navigator.userAgent;
+            //if (agent.indexOf('MSIE 6') > 0 || agent.indexOf('MSIE 7') > 0 || agent.indexOf('MSIE 8') > 0) {
+            //    var bAlert = $('<div class="alert alert-red"></div>').html("您的浏览器版本过低，可能无法正常使用系统。");
+            //    $("#browserAlert").append(bAlert);
+            //}
 
             var uid = $.cookie("uid");
             if (uid) {
@@ -263,28 +264,28 @@
                 }
             });
 
-            $("#formAdminLogin").ajaxFormExt({
-                message: false,
-                success: function (data) {
-                    if (data.success) {
-                        window.location = "/";
-                    } else {
-                        $("#formAdminLogin .form-button .alert").html(data.message).show();
-                    }
-                }
-            });
+            //$("#formAdminLogin").ajaxFormExt({
+            //    message: false,
+            //    success: function (data) {
+            //        if (data.success) {
+            //            window.location = "/";
+            //        } else {
+            //            $("#formAdminLogin .form-button .alert").html(data.message).show();
+            //        }
+            //    }
+            //});
 
-            $("#formRegister").ajaxFormExt({
-                message: false,
-                success: function (data) {
-                    if (data.success) {
-                        //$("#formRegister .form-button .alert").removeClass("alert-red").addClass("alert-green").html("<strong>注册成功：</strong>" + data.message).show();
-                        window.location = "/home";
-                    } else {
-                        $("#formRegister .form-button .alert").removeClass("alert-green").addClass("alert-red").html("<strong>注册失败：</strong>" + data.message).show();
-                    }
-                }
-            }); 
+            //$("#formRegister").ajaxFormExt({
+            //    message: false,
+            //    success: function (data) {
+            //        if (data.success) {
+            //            //$("#formRegister .form-button .alert").removeClass("alert-red").addClass("alert-green").html("<strong>注册成功：</strong>" + data.message).show();
+            //            window.location = "/home";
+            //        } else {
+            //            $("#formRegister .form-button .alert").removeClass("alert-green").addClass("alert-red").html("<strong>注册失败：</strong>" + data.message).show();
+            //        }
+            //    }
+            //}); 
         });
     </script>
 @endsection

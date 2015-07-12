@@ -61,7 +61,7 @@
 
         <div class="form-group">
             <div class="label">
-                <label for="click_action_id">link类型</label>
+                <label for="click_action_id">点击类型</label>
             </div>
             <div class="field">
                 <select class="select2" id="click_action_id" style="width:240px;" name="click_action_id">
@@ -74,7 +74,7 @@
 
         <div class="form-group">
             <div class="label">
-                <label for="link">link值</label>
+                <label for="link" id="linkLabel"></label>
             </div>
             <div class="field">
                 <input id="link" name="link" class="input" value="{{$idea->link}}"/>
@@ -113,29 +113,6 @@
                 </div>
                 <div class="form-group">
                     <div class="label">
-                        <label for="pay_type">结算方式</label>
-                    </div>
-                    <div class="field">
-                        <label class="i-radio">
-                            <input type="radio" name="pay_type" value="0" checked="checked" /><i></i>cpc
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="x6">
-                <div class="form-group">
-                    <div class="label">
-                        <label for="bid">出价金额</label>
-                    </div>
-                    <div class="field">
-                        <div class="input-group">
-                            <input type="text" class="input text-right" name="bid" value="{{$idea->bid}}" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空" />
-                            <span class="addon">元/点击</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="label">
                         <label for="frequency">频次控制</label>
                     </div>
                     <div class="field">
@@ -143,6 +120,31 @@
                         <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" data-val="true" data-val-required="频次控制不能为空" data-val-regexp-rule="^\d+$" />
                         -->
                         <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" />
+                    </div>
+                </div>
+            </div>
+            <div class="x6">
+                <div class="form-group">
+                    <div class="label">
+                        <label for="pay_type">结算方式</label>
+                    </div>
+                    <div class="field">
+                    @foreach ($payTypes as $payType=>$payName) 
+                        <label class="i-radio">
+                            <input type="radio" name="pay_type" value="{{$payType}}" @if($payType == $idea->pay_type) checked="checked" @endif /><i></i>{{$payName}}
+                        </label>
+                    @endforeach   
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">
+                        <label for="bid">出价金额</label>
+                    </div>
+                    <div class="field">
+                        <div class="input-group">
+                            <input type="text" class="input text-right" name="bid" value="@if($idea->bid) {{$idea->bid }} @endif" placeholder="点击付费0.2元起投，效果付费2元起投" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空"/>
+                            <span class="addon">元</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -155,7 +157,7 @@
                         <label for="region[]">地域</label>
                     </div>
                     <div class="field">
-                        <select class="select2" style="min-width:100px;" name="region[]"  style="width:240px;" multiple  data-placeholder="空白表示不限">
+                        <select class="select2" style="min-width:100px;" name="region[]"  style="width:240px;" multiple  placeholder="空白表示不限">
                         @foreach ($regions as $region)
                             <option  @if($idea->regions->contains($region->id) ) selected @endif  value="{{$region->id}}">{{$region->name}}</option>
                         @endforeach    
@@ -204,7 +206,7 @@
                 -->
                 <div class="form-group">
                     <div class="label">
-                        <label for="classify[]">APP类型</label>
+                        <label for="classify[]">应用类型</label>
                     </div>
                     <div class="field">
                         <select class="select2"  style="width:240px;" multiple  name="classify[]">
@@ -216,7 +218,7 @@
                 </div>
                 <div class="form-group">
                     <div class="label">
-                        <label for="ban[]">APP黑名单</label>
+                        <label for="ban[]">应用黑名单</label>
                     </div>
                     <div class="field">
                         <select class="select2"  style="width:240px;" multiple  name="ban[]">
@@ -226,19 +228,19 @@
                         </select>
                     </div>
                 </div>
-                <!--
                 <div class="form-group">
                     <div class="label">
-                        <label for="os[]">操作系统</label>
+                        <label for="location[]">地理位置</label>
                     </div>
                     <div class="field">
-                        <select class="select2"  style="width:240px;" multiple  name="os[]">
-                        @foreach ($oss as $os)
-                            <option  @if($idea->os->contains($os->id) ) selected @endif  value="{{$os->id}}">{{$os->name}}</option>
+                        <select class="select2"  style="width:240px;" multiple  name="location[]">
+                        @foreach ($locations as $location)
+                            <option  @if($idea->location->contains($location->id) ) selected @endif  value="{{$location->id}}">{{$location->name}}</option>
                         @endforeach    
                         </select>
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="age[]">年龄段</label>
@@ -254,17 +256,6 @@
                 -->
             </div>
             <div class="x6">
-                <div class="form-group">
-                    <div class="label">
-                        <label for="daterange">日期段</label>
-                    </div>
-                    <div class="field">
-                        <div class="input-group">
-                            <input type="text" class="input" name="daterange" value="@if (strtotime($idea->start_time)>0) {{substr($idea->start_time,0,10)}} 至 {{substr($idea->end_time,0,10)}} @else {{date('Y-m-d')}} 至 {{date('Y-m-d')}} @endif "/>
-                            <span class="addon"><i class="fa fa-calendar"></i></span>
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group">
                     <div class="label">
                         <label for="timerange">时间段</label>

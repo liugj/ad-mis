@@ -10,7 +10,7 @@ class Idea extends Model
     protected $table      = 'ideas';
     protected $primaryKey = 'id';
     protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link','link_text',
-                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','start_time','end_time'
+                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange'
                             ];
     protected $appends = ['state'];                        
     static  $arrStatus = [
@@ -22,13 +22,15 @@ class Idea extends Model
     ];
 
     public function update(array $attributes=[]) {
-        list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
-        $attributes['end_time']  = sprintf('%s 23:59:59', trim($attributes['end_time']));
        $update =  parent :: update($attributes);
 
         $this->industries()->detach();
         if (isset($attributes['industry'])) {
             $this->industries()->attach($attributes['industry']);
+        }
+        $this->location()->detach();
+        if (isset($attributes['location'])) {
+            $this->location()->attach($attributes['location']);
         }
         $this->os()->detach();
         if (isset($attributes['os'])) {
@@ -69,11 +71,12 @@ class Idea extends Model
         return $update;
     }
     public static function create(array $attributes=[]) {
-        list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
-        $attributes['end_time']  = sprintf('%s 23:59:59', trim($attributes['end_time']));
         $idea = parent :: create($attributes);
         if (isset($attributes['industry'])) {
             $idea->industries()->attach($attributes['industry']);
+        }
+        if (isset($attributes['location'])) {
+            $idea->location()->attach($attributes['location']);
         }
         if (isset($attributes['os'])) {
             $idea->os()->attach($attributes['os']);
@@ -128,6 +131,9 @@ class Idea extends Model
     }
     public function network() {
         return $this->belongsToMany('App\Network');
+    }
+    public function location() {
+        return $this->belongsToMany('App\Location');
     }
     public function regions() {
         return $this->belongsToMany('App\Region');

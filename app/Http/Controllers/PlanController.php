@@ -67,11 +67,14 @@ class PlanController extends Controller
                 'budget' => 'required|numeric|min:1',
                 ]);
         //
+        $attributes = $request->all();
+        list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
+        $attributes['end_time']  = sprintf('%s 23:59:59', trim($attributes['end_time']));
         if ($id <=0 ) {
-            $plan = Plan :: create($request->all()+array('user_id'=>$user_id));
+            $plan = Plan :: create(array('user_id'=>$user_id)+$attributes);
             return response()->json(['success'=>TRUE, 'id'=>$plan->id]);
         } else{
-           return response()->json(['success'=>Plan :: find($id)->update($request->all()), 'message'=>'修改计划成功！', 'id'=>$id]);
+           return response()->json(['success'=>Plan :: find($id)->update($attributes), 'message'=>'修改计划成功！', 'id'=>$id]);
         }
 
     }

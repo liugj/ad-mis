@@ -9,10 +9,10 @@
                 <label>费用预算：</label>
                 <span>{{$idea->budget}}元/天</span>
                 <label>消费：</label><span>{{number_format($idea->consumeTotalByDate(date('Y-m-d')),2)}}元/天</span>
-                <label>出价金额：</label>
-                <span>{{$idea->bid}}元/点击</span>
                 <label>结算方式：</label>
-                <span>@if ($idea->pay_type==1) cpm @else cpc @endif  </span>
+                <span> {{App\PayType :: $names[$idea->pay_type]}} </span>
+                <label>出价金额：</label>
+                <span>{{$idea->bid}}元</span>
                 <label>创建时间：</label>
                 <span>{{$idea->created_at}}</span>
             </div>
@@ -26,16 +26,18 @@
                 @else 
                 <span> <a href="{{$idea->src}}" style="color:#438eb9;" target="_ablank">图片{{$idea->size->width}}x{{$idea->size->height}}</a> @endif</span>
                 @endif
-                <label>link类型：</label>
+                <label>点击类型：</label>
                 <span>{{$idea->click_action->name}}</span>
-                <label>link值：</label>
+                <label>{{$idea->click_action->placeholder}}：</label>
                 <span>{{$idea->link}}</span>
                 @if ($idea->click_action->id ==2)
                 <label>应用名称：</label>
                 <span>{{$idea->link_text}}</span>
                 @endif
+                @if ($idea->frequency >0)
                 <label>频次控制：</label>
                 <span>{{$idea->frequency}}</span>
+                @endif
                 <label>更新时间：</label>
                 <span>{{$idea->updated_at}}</span>
             </div>
@@ -65,21 +67,19 @@
 -->
                 <?php  $classification = $idea->classification()->get(); ?>
                 @if ($classification->count())
-                <label>APP类型：</label>
+                <label>应用类型：</label>
                 <span>@foreach($classification as $classify)  {{$classify->name}} @endforeach</span>
                 @endif
                 <?php  $bans = $idea->ban()->get(); ?>
                 @if ($bans->count())
-                <label>APP黑名单：</label>
+                <label>应用黑名单：</label>
                 <span>@foreach($bans as $classify)  {{$classify->name}} @endforeach</span>
                 @endif
-                <!--
-               <?php $oss = $idea->os()->get(); ?>
-               @if ($oss->count())
-                <label>操作系统：</label>
-                <span>@foreach ($oss as $os) {{$os->name}} @endforeach</span>
+               <?php $locations = $idea->location()->get(); ?>
+               @if ($locations->count())
+                <label>地理位置：</label>
+                <span>@foreach ($locations as $location) {{$location->name}} @endforeach</span>
                @endif
-               -->
 <!--
                 <?php  $ages = $idea->age()->get(); ?>
                 @if ($ages->count())
@@ -89,12 +89,6 @@
 -->
             </div>
             <div class="x8">
-                <label>时间：</label>
-                <span><?php $daterange = array(); 
-                          if (strtotime($idea->start_time)>0) $daterange[] = date('Y-m-d', strtotime($idea->start_time));
-                          if (strtotime($idea->end_time)>0) $daterange[] = date('Y-m-d', strtotime($idea->end_time));
-                          if ($daterange) echo implode(' 至 ', $daterange); else echo '不限';
-                ?></span>
                 <label>时间段：</label>
                 <span>
                     <!--值以','符号分隔，表示0-167的可选时间点-->
