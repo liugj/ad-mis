@@ -46,7 +46,7 @@
             </div>
             <div class="field form-inline">
                 <input type="text" id="imgUpload" name="src" class="input" readonly="readonly" size="40" value="{{$idea->src}}" data-val="true" data-val-required="图片文件不能为空" />
-                <button class="button" type="button" onclick="App.Plan.upload();">图片上传</button>
+                <button class="button" type="button" onclick="App.Plan.upload();">上传图片</button>
             </div>
         </div>
 

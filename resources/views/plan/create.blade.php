@@ -26,7 +26,7 @@
         </div>
         <div class="field">
             <div class="input-group">
-                <input type="text" class="input" name="daterange" value="@if (strtotime($plan->start_time)>0) {{substr($plan->start_time,0,10)}} @endif @if (strtotime($plan->end_time)>0) 至 {{substr($plan->end_time,0,10)}}  @endif "/>
+                <input type="text" class="input" name="daterange" value="@if (strtotime($plan->start_time)>0) {{substr($plan->start_time,0,10)}} @endif @if (strtotime($plan->end_time)>0) 至 {{substr($plan->end_time,0,10)}}  @endif" data-val="true" data-val-required="日期不能为空" />
                 <span class="addon"><i class="fa fa-calendar"></i></span>
             </div>
         </div>

@@ -63,7 +63,7 @@ class PlanController extends Controller
         $user_id  = Auth::user()->get()->id;
         $this->validate($request, [
                 'name'    => 'required|max:128|unique:plans,name,' .($id>0?$id: 'NULL') . ',id,user_id,'. $user_id , #. ($id > 0 ? sprintf(',id,%d', $id): ''),
-                //'status' => 'required|numeric',
+                'daterange' => 'required|min:10',
                 'budget' => 'required|numeric|min:1',
                 ]);
         //
