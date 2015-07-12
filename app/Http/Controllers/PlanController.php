@@ -68,8 +68,10 @@ class PlanController extends Controller
                 ]);
         //
         $attributes = $request->all();
-        list($attributes['start_time'], $attributes['end_time']) = explode('至', $attributes['daterange']);
-        $attributes['end_time']  = sprintf('%s 23:59:59', trim($attributes['end_time']));
+
+        $dateRange = explode('至', $attributes['daterange']);
+        if (isset($dateRange[0])) = $attributes['start_time'] = $dateRange[0];
+        if (isset($daterange[1])) = sprintf('%s 23:59:59', trim($dateRange[1]));
         if ($id <=0 ) {
             $plan = Plan :: create(array('user_id'=>$user_id)+$attributes);
             return response()->json(['success'=>TRUE, 'id'=>$plan->id]);
