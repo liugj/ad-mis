@@ -3,7 +3,7 @@
     <label>计划名称：</label><span>{{$plan->name}}</span>
     <label>预算：</label><span>{{$plan->budget}} 元/天</span>
     <label>消费：</label><span>{{ number_format($plan->consumeTotalByDate(date('Y-m-d')),2)}} 元/天</span>
-    <label>日期：</label>
+    <label>投放日期：</label>
                 <span><?php $daterange = array(); 
                           if (strtotime($plan->start_time)>0) $daterange[] = date('Y-m-d', strtotime($plan->start_time));
                           if (strtotime($plan->end_time)>0) $daterange[] = date('Y-m-d', strtotime($plan->end_time));

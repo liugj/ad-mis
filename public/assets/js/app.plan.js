@@ -189,7 +189,7 @@
     }
 
     var deleteUnit = function (id, status) {
-        confirm(status ? "确定要停止这个广告创意吗？" : '确定要投放这个广告创意吗？', function () {
+        confirm(status==4 ? "确定要停止这个广告创意吗？" : '确定要投放这个广告创意吗？', function () {
             App.ajaxDelete(urlUnitDelete + id, {
                 data: {'status':status},
                 success: function () {

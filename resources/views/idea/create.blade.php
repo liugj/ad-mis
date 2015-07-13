@@ -119,7 +119,7 @@
                     <!--
                         <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" data-val="true" data-val-required="频次控制不能为空" data-val-regexp-rule="^\d+$" />
                         -->
-                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" />
+                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" placeholder="每天每个设备展现量" />
                     </div>
                 </div>
             </div>
@@ -157,7 +157,7 @@
                         <label for="region[]">地域</label>
                     </div>
                     <div class="field">
-                        <select class="select2" style="min-width:100px;" name="region[]"  style="width:240px;" multiple  placeholder="空白表示不限">
+                        <select class="select2"  name="region[]"  style="width:240px;" multiple  placeholder="不选表示不限">
                         @foreach ($regions as $region)
                             <option  @if($idea->regions->contains($region->id) ) selected @endif  value="{{$region->id}}">{{$region->name}}</option>
                         @endforeach    
