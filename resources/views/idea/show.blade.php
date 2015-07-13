@@ -92,7 +92,11 @@
                 <label>时间段：</label>
                 <span>
                     <!--值以','符号分隔，表示0-167的可选时间点-->
+                    @if ($idea->timerange)
                     <input type="hidden" id="timerange" value="{{$idea->timerange}}" />
+                    @else
+                      24小时全投
+                    @endif
                 </span>
                 @if ($operators->count())
                 <label>运营商：</label>
