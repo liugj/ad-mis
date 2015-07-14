@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group">
                     <div class="label">
-                        <label for="frequency">频次控制</label>
+                        <label for="frequency">频次控制(每天每个设备展现量)</label>
                     </div>
                     <div class="field">
                     <!--
@@ -157,7 +157,7 @@
                         <label for="region[]">地域</label>
                     </div>
                     <div class="field">
-                        <select class="select2"  name="region[]"  style="width:240px;" multiple  placeholder="不选表示不限">
+                        <select class="select2"  name="region[]"  style="width:240px;" multiple  placeholder="默认表示全国">
                         @foreach ($regions as $region)
                             <option  @if($idea->regions->contains($region->id) ) selected @endif  value="{{$region->id}}">{{$region->name}}</option>
                         @endforeach    
@@ -262,7 +262,11 @@
                     </div>
                     <div class="field">
                         <!--值以','符号分隔，表示0-167的可选时间点-->
+                        @if($idea->timerange)
                         <input type="hidden" name="timerange" value="{{$idea->timerange}}" />
+                        @else
+                        默认24小时全投放
+                        @endif
                     </div>
                 </div>
                 <div class="form-group">
