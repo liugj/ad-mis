@@ -262,11 +262,7 @@
                     </div>
                     <div class="field">
                         <!--值以','符号分隔，表示0-167的可选时间点-->
-                        @if($idea->timerange)
                         <input type="hidden" name="timerange" value="{{$idea->timerange}}" />
-                        @else
-                        默认24小时全投放
-                        @endif
                     </div>
                 </div>
                 <div class="form-group">
