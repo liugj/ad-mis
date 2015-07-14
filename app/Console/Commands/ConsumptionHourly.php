@@ -75,7 +75,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                             if ($item['type'] =='win_notice'){
                             }
                             else $items[$id][$item['type']] = 1;
-                            foreach (['region', 'classification', 'operator', 'device', 'network'] as $key) {
+                            foreach (['region', 'classification', 'operator', 'device_type', 'network'] as $key) {
                                 if (isset($item[$key]) && !isset($items[$id][$key]))  $items[$id][$key] = $item[$key] ;
                             }
                         }else{
@@ -94,7 +94,7 @@ class ConsumptionHourly extends Command implements SelfHandling
         }
         $stats = [];
         foreach ($items  as $item) {
-            foreach (['App\Region'=>'region', 'App\Classification'=>'classification', 'App\Operator'=>'operator', 'App\Device'=>'device', 'App\Network'=>'network'] as $consumable_type=>$consumable_key) {
+            foreach (['App\Region'=>'region', 'App\Classification'=>'classification', 'App\Operator'=>'operator', 'App\Device'=>'device_type', 'App\Network'=>'network'] as $consumable_type=>$consumable_key) {
                 $consumable_value = isset($item[$consumable_key]) && $item[$consumable_key]!= 'None' ? $item[$consumable_key] : '0' ;
                 $stat_key = sprintf('%d_%s_%s', $item['idea_id'], $consumable_type, $consumable_value); 
                 if (isset($stats[$stat_key])) {
