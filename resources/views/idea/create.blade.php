@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group">
                     <div class="label">
-                        <label for="frequency">频次控制(每天每个设备展现量)</label>
+                        <label for="frequency">频次控制</label>
                     </div>
                     <div class="field">
                     <!--
