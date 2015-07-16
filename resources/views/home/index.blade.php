@@ -86,11 +86,11 @@
                             <thead>
                                 <tr>
                                   <th>时间</th>
-                                  <th>展现次数</th>
-                                  <th>点击次数</th>
-                                  <th>下载次数</th>
-                                  <th>安装次数</th>
-                                  <th>打开次数</th>
+                                  <th>展现数</th>
+                                  <th>点击数</th>
+                                  <th>点击率</th>
+                                  <th>转化数</th>
+                                  <th>转化率</th>
                                   <th>消费金额(元)</th>
                                 </tr>
                             </thead>
@@ -102,9 +102,9 @@
                              <td class="text-center">{datetime}</td>
                              <td class="text-center">{exhibition_total}</td>
                              <td class="text-right">{click_total}</td>
-                             <td class="text-right">{download_total}</td>
-                             <td class="text-right">{install_total}</td>
+                             <td class="text-right">{click_rate}</td>
                              <td class="text-right">{open_total}</td>
+                             <td class="text-right">{convert_rate}</td>
                              <td class="text-right">{consumption_total}</td>
                             </tr>
                         </script>

@@ -34,22 +34,24 @@ class ConsumptionHourly extends Command implements SelfHandling
    // }
    protected  function _charge($dateHour) 
    {
-       $results = array();
-       $chargeFile = sprintf('/opt/log/charge/charge_python.%s.log', $dateHour);
-       if (file_exists($chargeFile)) {
-           $fp = fopen($chargeFile , 'r');
-           if ($fp) {
-               while(!feof($fp)) {
-                   $line  =  fgets($fp, 8192);
-                   if (!$line) break;
-                   if (preg_match('#CHARGE:.*?"price":(?P<price>.*?),.*?"impid":\s"(?P<id>.*?)"#', $line, $matches)){
-                       $results [$matches['id']] = $matches['price'];
-                   }
-               }
-           }
-       }
+	   $results = array();
+	   $chargeFile = sprintf('/opt/log/charge/charge_python.%s.log', $dateHour);
+	   if (file_exists($chargeFile)) {
+		   $fp = fopen($chargeFile , 'r');
+		   if ($fp) {
+			   while(!feof($fp)) {
+				   $line  =  fgets($fp, 8192);
+				   if (!$line) break;
+				   if ((($pos = strpos($line, 'CHARGE:'))!== false) && $s = substr($line, $pos+7)){
+					   $s = trim($s);
+					   $matches = json_decode($s, TRUE);
+					   $results [$matches['impid']] = $matches['price'];
+				   }  
+			   }
+		   }
+	   }
 
-       return $results;
+	   return $results;
    }
     protected function _stat($hour)
     {
@@ -93,42 +95,44 @@ class ConsumptionHourly extends Command implements SelfHandling
             $items [$sessionId]['price'] = $price;
         }
         $stats = [];
-        foreach ($items  as $item) {
-            foreach (['App\Region'=>'region', 'App\Classification'=>'classification', 'App\Operator'=>'operator', 'App\Device'=>'device_type', 'App\Network'=>'network'] as $consumable_type=>$consumable_key) {
-                $consumable_value = isset($item[$consumable_key]) && $item[$consumable_key]!= 'None' ? $item[$consumable_key] : '0' ;
-                $stat_key = sprintf('%d_%s_%s', $item['idea_id'], $consumable_type, $consumable_value); 
-                if (isset($stats[$stat_key])) {
-                    foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'open'=>'open_total', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
-                        if (isset($item[$key]) && $key == 'price') {
-                             $stats[$stat_key][$value] += $item['price'];
-                        }elseif (isset($item[$key])){
-                            $stats[$stat_key][$value] += 1;
-                        }
-                    }
-                }else{
-                    $stats[$stat_key] = ['idea_id' => $item['idea_id'], 'consumable_id'=> $consumable_value, 'consumable_type'=>$consumable_type ];
-                    if ($consumable_key == 'region') {
-                        if (strpos($consumable_value, ',') == false) {
-                             $consumable_id = $consumable_value;
-                             $parent_id     = 0;
-                        }else{
-                            list($parent_id, $consumable_id) = explode(',', $consumable_value);
-                        }
-                        $stats[$stat_key]['consumable_id'] = $consumable_id;
-                        $stats[$stat_key]['parent_id']    = $parent_id;
-                    }
-                    foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'open'=>'open_total', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
-                        if (isset($item[$key]) && $key == 'price') {
-                             $stats[$stat_key][$value] = $item['price'];
-                        }elseif (isset($item[$key])){
-                            $stats[$stat_key][$value] = 1;
-                        }else{
-                            $stats[$stat_key][$value] = 0;
-                        }
-                    }
-                }
-            }
-        }
+	foreach ($items  as $sessionId=>$item) {
+if (!isset($item['idea_id'])) continue;
+		foreach (['App\Region'=>'region', 'App\Classification'=>'classification', 'App\Operator'=>'operator', 'App\Device'=>'device_type', 'App\Network'=>'network'] as $consumable_type=>$consumable_key) {
+			$consumable_value = isset($item[$consumable_key]) && $item[$consumable_key]!= 'None' ? $item[$consumable_key] : '0' ;
+			$stat_key = sprintf('%d_%s_%s', $item['idea_id'], $consumable_type, $consumable_value); 
+			if (isset($stats[$stat_key])) {
+				foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'download'=>'download_total', 'open'=>'open_total', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
+					if (isset($item[$key]) && $key == 'price') {
+						$stats[$stat_key][$value] += $item['price'];
+					}elseif (isset($item[$key])){
+						$stats[$stat_key][$value] += 1;
+                                        }
+				}
+			}else{
+				$stats[$stat_key] = ['idea_id' => $item['idea_id'], 'consumable_id'=> $consumable_value, 'consumable_type'=>$consumable_type ];
+				if ($consumable_key == 'region') {
+					if (strpos($consumable_value, ',') == false) {
+						$consumable_id = $consumable_value;
+						$parent_id     = 0;
+					}else{
+						list($parent_id, $consumable_id) = explode(',', $consumable_value);
+					}
+					$stats[$stat_key]['consumable_id'] = $consumable_id;
+					$stats[$stat_key]['parent_id']    = $parent_id;
+				}
+                                 $stats[$stat_key]['consumable_id'] = intval( $stats[$stat_key]['consumable_id']);
+				foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'download'=>'download_total','open'=>'open_total', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
+					if (isset($item[$key]) && $key == 'price') {
+						$stats[$stat_key][$value] = $item['price'];
+					}elseif (isset($item[$key])){
+						$stats[$stat_key][$value] = 1;
+					}else{
+						$stats[$stat_key][$value] = 0;
+					}
+				}
+			}
+		}
+	}
         return $stats;
     }
     /**
@@ -139,29 +143,33 @@ class ConsumptionHourly extends Command implements SelfHandling
     public function handle()
     {
         $time        =      time();
-        $endTime     = date('Y-m-d H:00:00');
-        $startTime   = date('Y-m-d H:00:00' , $time - 3600);
-        $dateTime    = date('Y-m-d H',  $time - 3600);
-        $date        = date('Y-m-d',  $time - 3600);
-        $lastDateHour = date('YmdH', $time - 3600);
+for ($i=1; $i<2; $i++) {
+        $endTime     = date('Y-m-d H:00:00' );
+        $startTime   = date('Y-m-d H:00:00' , $time - 3600* $i);
+        $dateTime    = date('Y-m-d H',  $time - 3600 * $i);
+        $date        = date('Y-m-d',  $time - 3600 *$i);
+        $lastDateHour = date('YmdH', $time - 3600 *$i);
         $stats        = $this->_stat($lastDateHour);
-
-        $ideaCollections     = Idea ::where ('id', array_unique(array_column($stats, 'idea_id')))->select(['id', 'user_id', 'plan_id', 'status'])->get();
+       
         $ideas  = array();
-        foreach ($ideaCollections as $c) {
-            $ideas[$c->id]= $c->toArray();
-        }
+	foreach (array_unique(array_column($stats, 'idea_id')) as $id) {
+		$c   = Idea ::where('id', $id)->select(['id', 'user_id', 'plan_id', 'status'])->first();
+
+		$ideas[$id]= $c->toArray();
+	}
+       $install_total = 0;
         foreach ($stats  as $stat) {
             $consumption =  collect($stat+$ideas[$stat['idea_id']]);
             ConsumptionDaily :: where('idea_id'        ,  $consumption->get('idea_id'))
                 -> where('consumable_type',  $consumption->get('consumable_type')) 
+                -> where('parent_id'  ,  $consumption->get('parent_id', 0))
                 -> where('consumable_id'  ,  $consumption->get('consumable_id'))
                 -> where('datetime'       ,  $dateTime)
                 ->delete(); 
             ConsumptionDaily ::create($consumption->all() + array('datetime'=>$dateTime, 'date'=>$date));
-
         }
         Log :: info(__CLASS__. ' ok.', ['datetime'=>$dateTime]);
+}
 
     }
 }
