@@ -22,55 +22,61 @@ class Idea extends Model
     ];
 
     public function update(array $attributes=[]) {
-       $update =  parent :: update($attributes);
+	    if ($attributes['type'] == 'banner_text') {
+                 $attributes['size_id']  =0 ;
+	    }
+	    $update =  parent :: update($attributes);
 
-        $this->industries()->detach();
-        if (isset($attributes['industry'])) {
-            $this->industries()->attach($attributes['industry']);
-        }
-        $this->location()->detach();
-        if (isset($attributes['location'])) {
-            $this->location()->attach($attributes['location']);
-        }
-        $this->os()->detach();
-        if (isset($attributes['os'])) {
-            $this->os()->attach($attributes['os']);
-        }
-        $this->network()->detach();
-        if (isset($attributes['network'])) {
-            $this->network()->attach($attributes['network']);
-        }
-        $this->operators()->detach();
-        if (isset($attributes['operator'])) {
-            $this->operators()->attach($attributes['operator']);
-        }
-        $this->age()->detach();
-        if (isset($attributes['age'])) {
-            $this->age()->attach($attributes['age']);
-        }
-        $this->categories()->detach();
-        if (isset($attributes['category'])) {
-            $this->categories()->attach($attributes['category']);
-        }
-        $this->ban()->detach();
-        if (isset($attributes['ban'])) {
-            $this->ban()->attach($attributes['ban']);
-        }
-        $this->devices()->detach();
-        if (isset($attributes['device'])) {
-            $this->devices()->attach($attributes['device']);
-        }
-        $this->regions()->detach();
-        if (isset($attributes['region'])) {
-            $this->regions()->attach($attributes['region']);
-        }
-        $this->classification()->detach();
-        if (isset($attributes['classify'])) {
-            $this->classification()->attach($attributes['classify']);
-        }
-        return $update;
+	    $this->industries()->detach();
+	    if (isset($attributes['industry'])) {
+		    $this->industries()->attach($attributes['industry']);
+	    }
+	    $this->location()->detach();
+	    if (isset($attributes['location'])) {
+		    $this->location()->attach($attributes['location']);
+	    }
+	    $this->os()->detach();
+	    if (isset($attributes['os'])) {
+		    $this->os()->attach($attributes['os']);
+	    }
+	    $this->network()->detach();
+	    if (isset($attributes['network'])) {
+		    $this->network()->attach($attributes['network']);
+	    }
+	    $this->operators()->detach();
+	    if (isset($attributes['operator'])) {
+		    $this->operators()->attach($attributes['operator']);
+	    }
+	    $this->age()->detach();
+	    if (isset($attributes['age'])) {
+		    $this->age()->attach($attributes['age']);
+	    }
+	    $this->categories()->detach();
+	    if (isset($attributes['category'])) {
+		    $this->categories()->attach($attributes['category']);
+	    }
+	    $this->ban()->detach();
+	    if (isset($attributes['ban'])) {
+		    $this->ban()->attach($attributes['ban']);
+	    }
+	    $this->devices()->detach();
+	    if (isset($attributes['device'])) {
+		    $this->devices()->attach($attributes['device']);
+	    }
+	    $this->regions()->detach();
+	    if (isset($attributes['region'])) {
+		    $this->regions()->attach($attributes['region']);
+	    }
+	    $this->classification()->detach();
+	    if (isset($attributes['classify'])) {
+		    $this->classification()->attach($attributes['classify']);
+	    }
+	    return $update;
     }
     public static function create(array $attributes=[]) {
+	    if ($attributes['type'] == 'banner_text') {
+                 $attributes['size_id']  =0 ;
+	    }
         $idea = parent :: create($attributes);
         if (isset($attributes['industry'])) {
             $idea->industries()->attach($attributes['industry']);
