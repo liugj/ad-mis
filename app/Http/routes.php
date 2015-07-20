@@ -25,6 +25,7 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return Auth:: admin()->check()?  redirect('/admin/home') :  view('admin.welcome');
 });
+
 Route::group(['namespace'=>'Auth'], function() {
         Route::get('login',  'AuthController@getLogin');
         Route::post('login', 'AuthController@postLogin');
@@ -34,6 +35,16 @@ Route::group(['namespace'=>'Auth'], function() {
         });
 
 Route::group(['middleware' => 'auth'], function () {
+        Route::get('change_password',  ['as'=>'user', 'uses'=>'UserController@getChangePassword']);
+        Route::post('change_password',  ['as'=>'user', 'uses'=>'UserController@postChangePassword']);
+
+        Route::get('change',  ['as'=>'user', 'uses'=>'UserController@getChange']);
+        Route::post('change',  ['as'=>'user', 'uses'=>'UserController@postChange']);
+
+
+        Route::get('/region/lists',  [
+            'as' => 'idea', 'uses' => 'RegionController@lists'
+            ]);
         Route::get('/idea/create',  [
             'as' => 'idea', 'uses' => 'IdeaController@create'
             ]);
@@ -50,14 +61,15 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'idea', 'uses' => 'IdeaController@edit'
             ])->where('id','[0-9]+');
         Route::post('/idea/destroy/{id}',  [
-            'as' => 'idea', 'uses' => 'IdeaController@destroy'
-            ])->where('id','[0-9]+');
+                'as' => 'idea', 'uses' => 'IdeaController@destroy'
+                ])->where('id','[0-9]+');
         Route::post('/idea/store',  [
-            'as' => 'idea', 'uses' => 'IdeaController@store'
-            ]);
+                'as' => 'idea', 'uses' => 'IdeaController@store'
+                ]);
         Route :: post('idea/upload', ['as'=>'idea', 'uses'=>'IdeaController@upload']);
         Route :: post('idea/crop', ['as'=>'idea', 'uses'=>'IdeaController@crop']);
-        Route :: get('idea/test', ['as'=>'idea', 'uses'=>'IdeaController@test']);
+        Route :: get('idea/preview/{id}', ['as'=>'idea', 'uses'=>'IdeaController@preview'])
+            ->where('id', '[0-9]+');
 
         Route::get('/home', ['as'=>'home', 'uses'=>'HomeController@index']);
         Route::get('/home/chart', ['as'=>'home', 'uses'=>'HomeController@chart']);
@@ -74,7 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/plan/create', ['as'=>'plan', 'uses'=>'PlanController@create']);
         Route::get('/plan/edit/{id}', ['as'=>'plan', 'uses'=>'PlanController@edit'])->where('id','[1-9][0-9]*');
         Route::post('/plan/update/{id}', ['as'=>'plan', 'uses'=>'PlanController@update'])->where('id','[1-9][0-9]*');
-        }
+}
         );
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
       Route::group(['namespace'=>'Auth'], function() {

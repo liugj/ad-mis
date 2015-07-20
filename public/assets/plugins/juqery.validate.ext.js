@@ -1,126 +1,116 @@
 ﻿(function ($) {
 
-    $.extend($.validator.defaults, {
+    $.validator.setDefaults({
         onsubmit: false,
-        ignore: ":hidden",
-        errorElement: "span",
-        errorClass: "help-inline",
+        ignore: ':hidden',
+        errorElement: 'span',
+        errorClass: 'help-inline',
         errorPlacement: function (error, element) {
-            var place = element.parent();
-            error.appendTo(place);
+            var place = element.closest('.field');
+            place.append(error);
         },
         highlight: function (element, errorClass) {
-            $(element).parents(".form-group").removeClass("check-success").addClass("check-error");
+            $(element).parents('.form-group').removeClass('success').addClass('error');
         },
         unhighlight: function (element, errorClass) {
-            $(element).parents(".form-group").removeClass("check-error").addClass("check-success");
+            $(element).parents('.form-group').removeClass('error').addClass('success');
         }
     });
 
-    $.validator.addMethod("regexp", function (value, element, param) {        
+    $.validator.addMethod('regexp', function (value, element, param) {
         var rep = new RegExp(param);
         return this.optional(element) || rep.test(value);
     });
 
-    console.dir($.validate);
+    $.validator.ext = {
+        adapters: [],
 
-	$.validator.ext = {
-		adapters: [],
+        setOptions: function (element, options) {
 
-		setOptions: function (element, options) {
+            var $element = $(element);
+            var rules = {};
+            var messages = {};
 
-		    var $element = $(element);
-		    var rules = {};
-		    var messages = {};		    
+            $.each(this.adapters, function () {
+                var prefix = 'data-val-' + this.prefix;
+                var message = $element.attr(prefix);
 
-			$.each(this.adapters, function () {				
-			    var prefix = "data-val-" + this.prefix;
-				var message = $element.attr(prefix);
-				var paramValues = {};
+                if (message !== undefined) {
+                    rules[this.name] = this.adapt(prefix, element, options.form);
+                    messages[this.name] = message;
+                }
+            });
 
-				if (message !== undefined) {
-					prefix += "-";
+            options.rules[element.name] = rules;
+            options.messages[element.name] = messages;
+        },
 
-					$.each(this.params, function () {
-						paramValues[this] = $element.attr(prefix + this);
-					});
-					
-					rules[this.name] = this.adapt(paramValues, options.form);
-					messages[this.name] = message;
-				}
-			});
+        parse: function (selector) {
+            $(selector).each(function () {
+                var form = $(this);
 
-			options.rules[element.name] = rules;
-			options.messages[element.name] = messages;
-		},
+                var options = {
+                    rules: {},
+                    messages: {},
+                    form: this
+                };
 
-		parse: function (selector) {
-			var $forms = $(selector);
+                form.find('[data-val="true"]').each(function () {
+                    $.validator.ext.setOptions(this, options);
+                });
 
-			$forms.each(function () {
-			    var $form = $(this);
+                form.validate(options);
+            });
+        }
+    };
 
-				var options = {
-					rules: {},
-					messages: {},
-					form: $form
-				};
+    var adapters = $.validator.ext.adapters;
 
-				$form.find(":input[data-val='true']").each(function () {
-				    $.validator.ext.setOptions(this, options);
-				});
+    adapters.add = function (adapterName, prefixName, adapt) {
+        this.push({ name: adapterName, prefix: prefixName, adapt: adapt });
+        return this;
+    };
 
-				$form.validate(options);
-			});			
-		}
-	};
+    adapters.add('required', 'required', function () {
+        return true;
+    });
 
-	var adapters = $.validator.ext.adapters;
+    adapters.add('remote', 'remote', function (prefix, element, form) {
+        var $element = $(element);
+        return {
+            url: $element.attr(prefix + '-url'),
+            data: {
+                key: function () { return $element.attr(prefix + '-key') || 0; }
+            }
+        };
+    });
 
-	adapters.add = function (adapterName, prefixName, params, fn) {
-	    if (!fn) {
-	        fn = params;
-	        params = [];
-	    }
-	    this.push({ name: adapterName, prefix: prefixName, params: params, adapt: fn });
-	    return this;
-	};
+    //小数
+    adapters.add('number', 'number', function () {
+        return true;
+    });
 
-	adapters.add("required", "required", function () {
-	    return true;
-	});
+    //整数
+    adapters.add('digits', 'digits', function () {
+        return true;
+    });
 
-	adapters.add("number", "number", function () {
-	    return true;
-	});
+    adapters.add('min', 'min', function (prefix, element, form) {
+        return $(element).attr(prefix + '-value');
+    })
 
-	adapters.add("remote", "remote", ["url", "additionalfields"], function (params) {
-	    return params;
-	});
+    adapters.add('minlength', "minlength", function (prefix, element, form) {
+        return $(element).attr(prefix + '-value');
+    });
 
-	adapters.add("min", "min", ["min"], function (params) {
-	    return params.min;
-	});
+    adapters.add('regexp', 'regexp', function (prefix, element, form) {
+        return $(element).attr(prefix + '-rule');
+    });
 
-	adapters.add("range", "range", ["min", "max"], function (params) {
-	    return [params.min, params.max];
-	});
-
-	adapters.add("equalTo", "equalto", ["other"], function (params, form) {
-	    var other = params.other.replace('*.', '');
-	    return form.find('input[name="' + other + '"]:eq(0)');
-	});
-
-	adapters.add("email", "email", function () {
-	    return true;
-	});
-
-	adapters.add("minlength", "minlength", ["value"], function (params) {
-	    return params.value;
-	});
-
-	adapters.add("regexp", "regexp", ["rule"], function (params, form) {
-	    return params.rule;
-	});
+    //一致性检查
+    adapters.add("equalTo", "equalto", function (prefix, element, form) {
+        var other = $(element).attr(prefix + '-other');
+        return $(form).find('input[name="' + other + '"]:eq(0)');
+    });
 
 }(jQuery));

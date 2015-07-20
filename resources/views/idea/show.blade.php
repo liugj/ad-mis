@@ -109,7 +109,7 @@
                @endif
                 <?php $devices = $idea->devices()->get(); ?>
                 @if($devices->count())
-                <label>网络类型：</label>
+                <label>设备类型：</label>
                 <span>@foreach($devices as $device) {{$device->name}} @endforeach</span>
                @endif
             </div>
@@ -122,5 +122,6 @@
         @elseif ($idea->status == 0|| $idea->status==4)
         <button class="button" onclick="App.Plan.deleteUnit({{$idea->id}}, 3);">投放</button>
         @endif
+        <button class="button" onclick="App.Plan.preview({{$idea->id}});">预览</button>
     </div>
 </div>

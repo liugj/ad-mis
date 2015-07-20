@@ -157,11 +157,7 @@
                         <label for="region[]">地域</label>
                     </div>
                     <div class="field">
-                        <select class="select2"  name="region[]"  style="width:240px;" multiple  placeholder="默认表示全国">
-                        @foreach ($regions as $region)
-                            <option  @if($idea->regions->contains($region->id) ) selected @endif  value="{{$region->id}}">{{$region->name}}</option>
-                        @endforeach    
-                        </select>
+                       <input type="hidden" name="region" value="{{$idea->regions->implode('id', ',')}}" placeholder="默认表示全国" width="240px">
                     </div>
                 </div>
                <!--

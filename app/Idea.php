@@ -65,7 +65,7 @@ class Idea extends Model
 	    }
 	    $this->regions()->detach();
 	    if (isset($attributes['region'])) {
-		    $this->regions()->attach($attributes['region']);
+		    $this->regions()->attach(explode(',', $attributes['region']));
 	    }
 	    $this->classification()->detach();
 	    if (isset($attributes['classify'])) {
@@ -106,7 +106,7 @@ class Idea extends Model
             $idea->devices()->attach($attributes['device']);
         }
         if (isset($attributes['region'])) {
-            $idea->regions()->attach($attributes['region']);
+            $idea->regions()->attach(explode(',', $attributes['region']));
         }
         if (isset($attributes['classify'])) {
             $idea->classification()->attach($attributes['classify']);

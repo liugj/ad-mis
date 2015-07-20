@@ -125,7 +125,12 @@ class IdeaController extends Controller
         //
         if (!$v->fails()) {
             if ($id) {
-                return  response()->json(['success' => Idea ::find($id)->update($request->all()),
+                $idea   =  Idea ::find($id) ; 
+                $status =  $idea->status;
+                if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src')){
+                    $status = 1;
+                }
+                return  response()->json(['success' => $idea->update(['status'=>$status]+$request->all()),
                         'message'=> '', 'id'=>$id]
                         );
             }else{
@@ -137,10 +142,12 @@ class IdeaController extends Controller
         }
         $this->throwValidationException($request, $v);
     }
-    public function test()
+    public function preview(IdeaRequest $request, $id)
     {
-        return view('idea.test');
+        $idea = Idea:: findOrFail($id);
+        return  ['type'=>$idea->type, 'value'=> $idea->type =='banner_text'?  $idea->alt: $idea->src];
     }
+
     /**
      * upload 
      * 

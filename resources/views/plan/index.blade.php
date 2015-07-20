@@ -8,6 +8,7 @@
     <link href="/assets/plugins/croppic/css/croppic.css" rel="stylesheet" />
     <link href="/assets/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
     <link href="/assets/plugins/weekdaypicker/weekdaypicker.css" rel="stylesheet" />
+    <link href="/assets/plugins/multiplepicker/multiplepicker.css" rel="stylesheet" />
     <link href="{{ elixir('assets/css/site.css') }}" rel="stylesheet" />
     <link href="{{ elixir('assets/css/plan.css') }}" rel="stylesheet" />
 
@@ -91,17 +92,22 @@
             <div id="croppic"></div>
         </div>
     </div>
+    <div id="dialogPreview" class="dialog">
+        <div class="dialog-head">
+           <span class="close" data-handler="close"></span>
+           效果预览
+       </div>
+       <div class="dialog-body">
+         <div class="preview" style="height:400px;position:relative;background-position:center top;"></div>
+       </div>
+    </div> 
 
-    <script src="/assets/plugins/jquery.form.min.js"></script>
-    <script src="/assets/plugins/jquery.validate.min.js"></script>
-    <script src="/assets/plugins/juqery.validate.ext.js"></script>
-    <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.js"></script>
-    <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.numeric.extensions.js"></script>
     <script src="/assets/plugins/select2/select2.min.js"></script>
     <script src="/assets/plugins/croppic/croppic.js"></script>
     <script src="/assets/plugins/daterangepicker/moment.min.js"></script>
     <script src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="/assets/plugins/weekdaypicker/weekdaypicker.js"></script>
+    <script src="/assets/plugins/multiplepicker/multiplepicker.js"></script>
     <script src="{{ elixir('assets/js/app.js') }}"></script>
     <script src="{{ elixir('assets/js/app.plan.js') }}"></script>
 

@@ -10,6 +10,7 @@
     var urlUnitCreate = "/idea/create/"; //GET, Html, 单元编辑表单, 如果是添加操作，还会传人planId参数
     var urlUnitView = "/idea/show/"; //GET, Html, 单元详情
     var urlUnitDelete = "/idea/destroy/"; //POST, Json，计划删除动作
+    var urlUnitPreview = "/idea/preview/"; //GET, Json, 预览
 
     var urlIdeaList = "/idea/listIdea.json?unitId="; //GET, Json, 创意列表数据, unitId:单元ID
     var urlIdeaView = "/idea/viewIdea.html?id="; //GET, Html, 创意详情
@@ -75,6 +76,7 @@
         $("#dialogUnit").dialog({ width: "900px" });
         $("#dialogIdea").dialog({ width: "600px" });
         $("#dialogImage").dialog({ width: "auto", zIndex: 12 });
+        $("#dialogPreview").dialog({ width: "600px" });
     };
 
     var tpPlanItem = '<li class="adv-item" data-id="{id}"><a class="adv-handle" href="javascript:;"> {name}</a></li>';
@@ -149,7 +151,7 @@
             });
         });
     }
-
+    var regionData = [];
     var editUnit = function (id, planId) {
         if (id) {
             var url = urlUnitEdit + id;
@@ -166,6 +168,16 @@
                 $("#formUnit [data-inputmask]").inputmask();
                 $("#formUnit .select2").select2({ minimumResultsForSearch: 20 });
                 $("#formUnit [name='timerange']").weekdaypicker();
+                var region =   $("#formUnit [name='region']").multiplepicker();
+
+                if (regionData.length ==0){
+                    $.get('/region/lists', function(data){
+                        regionData = data;
+                        region.multiplepicker('setData', regionData);
+                        }, 'json'); 
+                }else{
+                    region.multiplepicker('setData', regionData);
+                }
 
                 setIdeaType();
                 $("#type").change(function (e) {
@@ -271,6 +283,48 @@
             $('#setp-1').hide();
         }
     }
+    function preview(id) {
+        $("#dialogPreview").dialog("open");
+        var box = $("#dialogPreview .preview").empty();
+        $.get(urlUnitPreview + id, function (data) {
+            box.css("background-image", "url(/assets/img/" + data.type + ".jpg)");
+            var ad = $();
+            switch (data.type) {
+                case "banner_iphone":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "77px", left: "201px", width: "165px" });
+                    break;
+                case "banner_ipad":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "48px", left: "169px", width: "225px" });
+                    break;
+                case "banner_android":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "62px", left: "194px", width: "150px" });
+                    break;
+                case "banner_text":
+                    ad = $('<p></p>').text(data.value).css({ position: "absolute", top: "78px", left: "206px", width: "155px", color: "#00c", fontSize: "12px", lineHeight: "16px" });
+                    break;
+                case "plaqueX_iphone":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "144px", left: "190px", width: "188px", height: "115px" });
+                    break;
+                case "plaqueX_ipad":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "134px", left: "180px", width: "198px", height: "125px" });
+                    break;
+                case "plaqueX_android":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "150px", left: "160px", width: "210px", height: "100px" });
+                    break;
+                case "plaqueY_iphone":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "100px", left: "211px", width: "145px", height: "200px" });
+                    break;
+                case "plaqueY_ipad":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "100px", left: "200px", width: "165px", height: "200px" });
+                    break;
+                case "plaqueY_android":
+                    ad = $('<img src="' + data.value + '" />').css({ position: "absolute", top: "100px", left: "204px", width: "130px", height: "190px" });
+                    break;
+            }
+
+            box.append(ad);
+        }, "json");
+    }
 
     return {
         init: function () {
@@ -301,7 +355,8 @@
         upload: function () {
             upload();
         },
-        gotoSetp: gotoSetp
+        gotoSetp: gotoSetp, 
+        preview: preview
     };
 })(jQuery);
 

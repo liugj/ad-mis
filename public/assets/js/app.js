@@ -22,6 +22,35 @@
             return (typeof v !== "undefined" && v !== null) ? v : "";
         });
     }
+    var changePwd = function () {
+        $("#dialogChangePwd").dialog("open", {
+            url: '/change_password',
+            success: function () {
+                $("#formChangePwd [data-inputmask]").inputmask();
+                $("#formChangePwd").ajaxFormExt({
+                    success: function (response) {
+                        $("#dialogChangePwd").dialog("close");
+                        alert(response.message);
+                    }
+                });
+            }
+        });
+    };
+    var change = function () {
+        $("#dialogChange").dialog("open", {
+            url: '/change',
+            success: function () {
+                $("#formChange [data-inputmask]").inputmask();
+                $("#formChange").ajaxFormExt({
+                    success: function (response) {
+                        $("#dialogChange").dialog("close");
+                        alert(response.message);
+                        window.location = "/home";
+                    }
+                });
+            }
+        });
+    };
 
     var ajaxAction= function (url, settings) {
         var sets = settings || {};
@@ -59,7 +88,7 @@
         init: function () {
             setNav();
         },
-
+        
         notify: function (message, type) {
             notify(message, type);
         },
@@ -79,6 +108,12 @@
 
         ajaxAction: function (url, settings) {
             ajaxAction(url, settings);
+        },
+        changePwd : function () {
+            changePwd();
+        },
+        change: function () {
+            change();
         }
     };
 }(jQuery);

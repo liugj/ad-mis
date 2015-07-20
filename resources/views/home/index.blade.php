@@ -115,8 +115,6 @@
 
         </div>
     </div>
-    <script src="/assets/plugins/jquery.validate.min.js"></script>
-    <script src="/assets/plugins/juqery.validate.ext.js"></script>
     <script src="/assets/plugins/datetimepicker/jquery.datetimepicker.js"></script>
     <script src="/assets/plugins/select2/select2.min.js"></script>
     <script src="{{elixir('assets/js/app.js') }}"></script>

@@ -28,8 +28,8 @@
                         <li>
                             <a href="#">欢迎您，{{{Auth::user()->get()->name}}} <i class="arrow"></i></a>
                             <ul class="drop-menu pull-right">
-                                <li><a href="/auth/edit"><i class="fa fa-user"></i> 修改信息</a></li>
-                                <li><a href="/change_password"><i class="fa fa-key"></i> 修改密码</a></li>
+                                <li><a href="javascript:;" onclick="App.change();"><i class="fa fa-key"></i> 修改信息</a></li>
+                                <li><a href="javascript:;" onclick="App.changePwd();"><i class="fa fa-key"></i> 修改密码</a></li>
                                 <li class="divider"></li>
                                 <li><a href="/logout"><i class="fa fa-power-off"></i> 退出</a></li>
                             </ul>
@@ -39,11 +39,31 @@
                @show
               @endif 
             </div>               
+        <div id="dialogChangePwd" class="dialog">
+            <div class="dialog-head">
+                <span class="close" data-handler="close"></span>
+                修改密码
+            </div>
+            <div class="dialog-body"></div>
+        </div>
+        <div id="dialogChange" class="dialog">
+            <div class="dialog-head">
+                <span class="close" data-handler="close"></span>
+            修改信息
+            </div>
+            <div class="dialog-body"></div>
+        </div>
+
         </div>
     </div>
     <!--页头结束-->
        @yield('content')
     <!--页脚-->
+    <script src="/assets/plugins/jquery.validate.min.js"></script>
+    <script src="/assets/plugins/juqery.validate.ext.js"></script>
+    <script src="/assets/plugins/jquery.form.min.js"></script>
+    <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.js"></script>
+    <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.numeric.extensions.js"></script>
     <div id="footer" class="border-main border-top">
         <div class="padding text-center">
             <p class="text-main">版权所有 © shoozen.net All Rights Reserved.</p>
