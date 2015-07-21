@@ -47,6 +47,7 @@
             <div class="field form-inline">
                 <input type="text" id="imgUpload" name="src" class="input" readonly="readonly" size="40" value="{{$idea->src}}" data-val="true" data-val-required="图片文件不能为空" />
                 <button class="button" type="button" onclick="App.Plan.upload();">上传图片</button>
+                <div class="input-help">GIF动画不支持裁剪</div>
             </div>
         </div>
 
@@ -186,20 +187,14 @@
                     </div>
                 </div>
                 -->
-                <!--
                 <div class="form-group">
                     <div class="label">
-                        <label for="category[]">兴趣</label>
+                        <label for="media[]">媒体</label>
                     </div>
                     <div class="field">
-                        <select class="select2"  style="width:240px;" multiple  name="category[]">
-                        @foreach ($categories as $category)
-                            <option  @if($idea->categories->contains($category->id) ) selected @endif  value="{{$category->id}}">{{$category->name}}</option>
-                        @endforeach    
-                        </select>
+                    <input name="media" id="media" type="hidden" style="width:240px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('id', ',')}}" >
                     </div>
                 </div>
-                -->
                 <div class="form-group">
                     <div class="label">
                         <label for="classify[]">应用类型</label>
@@ -224,6 +219,8 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="x6">
                 <div class="form-group">
                     <div class="label">
                         <label for="location[]">地理位置</label>
@@ -250,8 +247,6 @@
                     </div>
                 </div>
                 -->
-            </div>
-            <div class="x6">
                 <div class="form-group">
                     <div class="label">
                         <label for="timerange">时间段</label>
@@ -285,6 +280,7 @@
                         </select>
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <div class="label">
                         <label for="device[]">设备类型</label>
@@ -297,6 +293,7 @@
                         </select>
                     </div>
                 </div>
+                -->
             </div>
         </div>
 

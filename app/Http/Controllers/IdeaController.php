@@ -127,7 +127,7 @@ class IdeaController extends Controller
             if ($id) {
                 $idea   =  Idea ::find($id) ; 
                 $status =  $idea->status;
-                if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src')){
+                if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src') || $idea->link != $request->input('link')){
                     $status = 1;
                 }
                 return  response()->json(['success' => $idea->update(['status'=>$status]+$request->all()),
@@ -169,13 +169,18 @@ class IdeaController extends Controller
         foreach(["imgUrl","imgInitW","imgInitH","imgW","imgH","imgY1","imgX1","cropH","cropW"] as $v) {
             $$v = $request->input($v);
         }
-        $imagick = new \Imagick(public_path(). $imgUrl);
-        $imagick->cropImage($cropW, $cropH, $imgX1, $imgY1);
-        $cropFileName  = str_replace('/images/', '/resizeImages/', public_path() . $imgUrl);
-        $cropPath = substr($cropFileName, 0, strrpos($cropFileName, '/'));
-        file_exists($cropPath) ?: mkdir($cropPath, 0755, TRUE);
-        file_put_contents($cropFileName, $imagick->getImageBlob());
-        return ['status'=>'success', 'url'=> str_replace('/images/', '/resizeImages/', $imgUrl)];
+        $ext =  substr($imgUrl, strrpos($imgUrl, '.') + 1);
+        if (!in_array(strtolower($ext), array('gif'))) {
+            $imagick = new \Imagick(public_path(). $imgUrl);
+            $imagick->cropImage($cropW, $cropH, $imgX1, $imgY1);
+            $cropFileName  = str_replace('/images/', '/resizeImages/', public_path() . $imgUrl);
+            $cropPath = substr($cropFileName, 0, strrpos($cropFileName, '/'));
+            file_exists($cropPath) ?: mkdir($cropPath, 0755, TRUE);
+            file_put_contents($cropFileName, $imagick->getImageBlob());
+            return ['status'=>'success', 'url'=> str_replace('/images/', '/resizeImages/', $imgUrl)];
+        }else{
+            return ['status'=>'success', 'url'=>  $imgUrl];
+        }
     }
 
     /**

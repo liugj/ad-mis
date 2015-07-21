@@ -19,6 +19,13 @@ Route::get('/crop', function()
             $thumb->writeImage(public_path(). '/images/0/6iCZ65Qvph1435500565.6478.320x240.jpg');
 
         });
+Route ::get('/media/lists', function (){
+    return [
+      ['id'=>1, 'text'=>'媒体已'],
+      ['id'=>2, 'text'=>'媒体已'],
+      ['id'=>3, 'text'=>'媒体已'],
+    ];
+    });
 Route::get('/', function () {
     return Auth:: user()->check()?  redirect('/home') :  view('welcome');
         });

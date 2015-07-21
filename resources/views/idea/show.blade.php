@@ -48,7 +48,11 @@
                 <label>地域：</label>
                 <span>@foreach ($regions as $region) {{$region->name}} @endforeach </span>
                 @endif
-                <?php $operators = $idea->operators()->get() ; ?>
+                <?php  $medias = $idea->medias()->get(); ?>
+                @if ($medias->count())
+                <label>地域：</label>
+                <span>@foreach ($medias as $media) {{$media->name}} @endforeach </span>
+                @endif
 <!--
                 <label>性别：</label>
                 <span><?php $gender= array('U'=>'不限', 'M'=>'男', 'F'=>'女'); echo isset($gender[$idea->gender]) ? $gender[$idea->gender]: '不限';?></span>
@@ -75,6 +79,8 @@
                 <label>应用黑名单：</label>
                 <span>@foreach($bans as $classify)  {{$classify->name}} @endforeach</span>
                 @endif
+            </div>
+            <div class="x8">
                <?php $locations = $idea->location()->get(); ?>
                @if ($locations->count())
                 <label>地理位置：</label>
@@ -87,8 +93,6 @@
                 <span> @foreach($ages as $age)  {{$age->name}} @endforeach</span>
                 @endif
 -->
-            </div>
-            <div class="x8">
                 <label>时间段：</label>
                 <span>
                     <!--值以','符号分隔，表示0-167的可选时间点-->
@@ -98,6 +102,7 @@
                       24小时全投
                     @endif
                 </span>
+                <?php $operators = $idea->operators()->get() ; ?>
                 @if ($operators->count())
                 <label>运营商：</label>
                 <span>@foreach ($operators as $operator) {{$operator->name}} @endforeach</span>
@@ -106,11 +111,6 @@
                 @if($networks->count())
                 <label>网络类型：</label>
                 <span>@foreach($networks as $network) {{$network->name}} @endforeach</span>
-               @endif
-                <?php $devices = $idea->devices()->get(); ?>
-                @if($devices->count())
-                <label>设备类型：</label>
-                <span>@foreach($devices as $device) {{$device->name}} @endforeach</span>
                @endif
             </div>
         </div>

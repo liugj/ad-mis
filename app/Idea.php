@@ -67,6 +67,10 @@ class Idea extends Model
 	    if (isset($attributes['region'])) {
 		    $this->regions()->attach(explode(',', $attributes['region']));
 	    }
+	    $this->medias()->detach();
+	    if (isset($attributes['media'])) {
+		    $this->medias()->attach(explode(',', $attributes['media']));
+	    }
 	    $this->classification()->detach();
 	    if (isset($attributes['classify'])) {
 		    $this->classification()->attach($attributes['classify']);
@@ -108,6 +112,9 @@ class Idea extends Model
         if (isset($attributes['region'])) {
             $idea->regions()->attach(explode(',', $attributes['region']));
         }
+        if (isset($attributes['media'])) {
+            $idea->medias()->attach(explode(',', $attributes['media']));
+        }
         if (isset($attributes['classify'])) {
             $idea->classification()->attach($attributes['classify']);
         }
@@ -143,6 +150,9 @@ class Idea extends Model
     }
     public function regions() {
         return $this->belongsToMany('App\Region');
+    }
+    public function medias() {
+        return $this->belongsToMany('App\Media');
     }
     public function operators() {
         return $this->belongsToMany('App\Operator');

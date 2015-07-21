@@ -1,4 +1,4 @@
-﻿App.Plan = (function ($) {
+App.Plan = (function ($) {
     //url定义
     var urlPlanList = "/plan/lists"; //GET, Json, 左侧2级列表数据
     var urlPlanEdit = "/plan/edit/"; //GET, Html, 计划编辑表单

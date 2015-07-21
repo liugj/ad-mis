@@ -103,6 +103,7 @@
     </div> 
 
     <script src="/assets/plugins/select2/select2.min.js"></script>
+    <script src="/assets/plugins/select2/select2_locale_zh-CN.js"></script>
     <script src="/assets/plugins/croppic/croppic.js"></script>
     <script src="/assets/plugins/daterangepicker/moment.min.js"></script>
     <script src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
