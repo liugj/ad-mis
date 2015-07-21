@@ -9,8 +9,10 @@
                 <label>费用预算：</label>
                 <span>{{$idea->budget}}元/天</span>
                 <label>消费：</label><span>{{number_format($idea->consumeTotalByDate(date('Y-m-d')),2)}}元/天</span>
+                @if (isset(App\PayType :: $names[$idea->pay_type]))
                 <label>结算方式：</label>
-                <span> {{App\PayType :: $names[$idea->pay_type]}} </span>
+                <span> {{ App\PayType :: $names[$idea->pay_type]}} </span>
+                @endif
                 <label>出价金额：</label>
                 <span>{{$idea->bid}}元</span>
                 <label>创建时间：</label>
