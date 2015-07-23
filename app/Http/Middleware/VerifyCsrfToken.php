@@ -18,5 +18,6 @@ class VerifyCsrfToken extends BaseVerifier
         'plan/destroy/*',
         'idea/destroy/*',
         'admin/idea/destroy/*',
+        'admin/user/destroy/*',
     ];
 }

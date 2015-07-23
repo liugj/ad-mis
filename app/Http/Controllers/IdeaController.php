@@ -124,17 +124,21 @@ class IdeaController extends Controller
                 });
         //
         if (!$v->fails()) {
+            $type = $request->input('type');
+            $device = [];
+            $deviceMap = ['iphone'=>2, 'ipad'=>4, 'android'=>3, 'text'=>0];
+            $device[] = $deviceMap[substr($type, strrpos($type, '_')+1)];
             if ($id) {
                 $idea   =  Idea ::find($id) ; 
                 $status =  $idea->status;
                 if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src') || $idea->link != $request->input('link')){
                     $status = 1;
                 }
-                return  response()->json(['success' => $idea->update(['status'=>$status]+$request->all()),
+                return  response()->json(['success' => $idea->update(['status'=>$status, 'device'=>$device]+$request->all()),
                         'message'=> '', 'id'=>$id]
                         );
             }else{
-                $idea = Idea :: create(array('user_id'=>$user_id) + $request->all());
+                $idea = Idea :: create(array('user_id'=>$user_id, 'device'=>$device) + $request->all());
                 return response()->json(['success' => TRUE, 'id'=>$idea->id,
                         'message'=>'']
                         );

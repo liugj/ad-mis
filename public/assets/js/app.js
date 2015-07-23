@@ -18,6 +18,7 @@
     var template = function (temp, data) {
         return temp.replace(/\{([\w\.]*)\}/g, function (str, key) {
             var keys = key.split("."), v = data[keys.shift()];
+            if (v== null) return '';
             for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
             return (typeof v !== "undefined" && v !== null) ? v : "";
         });

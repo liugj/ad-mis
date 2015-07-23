@@ -1,7 +1,19 @@
+<?php $menu    =[2=>'/admin/ideas', 1=>'/admin/users', 3=>'/admin/administrators']; 
+      $role   = Auth :: admin()->get()->role; 
+      $grants =  \App\Role :: $roles_grants[$role];
+?>
 <div class="admin-left" id="navMain">
                 <ul>
-                    <li data-index="2"><a href="/admin/ideas">广告管理</a></li>
-                    <li data-index="1"><a href="/admin/users">客户管理</a></li>
+                @foreach($menu as $index => $link)
+                     @if (isset($grants[$link]))
+                      <li data-index="{{$index}}"><a href="{{$link}}">{{$grants[$link]}}</a></li>
+                     @endif
+                 @endforeach
+                @if(isset($appends))
+                   @foreach($appends as $index=>$name)
+                         <li data-index="{{$index}}"><a href="">{{$name}}</a></li>
+                   @endforeach
+                @endif
                 </ul>
  </div>
 

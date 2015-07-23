@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Idea;
-use Cache;
+use Auth;
 class IdeaController extends Controller
 {
     /**
@@ -98,8 +98,9 @@ class IdeaController extends Controller
     public function destroy(Request $request, $id)
     {
         //
+        $attributes = ['auditor_id'=> Auth::admin()->get()->id, 'audited_at'=>date('Y-m-d H:i:s')];
         return [
-            'success'=> Idea :: where('id', $id)->update($request->all()),
+            'success'=> Idea :: where('id', $id)->update($attributes + $request->all()),
            // 'message' => $request->input('status') ==1 ?'广告创意停止成功': '广告创意投放成功'
         ];
     }

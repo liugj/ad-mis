@@ -1,8 +1,8 @@
 Admin = {};
 
 Admin.Admin = (function ($) {
-    var urlAdminList = "/admin/admin/listAdmin.json";
-    var urlAdminEdit = "/admin/admin/editAdmin.html?id=";
+    var urlAdminList = "/admin/administrator/lists";
+    var urlAdminEdit = "/admin/administrator/";
     var urlAdminDelete = "/admin/admin/deleteAdmin.json?id=";
 
     var initSearch = function () {
@@ -34,7 +34,7 @@ Admin.Admin = (function ($) {
 
     var editAdmin = function (id) {
         $("#dialogAdmin").dialog("open", {
-            url: urlAdminEdit + id,
+            url:  urlAdminEdit + (id > 0 ? 'edit/' +id : 'create' ),
             success: function () {
                 $("#formAdmin").ajaxFormExt({
                     success: function () {

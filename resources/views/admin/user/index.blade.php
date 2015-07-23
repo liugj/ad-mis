@@ -16,6 +16,7 @@
     <![endif]-->    
     <script>
       var   NavIndex = 1;
+      var   Grants   =  ['<?php echo implode("','", App\Role:: grants (Auth :: admin()->get()->role)) ; ?>'];
     </script>
 
 @endsection
@@ -30,9 +31,9 @@
                 <h3 class="doc-h3">客户列表</h3>
                 <div class="doc-tbar">
                     <div class="button-group">
-                        <button class="button active" data-status="0">已审核</button>
-                        <button class="button" data-status="1">待审核</button>
-                        <button class="button" data-status="3">已禁用</button>
+                        <button class="button active" data-status="0">启用</button>
+                        <button class="button" data-status="3">禁用</button>
+                        <button class="button" onclick="Admin.User.editUser(0);"><i class="fa fa-plus"></i> 添加</button>
                     </div>
                     <div class="field field-icon-right float-right">
                         <i class="icon icon-search"></i>
@@ -67,8 +68,13 @@
             <td>{basic.total}元</td>
             <td>{basic.consumption_total}元</td>
             <td rowspan="2" class="tool">
+                <a href="javascript:;" class="text-main" onclick="Admin.User.editUser({id});">编辑</a>
                 <a href="javascript:;" class="text-main" onclick="{tool_action}">{tool_text}</a>
+                <a href="/admin/user/report/{id}" class="text-main">报表</a>
                 {recharge_button}
+                <br />
+                <a href="/admin/user/consume/{id}" class="text-main">消费</a> 
+                <a href="/admin/user/recharge/{id}" class="text-main">充值记录</a> 
             </td>
         </tr>
         <tr>
@@ -84,6 +90,14 @@
         <div class="dialog-head">
             <span class="close" data-handler="close"></span>
             充值
+        </div>
+        <div class="dialog-body"></div>
+    </div>
+    
+    <div id="dialogUser" class="dialog">
+        <div class="dialog-head">
+            <span class="close" data-handler="close"></span>
+            客户
         </div>
         <div class="dialog-body"></div>
     </div>

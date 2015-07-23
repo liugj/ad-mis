@@ -106,11 +106,25 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
 
         Route::get('/users', ['as'=>'users', 'uses'=>'UserController@index']); 
         Route::get('/user/lists', ['as'=>'users', 'uses'=>'UserController@lists']); 
+        Route::get('/user/create', ['as'=>'users', 'uses'=>'UserController@create']); 
+        Route::post('/user/store', ['as'=>'users', 'uses'=>'UserController@store']); 
+        Route::get('/user/edit/{id}', ['as'=>'users', 'uses'=>'UserController@edit'])->where('id', '[0-9]+'); 
+        Route::get('/user/report/{id}', ['as'=>'users', 'uses'=>'UserController@report'])->where('id', '[0-9]+'); 
+        Route::get('/user/consume/{id}', ['as'=>'users', 'uses'=>'UserController@consume'])->where('id', '[0-9]+'); 
+        Route::get('/user/recharge/{id}', ['as'=>'users', 'uses'=>'UserController@recharge'])->where('id', '[0-9]+'); 
+        Route::post('/user/destroy/{id}', ['as'=>'users', 'uses'=>'UserController@destroy'])->where('id', '[0-9]+'); 
+
         Route::get('/ideas', ['as'=>'users', 'uses'=>'IdeaController@index']); 
         Route::get('/idea/lists', ['as'=>'users', 'uses'=>'IdeaController@lists']); 
         Route::post('/idea/destroy/{id}', ['as'=>'users', 'uses'=>'IdeaController@destroy']); 
 
         Route::get('/recharge/create', ['as'=>'recharge', 'uses'=>'RechargeController@create']); 
         Route::post('/recharge/store', ['as'=>'recharge', 'uses'=>'RechargeController@store']); 
+
+        Route::get('/administrators', ['as'=>'administrators', 'uses'=>'AdministratorController@index']); 
+        Route::get('/administrator/lists', ['as'=>'administrators', 'uses'=>'AdministratorController@lists']); 
+        Route::get('/administrator/create', ['as'=>'administrators', 'uses'=>'AdministratorController@create']); 
+        Route::post('/administrator/store', ['as'=>'administrators', 'uses'=>'AdministratorController@store']); 
+        Route::get('/administrator/edit/{id}', ['as'=>'administrators', 'uses'=>'AdministratorController@edit'])->where('id', '[0-9]+'); 
     });
 });

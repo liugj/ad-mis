@@ -180,6 +180,6 @@ class Idea extends Model
     }
     public function getStateAttribute()
     {
-        return self :: $arrStatus[$this->attributes['status']];
+        return isset(self :: $arrStatus[$this->attributes['status']]) ? self :: $arrStatus[$this->attributes['status']]  : '';
     }
 }
