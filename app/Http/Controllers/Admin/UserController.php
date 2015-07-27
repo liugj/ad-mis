@@ -157,7 +157,7 @@ class UserController extends Controller
         $format = $request->input('format');
         if ($format == 'json') {
             $reports = ConsumptionDaily :: where('user_id',  $id)
-                ->where('date', $request->input('date'))
+                //->where('date', $request->input('date'))
                 ->where('consumable_type', 'App\Network')
                 ->select('consumable_type', 'date', 
                         DB::raw('sum(open_total) as open_total'), 
