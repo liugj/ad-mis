@@ -188,7 +188,7 @@ class UserController extends Controller
                 }
                 $results[] = $result;
             }
-            $total['consumable']= '总计';
+            $total['date']= '总计';
             $total['consumption_total'] /= 1000;  
             $total['click_rate'] = sprintf('%.2f', $total['click_total'] *1.0 / $total['exhibition_total'] *100). '%';
             $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
