@@ -48,8 +48,9 @@
                             <th>邮箱</th>
                             <th>电话</th>
                             <th>公司名</th>
-                            <th>充值总额</th>
-                            <th>消费金额</th>
+                            <th>总额</th>
+                            <th>消费</th>
+                            <th>成本</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -66,23 +67,23 @@
             <td>{basic.phone}</td>
             <td>{basic.company}</td>
             <td>{basic.total}元</td>
-            <td>{basic.consumption_total}元</td>
+            <td>{basic.consume}元</td>
+            <td>{basic.cost}元</td>
             <td rowspan="2" class="tool">
                 <a href="javascript:;" class="text-main" onclick="Admin.User.editUser({id});">编辑</a>
                 <a href="javascript:;" class="text-main" onclick="{tool_action}">{tool_text}</a>
                 <a href="/admin/user/report/{id}" class="text-main">报表</a>
-                {recharge_button}
                 <br />
-                <a href="/admin/user/consume/{id}" class="text-main">消费</a> 
+                {recharge_button}
                 <a href="/admin/user/recharge/{id}" class="text-main">充值记录</a> 
             </td>
         </tr>
         <tr>
-            <td colspan="3">
+            <td colspan="4">
                 地址：{basic.address}
             </td>
             <td colspan="2">
-                注册时间：{created_at}
+                添加时间：{created_at}
             </td>
         </tr>
     </script>

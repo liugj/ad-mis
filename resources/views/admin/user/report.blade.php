@@ -49,7 +49,8 @@
                            <th>点击率</th>
                            <th>转化数</th>
                            <th>转化率</th>
-                           <th>消费金额(元)</th>
+                           <th>消费(元)</th>
+                           <th>成本(元)</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -67,6 +68,7 @@
                              <td class="text-right">{open_total}</td>
                              <td class="text-right">{convert_rate}</td>
                              <td class="text-right">{consumption_total}</td>
+                             <td class="text-right">{cost}</td>
                             </tr>
     </script>
     <script src="/assets/plugins/jquery.validate.min.js"></script>

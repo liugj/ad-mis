@@ -18,12 +18,12 @@ class Plan extends Model
     }
     public  function consumeTotalByDate($date)
     {
-        $consumption =  \App\Consumption ::  where ('plan_id', $this->id)
+        $consumption =  \App\ConsumptionDaily ::  where ('plan_id', $this->id)
             -> where('date', $date)
-            -> select (\DB :: raw('sum( price ) as consume'))
+            -> select (\DB :: raw('sum( consumption_total ) as consume'))
             //-> groupBy('date')
             -> first();
-        return $consumption ?  $consumption->consume : 0 ;    
+        return $consumption ?  $consumption->consume /1000: 0 ;    
     }
     public function getStateAttribute()
     {

@@ -35,7 +35,7 @@
                     </h3>
                     <p>
                         用户名：{{$user->name}}<br>
-                        余额：{{$basic->total - $basic->consumption_total}}元<br>
+                        余额：{{$basic->total - $basic->consume}}元<br>
                         邮箱：{{$user->email}}<br>
                         电话：{{$basic->phone}}<br>
                         公司：{{$basic->company}}<br>

@@ -164,6 +164,7 @@ class UserController extends Controller
                         DB::raw('sum(install_total) as install_total'), 
                         DB::raw('sum(download_total) as download_total'), 
                         DB::raw('sum(click_total) as click_total'), 
+                        DB::raw('sum(cost) as cost'), 
                         DB::raw('sum(exhibition_total) as exhibition_total'),
                         DB::raw('sum(consumption_total) as consumption_total')
                         )
@@ -173,7 +174,9 @@ class UserController extends Controller
                 ->toArray();
 
             $reports['rows'] = $reports['data'];
-			$total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 'install_total'=>0, 'click_rate'=>0, 'convert_rate'=>0);
+            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 
+                    'install_total'=>0, 'click_rate'=>0, 'convert_rate'=>0, 'cost'=>0.0
+                    );
             foreach ($reports['rows'] as &$result) {
                 $result['consumption_total'] /= 1000; 
                 $result['click_rate'] =0;
@@ -188,17 +191,13 @@ class UserController extends Controller
                 }
                 $results[] = $result;
             }
-            $total['date']= '总计';
-            //$total['consumption_total'] /= 1000;  
             if ($total['exhibition_total'] >0) {
+                $total['date']= '总计';
                 $total['click_rate'] = sprintf('%.2f', $total['click_total'] *1.0 / $total['exhibition_total'] *100). '%';
                 $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
+                $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
+                $reports['rows'][] = $total; 
             }
-            $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
-            $total['exhibition_total']--;
-
-
-            $reports['rows'][] = $total; 
             unset($reports['data']);
             return  $reports;    
         }else{
