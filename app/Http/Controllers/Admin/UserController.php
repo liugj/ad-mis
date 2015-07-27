@@ -196,7 +196,7 @@ class UserController extends Controller
             $total['exhibition_total']--;
 
 
-            $results[] = $total; 
+            $reports['rows'][] = $total; 
             unset($reports['data']);
             return  $reports;    
         }else{
