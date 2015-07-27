@@ -236,7 +236,6 @@ class ConsumptionHourly extends Command implements SelfHandling
 				}
 				ConsumptionDaily ::create($consumption->all() + array('datetime'=>$dateTime, 'date'=>$date));
 			}
-if ($lastDate == date('Ymd')) {
 			foreach($ideas_stats as $idea_stat) {
 				$plan_id = $idea_stat['plan_id'];
 				$user_id = $idea_stat['user_id'];
@@ -247,14 +246,16 @@ if ($lastDate == date('Ymd')) {
 					$plans_stats[$plan_id]['cost'] +=  $idea_stat['cost'];
 					$plans_stats[$plan_id]['consumption_total'] +=  $idea_stat['consumption_total'];
 				}
+
 				if (!isset($users_stats[$user_id])) {
-					$plans_stats[$user_id]['cost'] =  $idea_stat['cost'];
-					$plans_stats[$user_id]['consumption_total'] =  $idea_stat['consumption_total'];
+					$users_stats[$user_id]['cost'] =  $idea_stat['cost'];
+					$users_stats[$user_id]['consumption_total'] =  $idea_stat['consumption_total'];
 				}else{
-					$plans_stats[$user_id]['cost'] +=  $idea_stat['cost'];
-					$plans_stats[$user_id]['consumption_total'] +=  $idea_stat['consumption_total'];
+					$users_stats[$user_id]['cost'] +=  $idea_stat['cost'];
+					$users_stats[$user_id]['consumption_total'] +=  $idea_stat['consumption_total'];
 				}
 			}
+if ($lastDate == date('Ymd')) {
 
 			foreach ($plans_stats as $plan_id =>$plan){
 				if ($lastDateHour !=  date('Ymd'). '01'){
@@ -263,7 +264,6 @@ if ($lastDate == date('Ymd')) {
 					Plan ::where ('id', $plan_id)->update(['daily_consume'=>$plan['consumption_total']/1000]);
 				}
 			}
-}
 			foreach ($ideas_stats as $idea_id =>$idea) {
 				if ($lastDateHour != date('Ymd'). '01'){
 					Idea ::where ('id', $idea_id)->increment('daily_consume',  $idea['consumption_total']/1000);
@@ -271,8 +271,9 @@ if ($lastDate == date('Ymd')) {
 					Idea ::where ('id', $idea_id)->update(['daily_consume' => $idea['consumption_total']/1000]);
 				}
 			}
+}
 			foreach ($users_stats as $user_id =>$user){
-				Basic ::where ('id', $user_id)->increment('comsume',  $user['consumption_total']/1000);
+				Basic ::where ('id', $user_id)->increment('consume',  $user['consumption_total']/1000);
 				Basic ::where ('id', $user_id)->increment('cost',     $user['cost']/1000);
 			}
 			Log :: info(__CLASS__. ' ok.', ['datetime'=>$dateTime]);
