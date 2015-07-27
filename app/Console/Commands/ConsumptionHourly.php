@@ -99,7 +99,7 @@ class ConsumptionHourly extends Command implements SelfHandling
 						$id = $item['id'];
 						if (isset($items[$id])) {
 							if ($item['type'] =='win_notice'){
-								$item[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+								$items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
 							}
 							else $items[$id][$item['type']] = 1;
 							foreach (['region', 'classification', 'operator', 'device_type', 'network'] as $key) {
@@ -110,7 +110,7 @@ class ConsumptionHourly extends Command implements SelfHandling
 							$items [$id] = $item;
 							if ($item['type'] =='win_notice'){
 								//$item[$id]['cost'] = 0.0;//解析win_notice
-								$item[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+								$items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
 							}
 							else $items[$id][$item['type']] = 1;
 						}
@@ -288,6 +288,6 @@ if ($lastDate == date('Ymd')) {
 		if ($output <=0 || $errNo ==255 || !is_numeric($output)) return 0.0;
 		echo "\n";
 
-		return $output/10000;
+		return $output*1.0/10000;
 	}
 }

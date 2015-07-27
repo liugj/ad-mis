@@ -179,6 +179,7 @@ class UserController extends Controller
                     );
             foreach ($reports['rows'] as &$result) {
                 $result['consumption_total'] /= 1000; 
+                $result['cost'] /= 1000; 
                 $result['click_rate'] =0;
                 $result['convert_rate']  =0;
                 if ($result['exhibition_total'] >0) {
