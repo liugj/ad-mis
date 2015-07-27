@@ -27,7 +27,7 @@
     <div id="container">
         <div class="container">
             <div class="admin-left">
-            @include('admin.left_siderbar', ['appends'=>[102=>'报表']])
+            @include('admin.left_siderbar', ['appends'=>[102=>'报表', 100=>'充值记录']])
             </div>
             <div class="admin-right">
                 <h3 class="doc-h3">报表</h3>

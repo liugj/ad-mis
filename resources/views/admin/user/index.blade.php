@@ -72,8 +72,8 @@
             <td rowspan="2" class="tool">
                 <a href="javascript:;" class="text-main" onclick="Admin.User.editUser({id});">编辑</a>
                 <a href="javascript:;" class="text-main" onclick="{tool_action}">{tool_text}</a>
-                <a href="/admin/user/report/{id}" class="text-main">报表</a>
                 <br />
+                <a href="/admin/user/report/{id}" class="text-main">报表</a>
                 {recharge_button}
                 <a href="/admin/user/recharge/{id}" class="text-main">充值记录</a> 
             </td>
