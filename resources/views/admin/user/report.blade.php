@@ -60,7 +60,7 @@
     </div>
     <script id="tempReportItem" type="text/template">
                             <tr>
-                             <td class="text-center">{datetime}</td>
+                             <td class="text-center">{date}</td>
                              <td class="text-center">{exhibition_total}</td>
                              <td class="text-right">{click_total}</td>
                              <td class="text-right">{click_rate}</td>
