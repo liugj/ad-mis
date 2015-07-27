@@ -62,6 +62,13 @@ class ConsumptionHourly extends Command implements SelfHandling
 
         return $results;
     }
+    protected function _charge2($idea_id, $sessionId) {
+        $charge =  DB::table('charge_record')->select('price')
+            -> where ('idea_id', $idea_id) 
+            -> where ('session_id', $sessionId) 
+            ->first();
+        return $charge ? $charge->price : 0.0;
+    }
     /**
      * _stat 
      * 
@@ -113,10 +120,13 @@ class ConsumptionHourly extends Command implements SelfHandling
             fclose($fp);
         }
 
-        $charges = $this->_charge($hour);
-        foreach ($charges as $sessionId =>$price) {
-            $items [$sessionId]['price'] = $price;
+        #$charges = $this->_charge($hour);
+        foreach ($items as $sessionId => &$item) {
+            $item['price'] = $this->_charge2($item['idea_id'], $sessionId);
         }
+        //foreach ($charges as $sessionId =>$price) {
+        //    $items [$sessionId]['price'] = $price;
+        //}
         $stats = [];
         foreach ($items  as $sessionId=>$item) {
             if (!isset($item['idea_id'])) continue;
@@ -181,8 +191,8 @@ class ConsumptionHourly extends Command implements SelfHandling
             $dateTime    = date('Y-m-d H',  $time - 3600 * $i);
             $lastHour    = date('H',  $time - 3600 * $i);
             $date        = date('Y-m-d',  $time - 3600 *$i);
-            #$lastDateHour = date('YmdH', $time - 3600 *$i);
-            $lastDateHour = date('Ym2510', $time - 3600 *$i);
+            $lastDateHour = date('YmdH', $time - 3600 *$i);
+            #$lastDateHour = date('Ym2510', $time - 3600 *$i);
             $stats        = $this->_stat($lastDateHour);
 
             $ideas  = [];
