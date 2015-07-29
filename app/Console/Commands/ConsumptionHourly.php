@@ -99,7 +99,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                         $id = $item['id'];
                         if (isset($items[$id])) {
                             if ($item['type'] =='win_notice'){
-                            //    $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+                                $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
                             }
                             else $items[$id][$item['type']] = 1;
                             foreach (['region', 'classification', 'operator', 'device_type', 'network'] as $key) {
@@ -110,7 +110,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                             $items [$id] = $item;
                             if ($item['type'] =='win_notice'){
                                 //$item[$id]['cost'] = 0.0;//解析win_notice
-                              //  $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+                                $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
                             }
                             else $items[$id][$item['type']] = 1;
                         }
@@ -121,7 +121,8 @@ class ConsumptionHourly extends Command implements SelfHandling
         }
         if (1) {
             foreach ($items as $sessionId => &$item) {
-               list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
+            //   list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
+               list($item['price'], $item['cost1']) = $this->_charge2($item['idea_id'], $sessionId);
             }
         }else{
             $charges = $this->_charge($hour);
@@ -151,8 +152,8 @@ class ConsumptionHourly extends Command implements SelfHandling
                 if (isset($stats[$stat_key])) {
                     foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'download'=>'download_total', 'open'=>'open_total', 
                             'install'=>'install_total', 'price'=>'consumption_total', 'cost'=>'cost'] as $key=>$value) {
-                        if (isset($item[$key]) && $key == 'price') {
-                            $stats[$stat_key][$value] += $item['price'];
+                        if (isset($item[$key]) && ($key == 'price' || $key=='cost')) {
+                            $stats[$stat_key][$value] += $item[$key];
                         }elseif (isset($item[$key])){
                             $stats[$stat_key][$value] += 1;
                         }
@@ -168,8 +169,8 @@ class ConsumptionHourly extends Command implements SelfHandling
 
                     foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'download'=>'download_total','open'=>'open_total', 
                             'cost'=>'cost', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
-                        if (isset($item[$key]) && $key == 'price') {
-                            $stats[$stat_key][$value] = $item['price'];
+                        if (isset($item[$key]) && ($key == 'price' || $key=='cost')) {
+                            $stats[$stat_key][$value] = $item[$key];
                         }elseif (isset($item[$key])){
                             $stats[$stat_key][$value] = 1;
                         }else{
