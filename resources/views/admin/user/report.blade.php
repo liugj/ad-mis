@@ -31,15 +31,7 @@
             </div>
             <div class="admin-right">
                 <h3 class="doc-h3">报表</h3>
-                    账户信息
-                    <p>
-                        用户名：{{$user->name}}<br>
-                        余额：{{$basic->total-$basic->consumption_total}}元<br>
-                        登录邮箱：{{$user->email}}<br>
-                        电话：{{$basic->phone}}<br>
-                        公司：{{$basic->company}}<br>
-                        地址： {{$basic->address}}
-                    </p>
+                @include('admin.basic',['user'=>$user, 'basic'=>$basic])
                 <table id="gridReport" class="table table-bordered table-striped">
                     <thead>
                         <tr>

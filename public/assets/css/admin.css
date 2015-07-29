@@ -9,3 +9,7 @@
 #navMain li.active a {border-left-color: #ffb752; background: url("/assets/img/left-col-arrow.png") no-repeat scroll 96% center #f7f7f7; color: #333;  }
 
 .doc-tbar .button.active {background-color:#82af6f;color:#fff; }
+.account { margin-bottom: 20px; }
+.account h4 { font-size: 15px; margin-bottom: 6px; }
+.account div > span { display: inline-block; margin-right: 7px; }
+.account div > span > label { color: #aaa; }
