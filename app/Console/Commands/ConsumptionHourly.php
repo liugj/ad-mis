@@ -63,11 +63,11 @@ class ConsumptionHourly extends Command implements SelfHandling
         return $results;
     }
     protected function _charge2($idea_id, $sessionId) {
-        $charge =  DB::table('charge_record')->select('price')
+        $charge =  DB::table('charge_record')->select('price', 'cost')
             -> where ('idea_id', $idea_id) 
             -> where ('session_id', $sessionId) 
             ->first();
-        return $charge ? $charge->price*1000 : 0.0;
+        return $charge ? [$charge->price*1000, $charge->cost*1000] : [0.0,0.0];
     }
     /**
      * _stat 
@@ -99,7 +99,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                         $id = $item['id'];
                         if (isset($items[$id])) {
                             if ($item['type'] =='win_notice'){
-                                $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+                            //    $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
                             }
                             else $items[$id][$item['type']] = 1;
                             foreach (['region', 'classification', 'operator', 'device_type', 'network'] as $key) {
@@ -110,7 +110,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                             $items [$id] = $item;
                             if ($item['type'] =='win_notice'){
                                 //$item[$id]['cost'] = 0.0;//解析win_notice
-                                $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+                              //  $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
                             }
                             else $items[$id][$item['type']] = 1;
                         }
@@ -121,7 +121,7 @@ class ConsumptionHourly extends Command implements SelfHandling
         }
         if (1) {
             foreach ($items as $sessionId => &$item) {
-                $item['price'] = $this->_charge2($item['idea_id'], $sessionId);
+               list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
             }
         }else{
             $charges = $this->_charge($hour);
