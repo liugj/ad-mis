@@ -121,6 +121,7 @@ class ConsumptionHourly extends Command implements SelfHandling
         }
         if (1) {
             foreach ($items as $sessionId => &$item) {
+if (!isset($item['idea_id'])) continue;
                list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
             //   list($item['price'], $item['cost1']) = $this->_charge2($item['idea_id'], $sessionId);
             }
