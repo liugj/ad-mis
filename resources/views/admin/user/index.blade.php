@@ -50,7 +50,6 @@
                             <th>公司名</th>
                             <th>总额</th>
                             <th>消费</th>
-                            <th>成本</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -68,7 +67,6 @@
             <td>{basic.company}</td>
             <td>{basic.total}元</td>
             <td>{basic.consume}元</td>
-            <td>{basic.cost}元</td>
             <td rowspan="2" class="tool">
                 <a href="javascript:;" class="text-main" onclick="Admin.User.editUser({id});">编辑</a>
                 <a href="javascript:;" class="text-main" onclick="{tool_action}">{tool_text}</a>
@@ -79,7 +77,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="4">
+            <td colspan="3">
                 地址：{basic.address}
             </td>
             <td colspan="2">
