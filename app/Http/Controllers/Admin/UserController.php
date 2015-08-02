@@ -47,7 +47,7 @@ class UserController extends Controller
             ->toArray();
         $users['rows'] = $users['data'];
         foreach ($users['rows'] as &$row){
-            $row['consume'] = Basic :: find($row['id'])->consumeTotal();
+            $row['basic']['consume'] = Basic :: find($row['id'])->consumeTotal();
         }
         unset($users['data']);
         return $users;
