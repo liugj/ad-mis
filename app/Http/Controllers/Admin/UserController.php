@@ -46,6 +46,9 @@ class UserController extends Controller
             ->paginate(10)
             ->toArray();
         $users['rows'] = $users['data'];
+        foreach ($users['rows'] as &$row){
+            $row['consume'] = Basic :: find($row['id'])->consumeTotal();
+        }
         unset($users['data']);
         return $users;
     }

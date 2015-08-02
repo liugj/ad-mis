@@ -196,7 +196,6 @@ if (!isset($item['idea_id'])) continue;
             $date        = date('Y-m-d',  $time - 3600 *$i);
             $lastDateHour = date('YmdH', $time - 3600 *$i);
             $lastDate = date('Ymd', $time - 3600 *$i);
-#$lastDateHour = date('Ym2510', $time - 3600 *$i);
             $stats        = $this->_stat($lastDateHour);
 
             $ideas  = [];
@@ -238,46 +237,44 @@ if (!isset($item['idea_id'])) continue;
                 }
                 ConsumptionDaily ::create($consumption->all() + array('datetime'=>$dateTime, 'date'=>$date));
             }
-            foreach($ideas_stats as $idea_stat) {
-                $plan_id = $idea_stat['plan_id'];
-                $user_id = $idea_stat['user_id'];
-                if (!isset($plans_stats[$plan_id])) {
-                    $plans_stats[$plan_id]['cost'] =  $idea_stat['cost'];
-                    $plans_stats[$plan_id]['consumption_total'] =  $idea_stat['consumption_total'];
-                }else{
-                    $plans_stats[$plan_id]['cost'] +=  $idea_stat['cost'];
-                    $plans_stats[$plan_id]['consumption_total'] +=  $idea_stat['consumption_total'];
-                }
-
-                if (!isset($users_stats[$user_id])) {
-                    $users_stats[$user_id]['cost'] =  $idea_stat['cost'];
-                    $users_stats[$user_id]['consumption_total'] =  $idea_stat['consumption_total'];
-                }else{
-                    $users_stats[$user_id]['cost'] +=  $idea_stat['cost'];
-                    $users_stats[$user_id]['consumption_total'] +=  $idea_stat['consumption_total'];
-                }
-            }
-            if ($lastDate == date('Ymd')) {
-
-                foreach ($plans_stats as $plan_id =>$plan){
-                    if ($lastDateHour !=  date('Ymd'). '01'){
-                        Plan ::where ('id', $plan_id)->increment('daily_consume',  $plan['consumption_total']/1000);
-                    }else{
-                        Plan ::where ('id', $plan_id)->update(['daily_consume'=>$plan['consumption_total']/1000]);
-                    }
-                }
-                foreach ($ideas_stats as $idea_id =>$idea) {
-                    if ($lastDateHour != date('Ymd'). '01'){
-                        Idea ::where ('id', $idea_id)->increment('daily_consume',  $idea['consumption_total']/1000);
-                    } else{
-                        Idea ::where ('id', $idea_id)->update(['daily_consume' => $idea['consumption_total']/1000]);
-                    }
-                }
-            }
-            foreach ($users_stats as $user_id =>$user){
-                Basic ::where ('id', $user_id)->increment('consume',  $user['consumption_total']/1000);
-                Basic ::where ('id', $user_id)->increment('cost',     $user['cost']/1000);
-            }
+          #  foreach($ideas_stats as $idea_stat) {
+          #      $plan_id = $idea_stat['plan_id'];
+          #      $user_id = $idea_stat['user_id'];
+          #      if (!isset($plans_stats[$plan_id])) {
+          #          $plans_stats[$plan_id]['cost'] =  $idea_stat['cost'];
+          #          $plans_stats[$plan_id]['consumption_total'] =  $idea_stat['consumption_total'];
+          #      }else{
+          #          $plans_stats[$plan_id]['cost'] +=  $idea_stat['cost'];
+          #          $plans_stats[$plan_id]['consumption_total'] +=  $idea_stat['consumption_total'];
+          #      }
+          #      if (!isset($users_stats[$user_id])) {
+          #          $users_stats[$user_id]['cost'] =  $idea_stat['cost'];
+          #          $users_stats[$user_id]['consumption_total'] =  $idea_stat['consumption_total'];
+          #      }else{
+          #          $users_stats[$user_id]['cost'] +=  $idea_stat['cost'];
+          #          $users_stats[$user_id]['consumption_total'] +=  $idea_stat['consumption_total'];
+          #      }
+          #  }
+          #  if ($lastDate == date('Ymd')) {
+          #      foreach ($plans_stats as $plan_id =>$plan){
+          #          if ($lastDateHour !=  date('Ymd'). '01'){
+          #              Plan ::where ('id', $plan_id)->increment('daily_consume',  $plan['consumption_total']/1000);
+          #          }else{
+          #              Plan ::where ('id', $plan_id)->update(['daily_consume'=>$plan['consumption_total']/1000]);
+          #          }
+          #      }
+          #      foreach ($ideas_stats as $idea_id =>$idea) {
+          #          if ($lastDateHour != date('Ymd'). '01'){
+          #              Idea ::where ('id', $idea_id)->increment('daily_consume',  $idea['consumption_total']/1000);
+          #          } else{
+          #              Idea ::where ('id', $idea_id)->update(['daily_consume' => $idea['consumption_total']/1000]);
+          #          }
+          #      }
+          #  }
+          #  foreach ($users_stats as $user_id =>$user){
+          #      Basic ::where ('id', $user_id)->increment('consume',  $user['consumption_total']/1000);
+          #      Basic ::where ('id', $user_id)->increment('cost',     $user['cost']/1000);
+          #  }
             Log :: info(__CLASS__. ' ok.', ['datetime'=>$dateTime]);
         }
 

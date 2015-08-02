@@ -20,6 +20,7 @@ class Plan extends Model
     {
         $consumption =  \App\ConsumptionDaily ::  where ('plan_id', $this->id)
             -> where('date', $date)
+            -> where('consumable_type', 'App\Network')
             -> select (\DB :: raw('sum( consumption_total ) as consume'))
             //-> groupBy('date')
             -> first();

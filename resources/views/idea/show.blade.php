@@ -8,7 +8,7 @@
                 <span> {{$idea->state}}</span>
                 <label>费用预算：</label>
                 <span>{{$idea->budget}}元/天</span>
-                <label>消费：</label><span>{{$idea->daily_consume}}元/天</span>
+                <label>消费：</label><span>{{$idea->consumeTotalByDate(date('Y-m-d'))}}元/天</span>
                 @if (isset(App\PayType :: $names[$idea->pay_type]))
                 <label>结算方式：</label>
                 <span> {{ App\PayType :: $names[$idea->pay_type]}} </span>
