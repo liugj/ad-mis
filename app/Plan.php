@@ -24,7 +24,7 @@ class Plan extends Model
             -> select (\DB :: raw('sum( consumption_total ) as consume'))
             //-> groupBy('date')
             -> first();
-        return $consumption ?  $consumption->consume /1000: 0 ;    
+        return $consumption ?  sprintf('%.2f', $consumption->consume /1000): 0 ;    
     }
     public function getStateAttribute()
     {
