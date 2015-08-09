@@ -1,9 +1,7 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
-
 class Idea extends Model
 {
     //
@@ -182,5 +180,12 @@ class Idea extends Model
     public function getStateAttribute()
     {
         return isset(self :: $arrStatus[$this->attributes['status']]) ? self :: $arrStatus[$this->attributes['status']]  : '';
+    }
+    public  static function bid($param) {
+        $client = new \GuzzleHttp\Client();
+        $minBid = $client->get('http://rtb.dev.shoozen.net/min_bid', ['query'=>$param])
+                  ->getBody();
+        return   ['minBid'=>(string)$minBid];
+
     }
 }

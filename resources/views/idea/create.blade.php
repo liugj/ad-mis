@@ -120,7 +120,7 @@
                     <!--
                         <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" data-val="true" data-val-required="频次控制不能为空" data-val-regexp-rule="^\d+$" />
                         -->
-                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" placeholder="每天每个设备展现量" />
+                        <input type="text" name="frequency" class="input" value="{{$idea->frequency}}" placeholder="每天每个设备最多展现量" />
                     </div>
                 </div>
             </div>
@@ -141,10 +141,11 @@
                     <div class="label">
                         <label for="bid">出价金额</label>
                     </div>
-                    <div class="field">
+                    <div class="field form-inline">
                         <div class="input-group">
-                            <input type="text" class="input text-right" name="bid" value="@if($idea->bid) {{$idea->bid }} @endif" placeholder="点击付费0.2元起投，效果付费2元起投" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空"/>
+                            <input type="text" class="input text-right" name="bid" value="@if($idea->bid) {{$idea->bid }} @endif" placeholder="点击付费0.2元起投，千次展现量3元起投" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空" style="width:170px"/>
                             <span class="addon">元</span>
+                            <div class="input-help" id="bid-help"></div>
                         </div>
                     </div>
                 </div>

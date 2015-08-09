@@ -161,6 +161,18 @@
         }else{
             var url =  urlUnitCreate + '?plan_id=' +planId;
         }
+        var selectMinBid =  function (){
+            $.get('/idea/bid',  { pay_type: $('#formUnit input:radio[name="pay_type"]:checked').val(),
+                    type: $('#formUnit select[name=type]').val()
+                    }, function(data){
+                       if (data.minBid) {
+                          tip = '最低出价金额' + data.minBid + "元";
+                          $('#formUnit #bid-help').text(tip);
+                        }
+                    },'json'
+                    );
+
+        };
 
         $("#dialogUnit").dialog("open", {
             url: url,
@@ -168,6 +180,9 @@
                 $("#formUnit [data-inputmask]").inputmask();
                 $("#formUnit .select2").select2({ minimumResultsForSearch: 20 });
                 $("#formUnit [name='timerange']").weekdaypicker();
+                $("#formUnit input:text[name='bid']").bind("click", selectMinBid);
+                $("#formUnit input:radio[name='pay_type']").bind("click", selectMinBid);
+                $("#formUnit select[name='type']").bind("change", selectMinBid);
                 var region =   $("#formUnit [name='region']").multiplepicker();
 
                 if (regionData.length ==0){
@@ -180,6 +195,7 @@
                 }
 
                 setIdeaType();
+                selectMinBid();
                 $("#type").change(function (e) {
                     setIdeaType();
                 });
@@ -222,7 +238,7 @@
                         mediaData.push({ id: id, text: mediaData_text[i] });
                     }                    
                 });
-                $('#media').data('select2').updateSelection(mediaData);
+                //$('#media').data('select2').updateSelection(mediaData);
             }
         });
     }

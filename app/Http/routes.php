@@ -19,13 +19,7 @@ Route::get('/crop', function()
             $thumb->writeImage(public_path(). '/images/0/6iCZ65Qvph1435500565.6478.320x240.jpg');
 
         });
-Route ::get('/media/lists', function (){
-    return [
-      ['id'=>1, 'text'=>'媒体已'],
-      ['id'=>2, 'text'=>'媒体已'],
-      ['id'=>3, 'text'=>'媒体已'],
-    ];
-    });
+Route ::get('/media/lists', 'MediaController@lists');
 Route::get('/', function () {
     return Auth:: user()->check()?  redirect('/home') :  view('welcome');
         });
@@ -50,7 +44,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         Route::get('/region/lists',  [
-            'as' => 'idea', 'uses' => 'RegionController@lists'
+            'as' => 'region', 'uses' => 'RegionController@lists'
+            ]);
+        Route::get('/idea/bid',  [
+            'as' => 'idea', 'uses' => 'IdeaController@bid'
             ]);
         Route::get('/idea/create',  [
             'as' => 'idea', 'uses' => 'IdeaController@create'

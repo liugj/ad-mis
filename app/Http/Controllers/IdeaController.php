@@ -49,6 +49,10 @@ class IdeaController extends Controller
             ->paginate(10);
         return view('idea.index', ['ideas'=>$ideas]); 
     }
+    public function bid(Request $request){
+        
+        return Idea ::bid($request->all());
+    }
 
     /**
      * Show the form for creating a new resource.

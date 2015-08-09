@@ -1,4 +1,5 @@
 # admis
+#$('input:radio[name="sex"]:checked') 
 
 use mis;
 set names utf8;
