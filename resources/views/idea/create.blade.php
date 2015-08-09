@@ -143,7 +143,7 @@
                     </div>
                     <div class="field form-inline">
                         <div class="input-group">
-                            <input type="text" class="input text-right" name="bid" value="@if($idea->bid) {{$idea->bid }} @endif" placeholder="点击付费0.2元起投，千次展现量3元起投" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空" style="width:170px"/>
+                            <input type="text" class="input text-right" name="bid" value="@if($idea->bid) {{$idea->bid }} @endif" placeholder="点击付费0.2元起投，千次展现量3元起投" data-inputmask="'alias': 'numeric', 'digits': 2" data-val="true" data-val-required="出价金额不能为空" style="width:168px"/>
                             <span class="addon">元</span>
                             <div class="input-help" id="bid-help"></div>
                         </div>
