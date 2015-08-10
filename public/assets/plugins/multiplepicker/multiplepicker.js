@@ -58,6 +58,7 @@
                 if (n.parent == dataItem.id) {
                     var cItem = $('<div class="item"><input value=' + n.id + ' type="checkbox"/> ' + n.name + '</div>');
                     var cCheckbox = cItem.find('input:checkbox');
+                    rightEl.append(cItem);
                     cCheckbox.data('dataItem', n);
 
                     if (checked) {
@@ -70,7 +71,6 @@
                             }
                         });
                     }
-                    rightEl.append(cItem);
                 }
             });
         });
@@ -80,7 +80,7 @@
             var count = rightEl.find('input:checked').length;
 
             var dataItem = $(this).data('dataItem');
-            var checkbox = leftEl.find('input:checkbox[value="' + dataItem.pid + '"]');
+            var checkbox = leftEl.find('input:checkbox[value="' + dataItem.parent + '"]');
 
             if (count == 0) {
                 checkbox.prop('checked', false);
@@ -121,8 +121,8 @@
         $.each(data, function (i, n) {
             if (n.parent == 0) {
                 var item = $('<div class="item"><input value=' + n.id + ' type="checkbox"/> ' + n.name + '</div>');
-                item.find('input:checkbox').data('dataItem', n);
                 left.append(item);
+                item.find('input:checkbox').data('dataItem', n);
             }            
         });
     }
@@ -137,7 +137,6 @@
         checkValue: function (dataItem, checked) {
             var self = this;
             var values = self.values;
-
             if (checked) {
                 values = $.grep(values, function (n, i) {
                     return n.parent != dataItem.id;
