@@ -1,6 +1,6 @@
 # admis
 #$('input:radio[name="sex"]:checked') 
-
+# data-val-min="最低出价0.25元" data-val-min-value="0.25" 
 use mis;
 set names utf8;
  alter table sizes add column  is_hd enum('Y','N') NOT NULL default 'N', COMMENT '是否高清';

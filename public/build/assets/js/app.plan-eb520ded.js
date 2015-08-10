@@ -168,6 +168,7 @@ App.Plan = (function ($) {
                        if (data.minBid) {
                           tip = '最低出价金额' + data.minBid + "元";
                           $('#formUnit #bid-help').text(tip);
+                          $('#formUnit #minBid').attr("value", data.minBid)
                         }
                     },'json'
                     );
@@ -210,7 +211,14 @@ App.Plan = (function ($) {
                         $("#dialogUnit").dialog("close");
                         loadPlanList();
                         loadUnitView(response.id);
-                    }
+                    },
+                    beforeSubmit: function(){
+                        var minBid = $('#formUnit #minBid').val();
+                        if ($('#formUnit input:text[name="bid"]').val()*100 < minBid*100){
+                          alert('最低出价金额必须大于'+minBid+"元");
+                          return false;
+                        }
+                  } 
                 });
                 $('#media').select2({
                     multiple: true,
