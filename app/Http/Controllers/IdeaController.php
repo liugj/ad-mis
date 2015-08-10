@@ -51,7 +51,7 @@ class IdeaController extends Controller
     }
     public function bid(Request $request){
         
-        return Idea ::bid($request->all());
+        return Idea :: MinBid($request->all());
     }
 
     /**

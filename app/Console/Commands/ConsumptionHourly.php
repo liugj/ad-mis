@@ -92,6 +92,8 @@ class ConsumptionHourly extends Command implements SelfHandling
                         $item = array();
                         foreach (explode('$$$', $matches1[1]) as $s){
                             if (strpos($s, '*') === false||$s[strlen($s)-1] == '*' ) continue;
+                            $s = trim($s);
+                            $s = trim($s, '&');
                             list($key, $value) = explode('*', $s);
                             $item[$key] = trim($value);
                         }
@@ -205,9 +207,9 @@ if (!isset($item['idea_id'])) continue;
                     $ideas[$id]= $c->toArray();
                 }
             }
-            $ideas_stats     = [];
-            $users_stats     = [];
-            $plans_stats     = [];
+            //$ideas_stats     = [];
+            //$users_stats     = [];
+            //$plans_stats     = [];
             foreach ($stats  as $stat) {
                 if (!isset($ideas[$stat['idea_id']])) continue;
                 $consumption =  collect($stat+$ideas[$stat['idea_id']]);
@@ -217,21 +219,24 @@ if (!isset($item['idea_id'])) continue;
                     -> where('consumable_id'  ,  $consumption->get('consumable_id'))
                     -> where('datetime'       ,  $dateTime)
                     -> first(); 
-                if ($consumption->get('consumable_type') =='App\Network') {
-                    $idea_id = $stat['idea_id'];  
-                    if (!isset($ideas_stats[$idea_id])) {
-                        $ideas_stats[$idea_id] = ['user_id' => $consumption->get('user_id'), 'plan_id'=> $consumption->get('plan_id'),
-                            'cost'=>  $consumption->get('cost'), 'consumption_total'=> $consumption->get('consumption_total')];    
-                    }else{
-                        $ideas_stats[$stat['idea_id']]['cost'] += $consumption->get('cost');
-                        $ideas_stats[$stat['idea_id']]['consumption_total'] += $consumption->get('consumption_total');
+            //   if ($consumption->get('consumable_type') =='App\Operator') {
+            //    Log ::  info('delete' , $consumption->all());
+            //   }
+              //  if ($consumption->get('consumable_type') =='App\Network') {
+              //      $idea_id = $stat['idea_id'];  
+              //      if (!isset($ideas_stats[$idea_id])) {
+              //          $ideas_stats[$idea_id] = ['user_id' => $consumption->get('user_id'), 'plan_id'=> $consumption->get('plan_id'),
+              //              'cost'=>  $consumption->get('cost'), 'consumption_total'=> $consumption->get('consumption_total')];    
+              //      }else{
+              //          $ideas_stats[$stat['idea_id']]['cost'] += $consumption->get('cost');
+              //          $ideas_stats[$stat['idea_id']]['consumption_total'] += $consumption->get('consumption_total');
 
-                    }
-                    if ($consumption_daily) {
-                        $ideas_stats[$stat['idea_id']]['cost'] -= $consumption_daily->cost;
-                        $ideas_stats[$stat['idea_id']]['consumption_total'] -= $consumption_daily->consumption_total;
-                    }
-                }
+              //      }
+              //      if ($consumption_daily) {
+              //          $ideas_stats[$stat['idea_id']]['cost'] -= $consumption_daily->cost;
+              //          $ideas_stats[$stat['idea_id']]['consumption_total'] -= $consumption_daily->consumption_total;
+              //      }
+              //  }
                 if ($consumption_daily) {
                     $consumption_daily->delete(); 
                 }

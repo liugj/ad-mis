@@ -181,7 +181,7 @@ class Idea extends Model
     {
         return isset(self :: $arrStatus[$this->attributes['status']]) ? self :: $arrStatus[$this->attributes['status']]  : '';
     }
-    public  static function bid($param) {
+    public  static function minBid($param) {
         $client = new \GuzzleHttp\Client();
         $minBid = $client->get('http://rtb.dev.shoozen.net/min_bid', ['query'=>$param])
                   ->getBody();
