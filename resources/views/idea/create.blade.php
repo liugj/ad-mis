@@ -188,15 +188,15 @@
                         </select>
                     </div>
                 </div>
+                -->
                 <div class="form-group">
                     <div class="label">
                         <label for="media[]">媒体</label>
                     </div>
                     <div class="field">
-                    <input name="media" id="media" type="hidden" style="width:240px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('id', ',')}}" >
+                    <input name="media" id="media" type="hidden" style="width:240px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('name', ',')}}" >
                     </div>
                 </div>
-                -->
                 <div class="form-group">
                     <div class="label">
                         <label for="classify[]">应用类型</label>

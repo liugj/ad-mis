@@ -52,7 +52,7 @@
                 @endif
                 <?php  $medias = $idea->medias()->get(); ?>
                 @if ($medias->count())
-                <label>地域：</label>
+                <label>媒体：</label>
                 <span>@foreach ($medias as $media) {{$media->name}} @endforeach </span>
                 @endif
 <!--

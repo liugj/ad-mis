@@ -246,7 +246,7 @@ App.Plan = (function ($) {
                         mediaData.push({ id: id, text: mediaData_text[i] });
                     }                    
                 });
-                //$('#media').data('select2').updateSelection(mediaData);
+                $('#media').data('select2').updateSelection(mediaData);
             }
         });
     }
