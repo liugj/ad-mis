@@ -135,8 +135,7 @@ class IdeaController extends Controller
             $device[] = $deviceMap[$request->input('device')];
             $media = $request->input('media');
             if ($request->input('platform')>0) {
-                $media = [];
-                $media[] = $request->input('platform');
+                $media = $request->input('platform');
             }
             if ($id) {
                 $idea   =  Idea ::find($id) ; 
