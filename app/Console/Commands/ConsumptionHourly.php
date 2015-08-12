@@ -143,7 +143,9 @@ if (!isset($item['idea_id'])) continue;
                         $consumable_id = $consumable_value;
                         $parent_id     = 0;
                     }else{
-                        list($parent_id, $consumable_id) = explode(',', $consumable_value);
+                        list($parent_id_t, $consumable_id_t) = explode(',', $consumable_value);
+                        $parent_id = min($parent_id_t, $consumable_id_t);
+                        $consumable_id = max($parent_id_t, $consumable_id_t);
                     }
                     $stat_key = sprintf('%d_%s_%d_%d', $item['idea_id'], $consumable_type, $parent_id, $consumable_id); 
                 }elseif ($consumable_key== 'classification') {
