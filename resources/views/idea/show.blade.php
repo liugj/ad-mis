@@ -19,6 +19,8 @@
                 <span>{{$idea->created_at}}</span>
             </div>
             <div class="x8">
+                <label>投放平台：</label>
+                <span> {{App\Idea :: $platforms[$idea->platform]}}</span>
                 @if($idea->type) 
                 <label>类型：</label>
                 <span> {{$idea->type}}</span>

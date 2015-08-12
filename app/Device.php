@@ -12,4 +12,9 @@ class Device extends Model
     {
         return $this->morphMany('App\ConsumptionDaily', 'consumable');
     }
+    public static function getDeviceIdByName($name_en) {
+       $device = self  :: where('name_en', $name_en)->first();
+       return $device->id;
+       
+    }
 }

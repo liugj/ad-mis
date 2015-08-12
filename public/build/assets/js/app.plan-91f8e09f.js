@@ -197,9 +197,52 @@ App.Plan = (function ($) {
 
                 setIdeaType();
                 selectMinBid();
-                $("#type").change(function (e) {
+                $("#group").change(function (e) {
                     setIdeaType();
                 });
+                $("#device").change(function (e) {
+                    setIdeaType();
+                });
+                $("input[id='platform'").change(function (e) {
+                    setIdeaType();
+                });
+
+                changePlaceholder();
+                $("#click_action_id").on("change", function (e) {
+                    changePlaceholder();
+                });
+
+                $("#formUnit").ajaxFormExt({
+                    success: function (response) {
+                        $("#dialogUnit").dialog("close");
+                        loadPlanList();
+                        loadUnitView(response.id);
+                    },
+                    beforeSubmit: function(){
+                        var minBid = $('#formUnit #minBid').val();
+                        if ($('#formUnit input:text[name="bid"]').val()*100 < minBid*100){
+                          alert('最低出价金额必须大于'+minBid+"元");
+                          return false;
+                        }
+                  } 
+                });
+                //$('#media').select2({
+                //    multiple: true,
+                //    ajax: {
+                //        url: "/media/lists/3333",
+                //        dataType: 'json',
+                //        data: function (params) {
+                //            return {
+                //                q: params
+                //            };
+                //        },
+                //        results: function (data) {
+                //            return {
+                //                results: data
+                //            };
+                //        }
+                //    }
+                //});
 
                 changePlaceholder();
                 $("#click_action_id").on("change", function (e) {
@@ -227,6 +270,7 @@ App.Plan = (function ($) {
                         dataType: 'json',
                         data: function (params) {
                             return {
+                                device:  $('#device').val(),
                                 q: params
                             };
                         },
@@ -264,7 +308,7 @@ App.Plan = (function ($) {
     }
 
     function setIdeaType() {
-        var type = $("#type").select2("val");
+        var type = $("#group").select2("val")+'_'+$("#device").select2("val")+'_' + $('#formUnit input:radio[name="platform"]:checked').val();
         $("#ideaSize div:not(." + type + ")").hide();
 
         var showDiv = $("#ideaSize div." + type).show();
@@ -282,6 +326,11 @@ App.Plan = (function ($) {
             $(".form-group.text").hide();
             $(".form-group.img").show();
         }
+        if ($('#formUnit input:radio[name="platform"]:checked').val() ==0){
+            $(".form-group.platform").show();
+        }else{
+            $(".form-group.platform").hide();
+            }
     }
 
     function changePlaceholder() {

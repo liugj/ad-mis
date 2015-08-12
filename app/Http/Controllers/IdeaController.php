@@ -73,7 +73,7 @@ class IdeaController extends Controller
         $ages         =  Cache:: rememberForever('ages', function(){ return  Age :: all();});
         $operators    =  Cache:: rememberForever('operators', function(){ return  Operator :: all();});
         $regions      =  Cache:: rememberForever('regions', function(){ return  Region :: all()->sortBy('parent');});
-        $locations      =  Cache:: rememberForever('locations', function(){ return  Location :: all();});
+        $locations    =  Cache:: rememberForever('locations', function(){ return  Location :: all();});
         $types        =  Cache:: rememberForever('types', function(){ return  Type :: all();});
         $classification =  Cache:: rememberForever('classification', function(){ return  Classification:: all();});
 
@@ -112,7 +112,8 @@ class IdeaController extends Controller
                 'plan_id' => 'required|numeric|min:1',
                 'bid' => 'required|numeric|min:0',
                 'budget' => 'required|numeric|min:0',
-                'type' => 'required|max:64',
+                'device' => 'required|max:64',
+                'group' => 'required|max:64',
                 'pay_type' => 'required|numeric',
                 'click_action_id' => 'required|numeric',
                 'link' => 'required|max:65535',
@@ -128,21 +129,21 @@ class IdeaController extends Controller
                 });
         //
         if (!$v->fails()) {
-            $type = $request->input('type');
+            $type  = sprintf('%s_%s', $request->input('group'), $request->input('device'));
             $device = [];
             $deviceMap = ['iphone'=>2, 'ipad'=>4, 'android'=>3, 'text'=>0];
-            $device[] = $deviceMap[substr($type, strrpos($type, '_')+1)];
+            $device[] = $deviceMap[$request->input('device')];
             if ($id) {
                 $idea   =  Idea ::find($id) ; 
                 $status =  $idea->status;
                 if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src') || $idea->link != $request->input('link')){
                     $status = 1;
                 }
-                return  response()->json(['success' => $idea->update(['status'=>$status, 'device'=>$device]+$request->all()),
+                return  response()->json(['success' => $idea->update(['status'=>$status, 'device'=>$device,'type'=>$type]+$request->all()),
                         'message'=> '', 'id'=>$id]
                         );
             }else{
-                $idea = Idea :: create(array('user_id'=>$user_id, 'device'=>$device) + $request->all());
+                $idea = Idea :: create(array('user_id'=>$user_id, 'device'=>$device, 'type'=>$type) + $request->all());
                 return response()->json(['success' => TRUE, 'id'=>$idea->id,
                         'message'=>'']
                         );

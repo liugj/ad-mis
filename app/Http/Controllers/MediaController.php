@@ -20,12 +20,6 @@ class MediaController extends Controller
     }
     function lists(Request $request){
         return Media :: search($request);
-    return [
-      ['id'=>1, 'text'=>'媒体已'],
-      ['id'=>2, 'text'=>'媒体已'],
-      ['id'=>3, 'text'=>'媒体已'],
-    ];
-
     }
 
     /**

@@ -10,17 +10,46 @@
             </div>
         </div>
         <div class="form-group">
+           <div class="label">
+               <label for="platform">投放平台</label>
+           </div>
+           <div class="field">
+           @foreach (App\Idea :: $platforms as $platform=>$value) 
+               <label class="i-radio">
+                   <input type="radio" id="platform" name="platform" value="{{$platform}}" @if($platform == $idea->platform) checked="checked" @endif /><i></i>{{$value}}
+               </label>
+           @endforeach   
+           </div>
+        </div>
+        <div class="form-group">
             <div class="label">
-                <label for="type">类型</label>
+                <label for="device">设备</label>
             </div>
             <div class="field">
-                <select id="type" name="type" style="width:240px;" class="select2">
+                <select class="select2"  style="width:240px;" id="device"  name="device">
+                @foreach ($devices as $device)
+                 <?php  if(!in_array($device->id, array(3,4,2))) continue; ?>
+                    <option  @if($idea->device == $device->name_en)  selected @endif  value="{{$device->name_en}}">{{$device->name}}</option>
+                @endforeach    
+                </select>
+            </div>
+        </div>
+        <div class="form-group platform">
+            <div class="label">
+                <label for="media[]">媒体</label>
+            </div>
+            <div class="field">
+            <input name="media" id="media" type="hidden" style="width:240px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('name', ',')}}" >
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label for="group">类型</label>
+            </div>
+            <div class="field">
+                <select id="group" name="group" style="width:240px;" class="select2">
                    @foreach($groups as $group)
-                    <optgroup label="{{$group->name}}">
-                        @foreach($group->types()->get() as $type)
-                        <option value="{{$type->name_en}}" @if($type->name_en == $idea->type) selected @endif >{{$type->name_zh}}</option>
-                        @endforeach
-                    </optgroup>
+                        <option value="{{$group->name_en}}" @if($group->name_en == $idea->group) selected @endif >{{$group->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -32,7 +61,7 @@
             <div class="field" id="ideaSize">
                @foreach($types as $type)
                 <?php if($type->name_en=='banner_text') continue;  ?>
-                <div class="{{$type->name_en}}">
+                <div class="{{$type->name_en}}_{{$type->platform_id}}">
                    @foreach($type->sizes()->get() as $size)
                     <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" @if ($idea->size_id == $size->id) checked @endif /><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
                   @endforeach
@@ -189,14 +218,6 @@
                     </div>
                 </div>
                 -->
-                <div class="form-group">
-                    <div class="label">
-                        <label for="media[]">媒体</label>
-                    </div>
-                    <div class="field">
-                    <input name="media" id="media" type="hidden" style="width:240px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('name', ',')}}" >
-                    </div>
-                </div>
                 <div class="form-group">
                     <div class="label">
                         <label for="classify[]">应用类型</label>

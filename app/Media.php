@@ -31,8 +31,8 @@ class Media extends Model
                     } else {
                     $search->setQuery($q);
          }
-         if ($request->input('device_id')) {
-              $search->setQuery('device_id:'. $request->input('device_id'));
+         if ($request->input('device')) {
+              $search->setQuery('device_id:'. Device:: getDeviceIdByName($request->input('device')));
          }
          // set sort
          if (($pos = strrpos($s, '_')) !== false) {

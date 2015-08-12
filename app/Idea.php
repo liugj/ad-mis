@@ -8,15 +8,20 @@ class Idea extends Model
     protected $table      = 'ideas';
     protected $primaryKey = 'id';
     protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link','link_text',
-                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange'
+                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','platform'
                             ];
-    protected $appends = ['state'];                        
+    protected $appends = ['state', 'device', 'group'];                        
     static  $arrStatus = [
         1=>'待审核',
         0=>'审核通过',
         2=>'审核未通过',
         3=>'投放中',
         4=>'停止投放'
+    ];
+    static $platforms = [
+      0 => '移动平台',
+      1 => 'Camera360',
+      
     ];
 
     public function update(array $attributes=[]) {
@@ -180,6 +185,14 @@ class Idea extends Model
     public function getStateAttribute()
     {
         return isset(self :: $arrStatus[$this->attributes['status']]) ? self :: $arrStatus[$this->attributes['status']]  : '';
+    }
+    public function getDeviceAttribute()
+    {
+        return isset($this->attributes['type']) ? explode('_', $this->attributes['type'])[1]: '';
+    }
+    public function getGroupAttribute()
+    {
+        return isset($this->attributes['type']) ? explode('_', $this->attributes['type'])[0]: '';
     }
     public  static function minBid($param) {
         $client = new \GuzzleHttp\Client();
