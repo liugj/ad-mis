@@ -133,17 +133,22 @@ class IdeaController extends Controller
             $device = [];
             $deviceMap = ['iphone'=>2, 'ipad'=>4, 'android'=>3, 'text'=>0];
             $device[] = $deviceMap[$request->input('device')];
+            $media = $request->input('media');
+            if ($request->input('platform')>0) {
+                $media = [];
+                $media[] = $request->input('platform');
+            }
             if ($id) {
                 $idea   =  Idea ::find($id) ; 
                 $status =  $idea->status;
                 if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src') || $idea->link != $request->input('link')){
                     $status = 1;
                 }
-                return  response()->json(['success' => $idea->update(['status'=>$status, 'device'=>$device,'type'=>$type]+$request->all()),
+                return  response()->json(['success' => $idea->update(['status'=>$status, 'media'=>$media, 'device'=>$device,'type'=>$type]+$request->all()),
                         'message'=> '', 'id'=>$id]
                         );
             }else{
-                $idea = Idea :: create(array('user_id'=>$user_id, 'device'=>$device, 'type'=>$type) + $request->all());
+                $idea = Idea :: create(array('user_id'=>$user_id, 'device'=>$device,'media'=>$media, 'type'=>$type) + $request->all());
                 return response()->json(['success' => TRUE, 'id'=>$idea->id,
                         'message'=>'']
                         );
