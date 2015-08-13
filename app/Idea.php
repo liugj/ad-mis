@@ -196,7 +196,7 @@ class Idea extends Model
     }
     public  static function minBid($param) {
         $client = new \GuzzleHttp\Client();
-        $minBid = $client->get('http://rtb.dev.shoozen.net/min_bid', ['query'=>$param])
+        $minBid = $client->get(sprintf('http://%s/min_bid', config('rtb.host')), ['query'=>$param])
                   ->getBody();
         return   ['minBid'=>(string)$minBid];
 
