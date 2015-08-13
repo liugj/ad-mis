@@ -163,7 +163,7 @@
         }
         var selectMinBid =  function (){
             $.get('/idea/bid',  { pay_type: $('#formUnit input:radio[name="pay_type"]:checked').val(),
-                    type: $('#formUnit select[name=type]').val()
+                    type: $('#formUnit select[name=group]').val()+'_'+$('select[name=device]').val()
                     }, function(data){
                        if (data.minBid) {
                           tip = '最低出价金额' + data.minBid + "元";
