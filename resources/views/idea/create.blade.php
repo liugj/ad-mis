@@ -34,14 +34,6 @@
                 </select>
             </div>
         </div>
-        <div class="form-group platform">
-            <div class="label">
-                <label for="media[]">媒体</label>
-            </div>
-            <div class="field">
-            <input name="media" id="media" type="hidden" style="width:240px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('name', ',')}}" >
-            </div>
-        </div>
         <div class="form-group">
             <div class="label">
                 <label for="group">类型</label>
@@ -52,6 +44,24 @@
                         <option value="{{$group->name_en}}" @if($group->name_en == $idea->group) selected @endif >{{$group->name}}</option>
                     @endforeach
                 </select>
+            </div>
+        </div>
+        <div class="form-group platform">
+            <div class="label">
+                <label for="media[]">媒体</label>
+            </div>
+            <div class="field">
+                    <select id="classify_id" class="select2"  style="width:160px;" multiple  name="classify_id[]" placeholder="请选择媒体一级分类" data-id="{{$idea->classify_id}}">
+                    @foreach($classification as $classify)
+                    <?php if ($classify->parent !=0) continue;?>
+                    <option value="{{$classify->id}}" @if (in_array($classify->id, explode(',', $idea->classify_id))) selected @endif>{{$classify->name}}</option>
+                    @endforeach
+                    </select>
+                        <select id="classify_sub_id" class="select2"  style="width:160px;" multiple  name="classify_sub_id[]" placeholder="请选择媒体二级分类" data-id="{{$idea->classify_sub_id}}">
+                        </select>
+                        <select id="classify_grandson_id" class="select2"  style="width:160px;" multiple  name="classify_grandson_id[]" placeholder="请选择媒体三级分类" data-id="{{$idea->classify_grandson_id}}">
+                        </select>
+            <input name="media" id="media" type="hidden" style="width:160px" data-id="{{$idea->medias->implode('id', ',')}}" data-text="{{$idea->medias->implode('name', ',')}}" placeholder="请选择媒体">
             </div>
         </div>
         <div class="form-group img">
@@ -218,18 +228,6 @@
                     </div>
                 </div>
                 -->
-                <div class="form-group">
-                    <div class="label">
-                        <label for="classify[]">应用类型</label>
-                    </div>
-                    <div class="field">
-                        <select class="select2"  style="width:240px;" multiple  name="classify[]">
-                        @foreach ($classification as $classify)
-                            <option  @if($idea->classification->contains($classify->id) ) selected @endif  value="{{$classify->id}}">{{$classify->name}}</option>
-                        @endforeach    
-                        </select>
-                    </div>
-                </div>
                 <div class="form-group">
                     <div class="label">
                         <label for="ban[]">应用黑名单</label>

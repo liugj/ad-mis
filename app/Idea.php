@@ -8,7 +8,7 @@ class Idea extends Model
     protected $table      = 'ideas';
     protected $primaryKey = 'id';
     protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link','link_text',
-                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','platform'
+                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','platform','classify_id', 'classify_sub_id','classify_grandson_id',
                             ];
     protected $appends = ['state', 'device', 'group'];                        
     static  $arrStatus = [
@@ -23,9 +23,20 @@ class Idea extends Model
       1 => 'Camera360',
       
     ];
+    public function update2(array $attributes=[]) {
+        $update =  parent :: update($attributes);
+        $this->flows()->detach();
+        if (isset($attributes['flow_price'])) {
+            $this->flows()->attach($attributes['flow_price']);
+        }
+        return $update;
+    }
+    public function flows() {
+        return $this->belongsToMany('App\Flow');
+    }
 
     public function update(array $attributes=[]) {
-	    if ($attributes['type'] == 'banner_text') {
+	    if (isset($attributes['type']) && $attributes['type'] == 'banner_text') {
                  $attributes['size_id']  =0 ;
 	    }
 	    $update =  parent :: update($attributes);
@@ -134,7 +145,8 @@ class Idea extends Model
         return $this->belongsTo('App\Plan');
     }
     public function classification() {
-        return $this->belongsToMany('App\Classification', 'classify_idea', 'idea_id', 'classify_id');
+        return $this->belongsToMany('App\Classification', 'classify_idea', 'idea_id', 'classify_id')
+        ->withPivot('classify_sub_id', 'classify_grandson_id');
     }
     public function ban() {
         return $this->belongsToMany('App\Classification', 'ban_idea', 'idea_id', 'ban_id');
@@ -200,5 +212,14 @@ class Idea extends Model
                   ->getBody();
         return   ['minBid'=>(string)$minBid];
 
+    }
+    public function setClassifyIdAttribute($values) {
+        $this->attributes['classify_id'] = implode(',', $values);
+    }
+    public function setClassifySubIdAttribute($values) {
+        $this->attributes['classify_sub_id'] = implode(',', $values);
+    }
+    public function setClassifyGrandsonIdAttribute($values) {
+        $this->attributes['classify_grandson_id'] = implode(',', $values);
     }
 }

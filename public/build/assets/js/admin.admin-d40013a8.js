@@ -36,6 +36,7 @@ Admin.Admin = (function ($) {
         $("#dialogAdmin").dialog("open", {
             url:  urlAdminEdit + (id > 0 ? 'edit/' +id : 'create' ),
             success: function () {
+                $('#formAdmin .select2').select2({ minimumResultsForSearch: 20 });
                 $("#formAdmin").ajaxFormExt({
                     success: function () {
                         $("#dialogAdmin").dialog("close");

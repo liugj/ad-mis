@@ -27,7 +27,7 @@
         <div class="field">
                 <select class="select2" id="role" style="width:240px;" name="role">
                 @foreach($roles  as $role_en => $role_cn)
-                    <option value="{{$role_en}}"  @if ($role_en == $administrator->role) selected @endif">{{$role_cn}}</option>
+                    <option value="{{$role_en}}"  @if ($role_en == $administrator->role) selected @endif>{{$role_cn}}</option>
                 @endforeach    
                 </select>
         </div>

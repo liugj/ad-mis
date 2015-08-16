@@ -20,6 +20,13 @@ Route::get('/crop', function()
 
         });
 Route ::get('/media/lists', 'MediaController@lists');
+Route ::get('/categories/{parent}', function($parent){
+    return  App\Category:: where ('parent', (string)($parent))->get();
+});
+Route ::get('/classification/{parent}', function($parent){
+    $s = (string)($parent) ; 
+    return  App\Classification:: whereIn ('parent', explode(',', $s))->get();
+});
 Route::get('/', function () {
     return Auth:: user()->check()?  redirect('/home') :  view('welcome');
         });
@@ -115,8 +122,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
         Route::get('/idea/lists', ['as'=>'users', 'uses'=>'IdeaController@lists']); 
         Route::post('/idea/destroy/{id}', ['as'=>'users', 'uses'=>'IdeaController@destroy']); 
 
+        Route::get('/idea/edit/{id}', ['as'=>'ideas', 'uses'=>'IdeaController@edit'])->where('id', '[0-9]+'); 
+        Route::post('/idea/store', ['as'=>'ideas', 'uses'=>'IdeaController@store']); 
+
         Route::get('/recharge/create', ['as'=>'recharge', 'uses'=>'RechargeController@create']); 
         Route::post('/recharge/store', ['as'=>'recharge', 'uses'=>'RechargeController@store']); 
+
+        Route::get('/flow/create', ['as'=>'flow', 'uses'=>'FlowController@create']); 
+        Route::post('/flow/store', ['as'=>'flow', 'uses'=>'FlowController@store']); 
 
         Route::get('/administrators', ['as'=>'administrators', 'uses'=>'AdministratorController@index']); 
         Route::get('/administrator/lists', ['as'=>'administrators', 'uses'=>'AdministratorController@lists']); 

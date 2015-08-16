@@ -5,6 +5,7 @@
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
     <link href="/assets/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/select2/select2.css" rel="stylesheet" />
     <link href="{{ elixir('assets/css/site.css') }}" rel="stylesheet" />
     <link href="{{ elixir('assets/css/admin.css') }}" rel="stylesheet" />
 
@@ -84,11 +85,31 @@
             </td>
         </tr>
     </script>
+
+    <div id="dialogIdeaAudit" class="dialog">
+        <div class="dialog-head">
+            <span class="close" data-handler="close"></span>
+            广告审核
+        </div>
+        <div class="dialog-body"></div>
+    </div>
+    <div id="dialogFlow" class="dialog">
+        <div class="dialog-head">
+            <span class="close" data-handler="close"></span>
+            流量分组
+        </div>
+        <div class="dialog-body"></div>
+    </div>
+    <script src="/assets/plugins/select2/select2.min.js"></script>
+    <script src="/assets/plugins/select2/select2_locale_zh-CN.js"></script>
+    <script src="/assets/plugins/jquery.form.min.js"></script>
     <script src="/assets/plugins/jquery.validate.min.js"></script>
     <script src="/assets/plugins/juqery.validate.ext.js"></script>
     <script src="/assets/plugins/jquery.pager.js"></script>
     <script src="{{ elixir('assets/js/app.js') }}"></script>
     <script src="{{ elixir('assets/js/admin.idea.js') }}"></script>
+    <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.js"></script>
+    <script src="/assets/plugins/jquery-inputmask/jquery.inputmask.numeric.extensions.js"></script>
 
 
 @endsection

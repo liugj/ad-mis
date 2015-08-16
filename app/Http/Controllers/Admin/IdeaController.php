@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Idea;
 use Auth;
+use App\Category;
+use App\Flow;
 class IdeaController extends Controller
 {
     /**
@@ -55,6 +57,11 @@ class IdeaController extends Controller
      */
     public function store(Request $request)
     {
+        $id = $request->input('id');
+        $attributes = ['auditor_id'=> Auth::admin()->get()->id, 'audited_at'=>date('Y-m-d H:i:s')];
+        $idea = Idea :: find($id);
+        $idea->update2($attributes+$request->all());
+        return ['success'=>'true', 'message'=>'操作成功'];
     }
 
     /**
@@ -76,6 +83,14 @@ class IdeaController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        return view('admin.idea.create',[ 
+                'categories' => Category ::where ('parent', 0)->get(),
+                'hasStatus' => $request->has('status'), 
+                'status' => $request->input('status',0), 
+                'idea'      => Idea ::find($id),
+                'flows'     => Flow :: all()
+                ]
+                );
     }
 
     /**

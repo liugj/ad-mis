@@ -1,4 +1,4 @@
-﻿Admin = {};
+Admin = {};
 
 Admin.Idea = (function ($) {
     var urlIdeaList = "/admin/idea/lists"; //GET参数: status (0:未审核，1:已审核, 2:已禁用, -1:全部); name (创意名称查询)

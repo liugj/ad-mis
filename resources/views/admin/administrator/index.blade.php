@@ -4,6 +4,7 @@
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/assets/plugins/pintuer/pintuer.css" rel="stylesheet" />
     <link href="/assets/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/select2/select2.css" rel="stylesheet" />
     <link href="{{ elixir('assets/css/site.css') }}" rel="stylesheet" />
     <link href="{{ elixir('assets/css/admin.css') }}" rel="stylesheet" />
 
@@ -69,6 +70,8 @@
         </div>
         <div class="dialog-body"></div>
     </div>
+    <script src="/assets/plugins/select2/select2.min.js"></script>
+    <script src="/assets/plugins/select2/select2_locale_zh-CN.js"></script>
     
     <script src="/assets/plugins/jquery.form.min.js"></script>
     <script src="/assets/plugins/jquery.validate.min.js"></script>

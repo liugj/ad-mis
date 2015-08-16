@@ -174,7 +174,31 @@ App.Plan = (function ($) {
                     );
 
         };
-
+        var changeClassify = function (param) {
+           var parent = $('#'+param.data.parent);
+           var sub    = $('#'+param.data.sub);
+           if (parent.val()!=null) {
+              $.ajax({
+                url    : '/classification/'+parent.val().join(','),
+                success : function(data){
+                   sub.empty();
+                   $.each(data, function (i, item){
+                       if ( $.inArray(item.id, sub.attr('data-id').split(',')) !=-1) {
+                         sub.append("<option value='" + item.id + "' selected='selected'>" + item.name + "</option>");
+                       }else{
+                         sub.append("<option value='" + item.id + "'>" + item.name + "</option>");
+                       }
+                   });
+                 sub.select2({ minimumResultsForSearch: -1 });
+                },
+                async: false ,
+                dataType:'json'
+             });
+           }else{
+               console.log(parent.val());
+               console.log(param.data);
+           }
+        }
         $("#dialogUnit").dialog("open", {
             url: url,
             success: function () {
@@ -184,6 +208,8 @@ App.Plan = (function ($) {
                 $("#formUnit input:text[name='bid']").bind("click", selectMinBid);
                 $("#formUnit input:radio[name='pay_type']").bind("click", selectMinBid);
                 $("#formUnit select[name='type']").bind("change", selectMinBid);
+                $("#formUnit select[id='classify_id']").bind("change", {parent:'classify_id', sub:'classify_sub_id', first:false}, changeClassify);
+                $("#formUnit select[id='classify_sub_id']").bind("change", {parent:'classify_sub_id', sub:'classify_grandson_id', first:false}, changeClassify);
                 var region =   $("#formUnit [name='region']").multiplepicker();
 
                 if (regionData.length ==0){
@@ -194,6 +220,7 @@ App.Plan = (function ($) {
                 }else{
                     region.multiplepicker('setData', regionData);
                 }
+
 
                 setIdeaType();
                 selectMinBid();
@@ -226,43 +253,9 @@ App.Plan = (function ($) {
                         }
                   } 
                 });
-                //$('#media').select2({
-                //    multiple: true,
-                //    ajax: {
-                //        url: "/media/lists/3333",
-                //        dataType: 'json',
-                //        data: function (params) {
-                //            return {
-                //                q: params
-                //            };
-                //        },
-                //        results: function (data) {
-                //            return {
-                //                results: data
-                //            };
-                //        }
-                //    }
-                //});
 
-                changePlaceholder();
-                $("#click_action_id").on("change", function (e) {
-                    changePlaceholder();
-                });
-
-                $("#formUnit").ajaxFormExt({
-                    success: function (response) {
-                        $("#dialogUnit").dialog("close");
-                        loadPlanList();
-                        loadUnitView(response.id);
-                    },
-                    beforeSubmit: function(){
-                        var minBid = $('#formUnit #minBid').val();
-                        if ($('#formUnit input:text[name="bid"]').val()*100 < minBid*100){
-                          alert('最低出价金额必须大于'+minBid+"元");
-                          return false;
-                        }
-                  } 
-                });
+                changeClassify({data:{parent:'classify_id', sub:'classify_sub_id', first: true}});
+                changeClassify({data:{parent:'classify_sub_id', sub:'classify_grandson_id', first: true}});
                 $('#media').select2({
                     multiple: true,
                     ajax: {
