@@ -194,9 +194,6 @@ App.Plan = (function ($) {
                 async: false ,
                 dataType:'json'
              });
-           }else{
-               console.log(parent.val());
-               console.log(param.data);
            }
         }
         $("#dialogUnit").dialog("open", {
