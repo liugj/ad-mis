@@ -30,7 +30,7 @@
             <label for="category">分类</label>
         </div>
         <div class="field">
-                <select class="select2" id="category_id" style="width:180px;" name="category_id">
+                <select class="select2" id="category_id" style="width:180px;" name="category_id" data-id="{{$idea->category_id}}">
                 <option value="0">请选择分类</option>
                 @foreach($categories as $category)
                     <option value="{{$category->id}}"  @if ($category->id == $idea->category_id) selected @endif>{{$category->name}}</option>
@@ -58,6 +58,18 @@
                 <button class="button" type="button" onClick="Admin.Idea.addFlow();">添加分组</button>
         </div>
     </div>    
+    @foreach($idea->flows as $flow )
+    <div class="form-group pass flow price">
+        <div class="label">
+            <label for="flow">{{$flow->name}} [{{$flow->min}} - {{$flow->max}}]的竞价</label>
+            <input name="flow_price[{{$flow->id}}][flow_id]" value="{{$flow->id}}" type="hidden" >
+        </div>
+        <div class="input-group">
+        <input type="text" class="input" name="flow_price[{{$flow->id}}][price]" value="{{$flow->pivot->price}}" style="width:100px"><span class="addon">元/天</span>
+        <button class="button" type="button" onClick="Admin.Idea.delFlowPrice({{$flow->id}});">删除</button>
+        </div>
+     </div>   
+     @endforeach
     <script id="tempFlowPriceItem" type="text/template">
     <div class="form-group pass flow price">
         <div class="label">
@@ -65,7 +77,8 @@
             <input name="flow_price[{id}][flow_id]" value="{id}" type="hidden" >
         </div>
         <div class="input-group">
-        <input type="text" class="input" name="flow_price[{id}][price]" value="" style="width:200px"><span class="addon">元/天</span>
+        <input type="text" class="input" name="flow_price[{id}][price]" value="" style="width:100px"><span class="addon">元/天</span>
+        <button class="button" type="button" onClick="Admin.Idea.delFlowPrice({id});">删除</button>
         </div>
      </div>   
     </script>

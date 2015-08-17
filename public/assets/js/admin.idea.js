@@ -96,10 +96,11 @@ Admin.Idea = (function ($) {
     var changeSubCategory = function(param){
         var category_id = $('select[name="'+param.data.parent+'"]');
         var category_sub_id = $('select[name="'+param.data.id+'"]');
-        $.get('/categories/'+category_id.val(),
-           function(data){
+        $.ajax({
+            url : '/categories/'+category_id.val(),
+            success : function(data){
               category_sub_id.empty();
-              category_sub_id.append("<option value='0'>请选择二级分类</option>");
+              category_sub_id.append("<option value='0'>请选择子级分类</option>");
               $.each(data, function (i, item){
                   if (item.id  == category_sub_id.attr('data-id')) {
                     category_sub_id.append("<option value='" + item.id + "' selected='selected'>" + item.name + "</option>");
@@ -109,8 +110,9 @@ Admin.Idea = (function ($) {
               });
                 category_sub_id.select2({ minimumResultsForSearch: -1 });
            },
-           'json'
-        );
+           async: false ,
+           dataType: 'json'
+        });
     }
     var addFlow = function (){
         $('#dialogFlow').dialog('open', {
@@ -142,8 +144,8 @@ Admin.Idea = (function ($) {
                         $("#pageIdeaBt").pager("load");
                     }
                 });
-                setStatus();
                 changeSubCategory({data:{parent:'category_id', id:'category_sub_id'}});
+                setStatus();
                 changeSubCategory({data:{parent:'category_sub_id', id:'category_grandson_id'}});
                // setFlow();
             }
@@ -171,16 +173,21 @@ Admin.Idea = (function ($) {
     };
     var addFlowPrice = function () {
         var temp = $("#tempFlowPriceItem").html();
-        $('.form-group.flow.price').remove();
+       // $('.form-group.flow.price').remove();
         if ($('#flow').val()){
             $.each($('#flow').val(),function(i, n){
+                if ($('.flow'+n).length==0) {
                     $('#flow').parent().parent().append(App.template(temp, {
                         flow_name: $('#flow option[value='+ n +']').text(),
                         id: n
                         })
                     );
+                }
             });
         }
+    }
+    var delFlowPrice = function (id){
+        $('.flow'+id).remove();
     }
     return {
         init: function () {
@@ -206,6 +213,9 @@ Admin.Idea = (function ($) {
         },
         addFlow: function() {
             addFlow();
+        },
+        delFlowPrice: function(id){
+            delFlowPrice(id);
         }
     };
 

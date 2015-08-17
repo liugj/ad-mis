@@ -49,7 +49,7 @@ class Media extends Model
          $results = [];
          foreach ($docs as $doc) {
             $result = [];
-            $result['id']    = $doc->id;
+            $result['id']    = $doc->media_id;
             $result['text']  = $doc->name;
             $results[] = $result;
         }

@@ -8,7 +8,7 @@ class Idea extends Model
     protected $table      = 'ideas';
     protected $primaryKey = 'id';
     protected $fillable   = ['name','user_id', 'plan_id','type','bid','frequency','budget','size_id','status', 'link','link_text',
-                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','platform','classify_id', 'classify_sub_id','classify_grandson_id',
+                            'display_type','alt','src','click_action_id','gender','pay_type', 'timerange','platform','classify_id', 'classify_sub_id','classify_grandson_id', 'category_id', 'category_sub_id','category_grandson_id'
                             ];
     protected $appends = ['state', 'device', 'group'];                        
     static  $arrStatus = [
@@ -32,7 +32,7 @@ class Idea extends Model
         return $update;
     }
     public function flows() {
-        return $this->belongsToMany('App\Flow');
+        return $this->belongsToMany('App\Flow')->withPivot('price');
     }
 
     public function update(array $attributes=[]) {

@@ -177,13 +177,17 @@ App.Plan = (function ($) {
         var changeClassify = function (param) {
            var parent = $('#'+param.data.parent);
            var sub    = $('#'+param.data.sub);
+           if (!param.data.first && param.data.parent == 'classify_id'){
+               sub.empty();
+               $('#classify_grandson_id').empty();
+               $('#classify_grandson_id').select2({ minimumResultsForSearch: -1 });
+           }
            if (parent.val()!=null) {
               $.ajax({
                 url    : '/classification/'+parent.val().join(','),
                 success : function(data){
-                   sub.empty();
                    $.each(data, function (i, item){
-                       if ( $.inArray(item.id, sub.attr('data-id').split(',')) !=-1) {
+                       if (param.data.first  && $.inArray(item.id, sub.attr('data-id').split(',')) !=-1) {
                          sub.append("<option value='" + item.id + "' selected='selected'>" + item.name + "</option>");
                        }else{
                          sub.append("<option value='" + item.id + "'>" + item.name + "</option>");
