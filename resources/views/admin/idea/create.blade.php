@@ -59,7 +59,7 @@
         </div>
     </div>    
     @foreach($idea->flows as $flow )
-    <div class="form-group pass flow price">
+    <div class="form-group pass flow price flow{$flow->id}">
         <div class="label">
             <label for="flow">{{$flow->name}} [{{$flow->min}} - {{$flow->max}}]的竞价</label>
             <input name="flow_price[{{$flow->id}}][flow_id]" value="{{$flow->id}}" type="hidden" >
@@ -71,7 +71,7 @@
      </div>   
      @endforeach
     <script id="tempFlowPriceItem" type="text/template">
-    <div class="form-group pass flow price">
+    <div class="form-group pass flow price flow{id}">
         <div class="label">
             <label for="flow">{flow_name}的竞价</label>
             <input name="flow_price[{id}][flow_id]" value="{id}" type="hidden" >

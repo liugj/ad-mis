@@ -96,7 +96,6 @@ Admin.Idea = (function ($) {
     var changeSubCategory = function(param){
         var category_id = $('select[name="'+param.data.parent+'"]');
         var category_sub_id = $('select[name="'+param.data.id+'"]');
-        console.log(param.data);
         $.ajax({
             url : '/categories/'+category_id.val(),
             success : function(data){
@@ -174,16 +173,21 @@ Admin.Idea = (function ($) {
     };
     var addFlowPrice = function () {
         var temp = $("#tempFlowPriceItem").html();
-        $('.form-group.flow.price').remove();
+       // $('.form-group.flow.price').remove();
         if ($('#flow').val()){
             $.each($('#flow').val(),function(i, n){
+                if ($('.flow'+n).length==0) {
                     $('#flow').parent().parent().append(App.template(temp, {
                         flow_name: $('#flow option[value='+ n +']').text(),
                         id: n
                         })
                     );
+                }
             });
         }
+    }
+    var delFlowPrice = function (id){
+        $('.flow'+id).remove();
     }
     return {
         init: function () {
@@ -209,6 +213,9 @@ Admin.Idea = (function ($) {
         },
         addFlow: function() {
             addFlow();
+        },
+        delFlowPrice: function(id){
+            delFlowPrice(id);
         }
     };
 
