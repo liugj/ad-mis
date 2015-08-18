@@ -49,7 +49,7 @@
                             <th>电话</th>
                             <th>公司名</th>
                             <th>总额</th>
-                            <th>消费</th>
+                            <th>消费@if(Auth::admin()->get()->role =='admin')(成本) @endif</th>
                             <th>操作</th>
                         </tr>
                     </thead>
