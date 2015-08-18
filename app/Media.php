@@ -10,6 +10,10 @@ class Media extends Model
 {
     //
     protected $table= 'medias';
+    public function consumption_daily()
+    {
+        return $this->morphMany('App\ConsumptionDaily', 'consumable');
+    }
     static function search($request) {
         $__ = array('q', 'm', 'f', 's', 'p', 'ie', 'oe', 'syn', 'xml');
         foreach ($__ as $_) {

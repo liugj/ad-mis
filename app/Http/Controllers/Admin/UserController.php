@@ -48,6 +48,10 @@ class UserController extends Controller
         $users['rows'] = $users['data'];
         foreach ($users['rows'] as &$row){
             $row['basic']['consume'] = Basic :: find($row['id'])->consumeTotal();
+            if (Auth:: admin()->get()->role =='admin') {
+                  $cost= Basic :: find($row['id'])->costTotal();
+                  $row['basic']['consume'] = sprintf('%s(%s)',  $row['basic']['consume'], $cost);
+            }
         }
         unset($users['data']);
         return $users;
@@ -133,7 +137,7 @@ class UserController extends Controller
             unset($recharges['data']);
             return $recharges;
         }else{
-            return view('admin.user.recharge', ['basic' => Basic ::find($id), 'user'=> Auth::admin()->get()]);
+            return view('admin.user.recharge', ['basic' => Basic ::find($id), 'user'=> User :: find($id)]);
         }
     }
     public function consume(UserRequest $request, $id) {
@@ -153,7 +157,7 @@ class UserController extends Controller
             unset($recharges['data']);
             return $recharges;
         }else{
-            return view('admin.user.consume', ['basic' => Basic ::find($id), 'user'=> Auth::admin()->get()]);
+            return view('admin.user.consume', ['basic' => Basic ::find($id), 'user'=> User :: find($id)]);
         }
     }
     public function report(UserRequest $request, $id) {
@@ -205,7 +209,7 @@ class UserController extends Controller
             unset($reports['data']);
             return  $reports;    
         }else{
-            return view('admin.user.report', ['basic' => Basic ::find($id), 'user'=> Auth::admin()->get()]);
+            return view('admin.user.report', ['basic' => Basic ::find($id), 'user'=> User :: find($id)]);
         }
     }
 
