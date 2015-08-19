@@ -67,6 +67,7 @@ class IdeaController extends Controller
                 $result = $row->toArray();
                 $result['consumable'] = $row->consumable ?$row->consumable->name: '未知';
                 $result['consumption_total'] /= 1000; 
+                $result['cost'] /= 1000; 
                 $result['click_rate'] =0;
                 $result['convert_rate']  =0;
                 if ($result['exhibition_total'] >0) {
@@ -74,6 +75,7 @@ class IdeaController extends Controller
                     $result['convert_rate'] = sprintf('%.2f', $result['open_total'] *1.0/ $result['exhibition_total'] *100) .'%';
                 }
                 $result['consumption_total'] = sprintf('%.3f', $result['consumption_total']); 
+                $result['cost'] = sprintf('%.2f', $result['cost']); 
                 foreach ($total as $key=>$value){
                     $total[$key] += $row[$key];
                 }
@@ -85,6 +87,7 @@ class IdeaController extends Controller
                 $total['click_rate'] = sprintf('%.2f', $total['click_total'] *1.0 / $total['exhibition_total'] *100). '%';
                 $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
                 $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
+                $total['cost'] = sprintf('%.2f', $total['cost']/1000); 
                 $results[] = $total; 
             }
             return ['total'=>$rows->count(), 'rows'=> $results];    
