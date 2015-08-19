@@ -57,11 +57,12 @@ class IdeaController extends Controller
                         DB::raw('sum(download_total) as download_total'), 
                         DB::raw('sum(click_total) as click_total'), 
                         DB::raw('sum(exhibition_total) as exhibition_total'),
+                        DB::raw('sum(cost) as cost'),
                         DB::raw('sum(consumption_total) as consumption_total')
                         )
                 ->orderBy('exhibition_total', 'DESC')
                 ->get();
-            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 'install_total'=>0);
+            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 'install_total'=>0, 'cost'=>0);
             foreach ($rows as $row) {
                 $result = $row->toArray();
                 $result['consumable'] = $row->consumable ?$row->consumable->name: '未知';
