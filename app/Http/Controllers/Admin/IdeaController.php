@@ -93,7 +93,8 @@ class IdeaController extends Controller
             return  $reports;    
         }else{
             return view('admin.idea.report', [
-             'ideas'=> Idea:: where('user_id', Auth::admin()->get()->id)->get(), 
+             //'ideas'=> Idea:: where('user_id', Auth::admin()->get()->id)->get(), 
+             'ideas'=> Idea:: all(), 
              'idea_id'=>$id
              ]);
         }
