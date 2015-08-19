@@ -45,30 +45,27 @@ class IdeaController extends Controller
     public function report(Request $request, $id) {
         $format = $request->input('format');
         if ($format == 'json') {
-            $reports = ConsumptionDaily :: where('idea_id',  $id)
-                ->where('date', $request->input('date'))
+            $results = array();
+            $rows =  ConsumptionDaily:: where('idea_id', $id)
                 ->where('consumable_type', $request->input('consumable_type'))
-                ->select('consumable_type', 'date', 
+                ->where('date', $request->input('date'))
+                ->groupBy('consumable_id')
+                ->groupBy('date')
+                ->select('consumable_type', 'date', 'consumable_id',
                         DB::raw('sum(open_total) as open_total'), 
                         DB::raw('sum(install_total) as install_total'), 
                         DB::raw('sum(download_total) as download_total'), 
                         DB::raw('sum(click_total) as click_total'), 
-                        DB::raw('sum(cost) as cost'), 
                         DB::raw('sum(exhibition_total) as exhibition_total'),
                         DB::raw('sum(consumption_total) as consumption_total')
                         )
-                ->groupBy('date')
-                ->orderBy('date', 'DESC')
-                ->paginate(10)
-                ->toArray();
-
-            $reports['rows'] = $reports['data'];
-            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 
-                    'install_total'=>0, 'click_rate'=>0, 'convert_rate'=>0, 'cost'=>0.0
-                    );
-            foreach ($reports['rows'] as &$result) {
+                ->orderBy('exhibition_total', 'DESC')
+                ->get();
+            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 'install_total'=>0);
+            foreach ($rows as $row) {
+                $result = $row->toArray();
+                $result['consumable'] = $row->consumable ?$row->consumable->name: '未知';
                 $result['consumption_total'] /= 1000; 
-                $result['cost'] /= 1000; 
                 $result['click_rate'] =0;
                 $result['convert_rate']  =0;
                 if ($result['exhibition_total'] >0) {
@@ -77,17 +74,20 @@ class IdeaController extends Controller
                 }
                 $result['consumption_total'] = sprintf('%.3f', $result['consumption_total']); 
                 foreach ($total as $key=>$value){
-                    $total[$key] += $result[$key];
+                    $total[$key] += $row[$key];
                 }
                 $results[] = $result;
             }
             if ($total['exhibition_total'] >0) {
-                $total['date']= '总计';
+                $total['consumable']= '总计';
+                $total['consumption_total'] /= 1000;  
                 $total['click_rate'] = sprintf('%.2f', $total['click_total'] *1.0 / $total['exhibition_total'] *100). '%';
                 $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
                 $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
-                $reports['rows'][] = $total; 
+                $results[] = $total; 
             }
+            return ['total'=>$rows->count(), 'rows'=> $results];    
+
             unset($reports['data']);
             return  $reports;    
         }else{
