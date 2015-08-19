@@ -45,7 +45,7 @@ class IdeaController extends Controller
     public function report(Request $request, $id) {
         $format = $request->input('format');
         if ($format == 'json') {
-            $reports = ConsumptionDaily :: where('user_id',  $id)
+            $reports = ConsumptionDaily :: where('idea_id',  $id)
                 ->where('date', $request->input('date'))
                 ->where('consumable_type', $request->input('consumable_type'))
                 ->select('consumable_type', 'date', 
