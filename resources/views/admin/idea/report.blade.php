@@ -33,11 +33,18 @@
             </div>
             <div class="admin-right">
                 <h3 class="doc-h3">报表</h3>
-                <div class="account"><span><label>广告名称：</label>{{$idea->name}}</span></div>
                 <div class="panel-tbar">
                     <form id="query-form" class="form-inline query" method="get" action="ee">
                          <input type="hidden" name="format" value="json">
-                        <div class="form-group">
+                         <div class="form-group">
+                            <div class="field">
+                                <select name="idea_id" style="width:240px;">
+                                 @foreach($ideas as $idea)
+                                    <option value="{{$idea->id}}" @if($idea->id==$idea->id)selected @endif>{{$idea->name}}</option>
+                                 @endforeach
+                                </select>
+                            </div>
+
                             <div class="field">
                                 <select name="consumable_type" style="width:120px;">
                                     <option value="App\Region">地域</option>

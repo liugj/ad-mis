@@ -213,7 +213,7 @@ Admin.Idea = (function ($) {
     };
     var initFields = function () {
         $("#query-form input[name='date']").datetimepicker({ allowBlank: false, value: new Date().dateFormat('Y-m-d') });
-        $("#query-form select[name='consumable_type']").select2({ minimumResultsForSearch: -1 });
+        $("#query-form select").select2({ minimumResultsForSearch: -1 });
         $("#query-form").submit(function (e) {
             e.preventDefault();
             //initReportList();

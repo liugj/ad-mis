@@ -46,7 +46,7 @@ class IdeaController extends Controller
         $format = $request->input('format');
         if ($format == 'json') {
             $results = array();
-            $rows =  ConsumptionDaily:: where('idea_id', $id)
+            $rows =  ConsumptionDaily:: where('idea_id', $request->input('idea_id'))
                 ->where('consumable_type', $request->input('consumable_type'))
                 ->where('date', $request->input('date'))
                 ->groupBy('consumable_id')
@@ -67,7 +67,6 @@ class IdeaController extends Controller
                 $result = $row->toArray();
                 $result['consumable'] = $row->consumable ?$row->consumable->name: '未知';
                 $result['consumption_total'] /= 1000; 
-                $result['cost'] /= 1000; 
                 $result['click_rate'] =0;
                 $result['convert_rate']  =0;
                 if ($result['exhibition_total'] >0) {
@@ -75,7 +74,6 @@ class IdeaController extends Controller
                     $result['convert_rate'] = sprintf('%.2f', $result['open_total'] *1.0/ $result['exhibition_total'] *100) .'%';
                 }
                 $result['consumption_total'] = sprintf('%.3f', $result['consumption_total']); 
-                $result['cost'] = sprintf('%.2f', $result['cost']); 
                 foreach ($total as $key=>$value){
                     $total[$key] += $row[$key];
                 }
@@ -84,11 +82,9 @@ class IdeaController extends Controller
             if ($total['exhibition_total'] >0) {
                 $total['consumable']= '总计';
                 $total['consumption_total'] /= 1000;  
-                $total['cost'] /= 1000;  
                 $total['click_rate'] = sprintf('%.2f', $total['click_total'] *1.0 / $total['exhibition_total'] *100). '%';
                 $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
                 $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
-                $total['cost'] = sprintf('%.2f', $total['cost']); 
                 $results[] = $total; 
             }
             return ['total'=>$rows->count(), 'rows'=> $results];    
@@ -96,7 +92,10 @@ class IdeaController extends Controller
             unset($reports['data']);
             return  $reports;    
         }else{
-            return view('admin.idea.report', ['idea'=> Idea:: find($id)]);
+            return view('admin.idea.report', [
+             'ideas'=> Idea:: where('user_id', Auth::admin()->get()->id)->get(), 
+             'idea_id'=>$id
+             ]);
         }
     }
 
