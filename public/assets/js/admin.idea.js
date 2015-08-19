@@ -1,4 +1,4 @@
-﻿Admin = {};
+Admin = {};
 
 Admin.Idea = (function ($) {
     var urlIdeaList = "/admin/idea/lists"; //GET参数: status (0:未审核，1:已审核, 2:已禁用, -1:全部); name (创意名称查询)
@@ -57,6 +57,7 @@ Admin.Idea = (function ($) {
                         n.tool_action = "Admin.Idea.auditIdea(" + n.id + ",4,'确定暂停投放?');";
                         n.tool_text = "暂停投放";
                         n.operators = '<a href="javascript:;" class="text-main" onclick="' + 'Admin.Idea.audit(' + n.id + ',3);">设置</a>';
+                        n.operators += ' <a href="/admin/idea/report/'+n.id+'" class="text-main">报表</a>';
                     }
                     if (n.type == "banner_text") {
                         n.content = '<a href="' +n.link + '" alt="'+ n.alt + '" target="_blank">' +n.alt+ '</a>';
@@ -189,18 +190,63 @@ Admin.Idea = (function ($) {
     var delFlowPrice = function (id){
         $('.flow'+id).remove();
     }
+    var initReportList = function () {
+        var options ={
+            url: '/admin/idea/report/34',
+            size: 10,
+            data: function () {
+                return {
+                     date:$('input[name="date"]').val(),
+                     consumable_type:$('select[name="consumable_type"]').val(),
+                     format:'json'
+                  };
+            },
+            onLoad: function (data) {
+                var temp = $("#tempReportItem").html();
+                $("#gridReport tbody").empty();
+                $.each(data, function (i, n) {
+                    $("#gridReport tbody").append(App.template(temp, n));
+                });
+            }
+        };
+        $('#pageReportBt').pager(options);
+    };
+    var initFields = function () {
+        $("#query-form input[name='date']").datetimepicker({ allowBlank: false, value: new Date().dateFormat('Y-m-d') });
+        $("#query-form select[name='consumable_type']").select2({ minimumResultsForSearch: -1 });
+        $("#query-form").submit(function (e) {
+            e.preventDefault();
+            //initReportList();
+            loadReportList();
+        });
+    };
+    var tpReportItem = $("#tempDataItem").html();
+    var loadReportList = function () {
+        $.get(window.location.href, $('#query-form').serialize(), function (data) {
+            $("#gridData tbody").replaceWith('<tbody></tbody>');
+            $.each(data.rows, function (i, n) {
+              $("#gridData tbody").append(App.template(tpReportItem, n));
+           });
+        });
+    };
     return {
         init: function () {
             initIdeaList();
             initSearch();
             initState();
             initDialog();
+           // initFields();
+           // initReportList();
         },
         auditIdea: function (id, status, confirm) {
             auditIdea(id, status, confirm);
         },
         audit: function(id, status){
             audit(id,status);
+        },
+        reportList: function (){
+            initFields();
+            loadReportList();
         },
         lockIdea: function (id) {
             lockIdea(id, 0);

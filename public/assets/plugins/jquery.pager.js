@@ -4,7 +4,6 @@
         this.options = $.extend({}, $.fn.pager.defaults, options);
         this.index = 1;
         this.pageCount = 0;
-
         this.$element.on('click', 'a', $.proxy(this.onClick, this));
         if (this.options.autoLoad) {
             this.load();
@@ -103,7 +102,6 @@
             if (typeof (opts.data) === "function") {
                 baseParams = opts.data(self);
             }
-
             var data = $.extend({ page: index, size: opts.size }, baseParams, data);
 
             opts.onBeforeLoad(data);
@@ -124,13 +122,13 @@
 
     $.fn.pager = function (option, value) {
         var methodReturn;
-
         var $set = this.each(function () {
             var $this = $(this);
-            var data = $this.data("pager");
+            var data  = $this.data("pager");
             var options = typeof option === "object" && option;
-
-            if (!data) $this.data("pager", (data = new Pager(this, options)));
+            if (!data){
+                $this.data("pager", (data = new Pager(this, options)));
+            }
             if (typeof option === "string") methodReturn = data[option](value);
         });
 

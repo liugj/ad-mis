@@ -116,6 +116,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
         Route::get('/user/report/{id}', ['as'=>'users', 'uses'=>'UserController@report'])->where('id', '[0-9]+'); 
         Route::get('/user/consume/{id}', ['as'=>'users', 'uses'=>'UserController@consume'])->where('id', '[0-9]+'); 
         Route::get('/user/recharge/{id}', ['as'=>'users', 'uses'=>'UserController@recharge'])->where('id', '[0-9]+'); 
+        Route::get('/idea/report/{id}', ['as'=>'ideas', 'uses'=>'IdeaController@report'])->where('id', '[0-9]+'); 
         Route::post('/user/destroy/{id}', ['as'=>'users', 'uses'=>'UserController@destroy'])->where('id', '[0-9]+'); 
 
         Route::get('/ideas', ['as'=>'users', 'uses'=>'IdeaController@index']); 
