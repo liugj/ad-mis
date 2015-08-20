@@ -65,7 +65,7 @@
             <input name="flow_price[{{$flow->id}}][flow_id]" value="{{$flow->id}}" type="hidden" >
         </div>
         <div class="input-group">
-        <input type="text" class="input" name="flow_price[{{$flow->id}}][price]" value="{{$flow->pivot->price}}" style="width:100px"><span class="addon">元/天</span>
+        <input type="text" class="input" name="flow_price[{{$flow->id}}][price]" value="{{$flow->pivot->price}}"><span class="addon">元/天</span>
         <button class="button" type="button" onClick="Admin.Idea.delFlowPrice({{$flow->id}});">删除</button>
         </div>
      </div>   
@@ -77,7 +77,7 @@
             <input name="flow_price[{id}][flow_id]" value="{id}" type="hidden" >
         </div>
         <div class="input-group">
-        <input type="text" class="input" name="flow_price[{id}][price]" value="" style="width:100px"><span class="addon">元/天</span>
+        <input type="text" class="input" name="flow_price[{id}][price]" value=""><span class="addon">元/天</span>
         <button class="button" type="button" onClick="Admin.Idea.delFlowPrice({id});">删除</button>
         </div>
      </div>   
