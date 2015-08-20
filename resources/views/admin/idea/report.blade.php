@@ -40,7 +40,8 @@
                             <div class="field">
                                 <select name="idea_id" style="width:240px;">
                                  @foreach($ideas as $idea)
-                                    <option value="{{$idea->id}}" @if($idea->id==$idea->id)selected @endif>{{$idea->name}}</option>
+                                    <option value="{{$idea->id}}" @if($idea->id==$idea_id)selected @endif>{{$idea->name}}</option>
+
                                  @endforeach
                                 </select>
                             </div>
