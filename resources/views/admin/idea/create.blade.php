@@ -44,12 +44,12 @@
                 </select>
         </div>
     </div>
-    <div class="form-group pass">
+    <div class="form-group pass append">
         <div class="label">
             <label for="flow">流量分组</label>
         </div>
         <div class="field">
-                <select class="select2" style="width:200px" id="flow" name="flow[]" multiple="true">
+                <select class="select2" style="width:395px" id="flow" name="flow[]" multiple="true">
                 @foreach($flows as $flow)
                 <option value="{{$flow->id}}">{{$flow->name}} [{{$flow->min}}-{{$flow->max}}]</option>
                 @endforeach
@@ -62,10 +62,10 @@
     <div class="form-group pass flow price flow{{$flow->id}}">
         <div class="label">
             <label for="flow">{{$flow->name}} [{{$flow->min}} - {{$flow->max}}]的竞价</label>
-            <input name="flow_price[{{$flow->id}}][flow_id]" value="{{$flow->id}}" type="hidden" >
         </div>
         <div class="input-group">
-        <input type="text" class="input" name="flow_price[{{$flow->id}}][price]" value="{{$flow->pivot->price}}"><span class="addon">元/天</span>
+        <input name="flow_price[{{$flow->id}}][flow_id]" value="{{$flow->id}}" type="hidden" >
+        <input type="text" class="input" name="flow_price[{{$flow->id}}][price]" value="{{$flow->pivot->price}}" style="width:395px"><span class="addon">元/天</span>
         <button class="button" type="button" onClick="Admin.Idea.delFlowPrice({{$flow->id}});">删除</button>
         </div>
      </div>   
@@ -74,10 +74,10 @@
     <div class="form-group pass flow price flow{id}">
         <div class="label">
             <label for="flow">{flow_name}的竞价</label>
-            <input name="flow_price[{id}][flow_id]" value="{id}" type="hidden" >
         </div>
         <div class="input-group">
-        <input type="text" class="input" name="flow_price[{id}][price]" value=""><span class="addon">元/天</span>
+            <input name="flow_price[{id}][flow_id]" value="{id}" type="hidden" >
+        <input type="text" class="input" name="flow_price[{id}][price]" value="" style="width:400px"><span class="addon">元/天</span>
         <button class="button" type="button" onClick="Admin.Idea.delFlowPrice({id});">删除</button>
         </div>
      </div>   

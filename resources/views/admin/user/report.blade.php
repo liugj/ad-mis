@@ -41,7 +41,7 @@
                            <th>点击率</th>
                            <th>转化数</th>
                            <th>转化率</th>
-                           <th>消费(元)</th>
+                           <th>消费@if(Auth :: admin()->get()->role == 'admin')/成本@endif(元)</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

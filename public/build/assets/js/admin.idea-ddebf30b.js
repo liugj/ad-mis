@@ -178,7 +178,7 @@ Admin.Idea = (function ($) {
         if ($('#flow').val()){
             $.each($('#flow').val(),function(i, n){
                 if ($('.flow'+n).length==0) {
-                    $('#flow').parent().parent().append(App.template(temp, {
+                    $('.append').after(App.template(temp, {
                         flow_name: $('#flow option[value='+ n +']').text(),
                         id: n
                         })
