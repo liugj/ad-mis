@@ -39,6 +39,8 @@
                            <th>展现数</th>
                            <th>点击数</th>
                            <th>点击率</th>
+                           <th>下载数</th>
+                           <th>安装数</th>
                            <th>转化数</th>
                            <th>转化率</th>
                            <th>消费@if(Auth :: admin()->get()->role == 'admin') /成本 @endif （元）</th>
@@ -56,6 +58,8 @@
                              <td class="text-center">{exhibition_total}</td>
                              <td class="text-right">{click_total}</td>
                              <td class="text-right">{click_rate}</td>
+                             <td class="text-right">{download_total}</td>
+                             <td class="text-right">{install_total}</td>
                              <td class="text-right">{open_total}</td>
                              <td class="text-right">{convert_rate}</td>
                              <td class="text-right">{consumption_total}</td>
