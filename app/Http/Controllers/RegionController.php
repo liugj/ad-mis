@@ -31,7 +31,7 @@ class RegionController extends Controller
     }
     public function lists()
     {
-        return Region :: all();
+        return Region :: orderBy('id', 'asc')->get();
     }
     /**
      * Store a newly created resource in storage.
