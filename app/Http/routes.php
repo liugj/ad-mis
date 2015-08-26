@@ -137,5 +137,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
         Route::get('/administrator/create', ['as'=>'administrators', 'uses'=>'AdministratorController@create']); 
         Route::post('/administrator/store', ['as'=>'administrators', 'uses'=>'AdministratorController@store']); 
         Route::get('/administrator/edit/{id}', ['as'=>'administrators', 'uses'=>'AdministratorController@edit'])->where('id', '[0-9]+'); 
+        Route::get('/medias', ['as'=>'medias', 'uses'=>'MediaController@index']); 
+        Route::get('/media/lists', ['as'=>'medias', 'uses'=>'MediaController@lists']); 
+        Route::get('/media/create', ['as'=>'medias', 'uses'=>'MediaController@create']); 
+        Route::post('/media/store', ['as'=>'medias', 'uses'=>'MediaController@store']); 
+        Route::get('/media/edit/{id}', ['as'=>'medias', 'uses'=>'MediaController@edit'])->where('id', '[0-9]+'); 
     });
 });

@@ -10,6 +10,8 @@ class Media extends Model
 {
     //
     protected $table= 'medias';
+    protected $fillable =['name', 'classify_id', 'classify_id_1', 'classify_id_3','user_id', 'comment', 'is_star', 'status'];
+    protected $appends = ['statusName'];
     public function consumption_daily()
     {
         return $this->morphMany('App\ConsumptionDaily', 'consumable');
@@ -60,4 +62,30 @@ class Media extends Model
         return $results;
 
   }
+    public function classify(){
+        return $this->belongsTo('App\Classification');
+    }
+    public function classify_1(){
+        return $this->belongsTo('App\Classification','classify_id_1', 'id');
+    }
+    public function classify_3(){
+        return $this->belongsTo('App\Classification', 'classify_id_3', 'id');
+    }
+    public function devices(){
+        return $this->belongsToMany('App\Device')->withPivot(['adx','group']);
+    }
+   public  static function create(array $attributes=[]){
+        $media = parent ::create($attributes);
+        $media->devices()->attach($attributes['device_media']);
+        return $media;
+    }
+    function update(array $attributes=[]) {
+        $update = parent :: update($attributes);
+        $this->devices()->detach();
+        $this->devices()->attach($attributes['device_media']);
+        return $update;
+    }
+    function getStatusNameAttribute(){
+        return  $this->attributes['status'] == 'Y' ? '启用': '禁用';
+    }
 }

@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\Index::class,
         \App\Console\Commands\ConsumptionHourly::class,
     ];
 
@@ -28,5 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('consumption_hourly')
             ->cron('10 */1 * * *')
             ->sendOutputTo(storage_path(). '/logs/cron.log');
+            
+        $schedule->command('index')
+            ->cron('*/10 * * * *');
     }
 }

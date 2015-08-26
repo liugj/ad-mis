@@ -1,4 +1,4 @@
-<?php $menu    =[2=>'/admin/ideas', 1=>'/admin/users', 3=>'/admin/administrators']; 
+<?php $menu    =[2=>'/admin/ideas', 1=>'/admin/users', 3=>'/admin/administrators', 4=>'/admin/medias']; 
       $role   = Auth :: admin()->get()->role; 
       $grants =  \App\Role :: $roles_grants[$role];
 ?>
