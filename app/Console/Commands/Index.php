@@ -42,7 +42,7 @@ class Index extends Command implements SelfHandling
         //
         
         if ('prod' == env('APP_ENV')){
-            $cmd = sprintf('%s  --source=mysql://%s:%s@127.0.0.1:%d/mis --sql="select dm.id as id , name,comment,device_id,media_id,classify_id, classify_id_1,classify_id_3,group from medias  as m join device_media  as dm on dm.media_id=m.id" media  --rebuild',self :: INDEXCMD, env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_PORT'));
+            $cmd = sprintf('%s  --source=mysql://%s:%s@127.0.0.1:%d/mis --sql="select dm.id as id , name,comment,device_id,media_id,classify_id, classify_id_1,classify_id_3, dm.* from medias  as m join device_media  as dm on dm.media_id=m.id" media  --rebuild',self :: INDEXCMD, env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_PORT'));
             system($cmd);
             log :: info (env('APP_ENV'). ' '. $cmd);
             }else{
