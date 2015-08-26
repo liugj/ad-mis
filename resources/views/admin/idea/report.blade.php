@@ -48,11 +48,9 @@
 
                             <div class="field">
                                 <select name="consumable_type" style="width:120px;">
-                                    <option value="App\Region">地域</option>
-                                    <option value="App\Classification">app类型</option>
-                                    <option value="App\Operator">运营商</option>
-                                    <option value="App\NetWork">网络类型</option>
-                                    <option value="App\Device">设备类型</option>
+                                @foreach (App\ConsumptionDaily :: $Types as $key=>$value)
+                                    <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
                                     <!--
                                     <option value="App\Industry">行业</option>
                                     <option value="App\Os">操作系统</option>
