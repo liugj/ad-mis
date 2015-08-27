@@ -217,8 +217,9 @@ class ConsumptionHourly extends Command implements SelfHandling
         }
         foreach ($stats as &$stat) {
             foreach (self ::$statsCountUniqItems as $key=>$value) {
-                if (isset($stat[$value]))  $stat[$value] = count($stat[$value]);
-                else $stat[$value] = 0;
+                if (isset($stat[$value])){
+                      $stat[$value] = count($stat[$value]);
+                }else $stat[$value] = 0;
             }
         }
         return $stats;
