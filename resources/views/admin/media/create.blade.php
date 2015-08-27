@@ -60,7 +60,15 @@
             <label for="appID">APPID</label>
         </div>
         <div class="field">
-            <input type="text" class="input" style="width:80%;display:inline-block" name="device_media[{{$device->id}}][adx]"  value="{{$device->pivot->adx}}" data-val="true" data-val-required="APPID不能为空" /> <button class="button" type="button" onClick="Admin.Media.deleteDevice({{$device->id}});">删除</button>
+            <input type="text" class="input" style="width:80%;display:inline-block" name="device_media[{{$device->id}}][adx]"  value="{{$device->pivot->adx}}" data-val="true" data-val-required="APPID不能为空" />
+        </div>
+    </div>
+    <div class="form-group device{{$device->id}}">
+        <div class="label">
+            <label for="link">链接</label>
+        </div>
+        <div class="field">
+            <input type="text" class="input" style="width:80%;display:inline-block" name="device_media[{{$device->id}}][link]"  value="{{$device->pivot->link}}" data-val="true" data-val-required="链接不能为空" /> <button class="button" type="button" onClick="Admin.Media.deleteDevice({{$device->id}});">删除</button>
         </div>
     </div>
     @endforeach
@@ -124,7 +132,15 @@
             <label for="appID">APPID</label>
         </div>
         <div class="field">
-            <input type="text" class="input" style="width:80%;display:inline-block" name="device_media[{id}][adx]"  value="" data-val="true" data-val-required="APPID不能为空" /> <button class="button" type="button" onClick="Admin.Media.deleteDevice({id});">删除</button>
+            <input type="text" class="input" style="width:80%;display:inline-block" name="device_media[{id}][adx]"  value="" data-val="true" data-val-required="APPID不能为空" />
+        </div>
+    </div>
+    <div class="form-group device{id}">
+        <div class="label">
+            <label for="link">链接</label>
+        </div>
+        <div class="field">
+            <input type="text" class="input" style="width:80%;display:inline-block" name="device_media[{id}][link]"  value="" data-val="true" data-val-required="链接不能为空" /> <button class="button" type="button" onClick="Admin.Media.deleteDevice({id});">删除</button>
         </div>
     </div>
    </script>

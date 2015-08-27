@@ -72,7 +72,7 @@ class Media extends Model
         return $this->belongsTo('App\Classification', 'classify_id_3', 'id');
     }
     public function devices(){
-        return $this->belongsToMany('App\Device')->withPivot(['adx','group']);
+        return $this->belongsToMany('App\Device')->withPivot(['adx','group','link']);
     }
    public  static function create(array $attributes=[]){
         $media = parent ::create($attributes);
