@@ -25,6 +25,27 @@ class ConsumptionHourly extends Command implements SelfHandling
      * @var string
      */
     protected $description = 'Consumption Hourly';
+    static $statsItems = ['App\Region'         => 'region', 
+                          'App\Classification' => 'classification',
+                          'App\Operator'       => 'operator', 
+                          'App\Device'         => 'device_type', 
+                          'App\Network'        => 'network',
+                          'App\Media'          => 'media', 
+                          'App\Manufacturer'   => 'manufacturer'
+                          ];
+    static $statsCountItems = ['show'     => 'exhibition_total', 
+                               'click'    => 'click_total', 
+                               'download' => 'download_total',
+                               'open'     => 'open_total', 
+                               'install'  => 'install_total', 
+                               'price'    => 'consumption_total', 
+                               'cost'     => 'cost'
+                            ];
+    static $statsCountUniqItems = [ 
+                               'download' => 'download_total',
+                               'open'     => 'open_total', 
+                               'install'  => 'install_total', 
+                            ];
     /**
      * Create a new command instance.
      *
@@ -104,7 +125,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                                 //$items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
                             }
                             else $items[$id][$item['type']] = 1;
-                            foreach (['region', 'classification', 'operator', 'device_type', 'network'] as $key) {
+                            foreach (array_merge(array_values(self :: $statsItems), ['dpid']) as $key) {
                                 if (isset($item[$key]) && !isset($items[$id][$key]))  $items[$id][$key] = $item[$key] ;
                             }
                         }else{
@@ -112,7 +133,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                             $items [$id] = $item;
                             if ($item['type'] =='win_notice'){
                                 //$item[$id]['cost'] = 0.0;//解析win_notice
-                               // $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
+                                // $items[$id]['cost'] = $this->_cost($item['win_price']); //解析win_notice
                             }
                             else $items[$id][$item['type']] = 1;
                         }
@@ -121,11 +142,13 @@ class ConsumptionHourly extends Command implements SelfHandling
             }
             fclose($fp);
         }
+
         if (1) {
             foreach ($items as $sessionId => &$item) {
-if (!isset($item['idea_id'])) continue;
-               list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
-            //   list($item['price'], $item['cost1']) = $this->_charge2($item['idea_id'], $sessionId);
+                if (!isset($item['idea_id'])) continue;
+                if (!isset($item['dpid'])) $item['dpid'] = '';
+                list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
+                //   list($item['price'], $item['cost1']) = $this->_charge2($item['idea_id'], $sessionId);
             }
         }else{
             $charges = $this->_charge($hour);
@@ -136,7 +159,7 @@ if (!isset($item['idea_id'])) continue;
         $stats = [];
         foreach ($items  as $sessionId=>$item) {
             if (!isset($item['idea_id'])) continue;
-            foreach (['App\Region'=>'region', 'App\Classification'=>'classification', 'App\Operator'=>'operator', 'App\Device'=>'device_type', 'App\Network'=>'network','App\Media'=>'media', 'App\Manufacturer'=>'manufacturer'] as $consumable_type=>$consumable_key) {
+            foreach (self :: $statsItems as $consumable_type=>$consumable_key) {
                 $consumable_value = isset($item[$consumable_key]) && $item[$consumable_key]!= 'None' ? $item[$consumable_key] : '0' ;
                 if ($consumable_key == 'region') {
                     if (strpos($consumable_value, ',') == false) {
@@ -144,27 +167,33 @@ if (!isset($item['idea_id'])) continue;
                         $parent_id     = 0;
                     }else{
                         list($parent_id_t, $consumable_id_t) = explode(',', $consumable_value);
-                        $parent_id = min($parent_id_t, $consumable_id_t);
+                        $parent_id     = min($parent_id_t, $consumable_id_t);
                         $consumable_id = max($parent_id_t, $consumable_id_t);
                     }
                     $stat_key = sprintf('%d_%s_%d_%d', $item['idea_id'], $consumable_type, $parent_id, $consumable_id); 
-                }elseif ($consumable_key== 'classification') {
+                }elseif ($consumable_key == 'classification') {
                     $stat_key = sprintf('%d_%s_%d', $item['idea_id'], $consumable_type, $consumable_value); 
 
                 }else{
                     $stat_key = sprintf('%d_%s_%s', $item['idea_id'], $consumable_type, $consumable_value); 
                 }
+
                 if (isset($stats[$stat_key])) {
-                    foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'download'=>'download_total', 'open'=>'open_total', 
-                            'install'=>'install_total', 'price'=>'consumption_total', 'cost'=>'cost'] as $key=>$value) {
+                    foreach (self :: $statsCountItems  as $key=>$value) {
                         if (isset($item[$key]) && ($key == 'price' || $key=='cost')) {
                             $stats[$stat_key][$value] += $item[$key];
-                        }elseif (isset($item[$key])){
+                        }elseif (isset($item[$key]) && !isset(self ::$statsCountUniqItems[$key])){
                             $stats[$stat_key][$value] += 1;
+                        }elseif (isset($item[$key]) && isset(self ::$statsCountUniqItems[$key])) {
+                            $stats[$stat_key][$value][$item['dpid']] = 1;
                         }
                     }
                 }else{
-                    $stats[$stat_key] = ['idea_id' => $item['idea_id'], 'consumable_id'=> $consumable_value, 'consumable_type'=>$consumable_type ];
+                    $stats[$stat_key] = [ 
+                                         'idea_id'         => $item['idea_id'], 
+                                         'consumable_id'   => $consumable_value, 
+                                         'consumable_type' => $consumable_type 
+                                         ];
                     if ($consumable_key == 'region') {
                         $stats[$stat_key]['consumable_id'] = $consumable_id;
                         $stats[$stat_key]['parent_id']    = $parent_id;
@@ -172,17 +201,24 @@ if (!isset($item['idea_id'])) continue;
                         $stats[$stat_key]['consumable_id'] = $consumable_value;
                     }
 
-                    foreach (['show'=>'exhibition_total', 'click'=>'click_total', 'download'=>'download_total','open'=>'open_total', 
-                            'cost'=>'cost', 'install'=>'install_total', 'price'=>'consumption_total'] as $key=>$value) {
-                        if (isset($item[$key]) && ($key == 'price' || $key=='cost')) {
+                    foreach (self :: $statsCountItems  as $key=>$value) {
+                        if (isset($item[$key]) && ($key == 'price' || $key == 'cost')) {
                             $stats[$stat_key][$value] = $item[$key];
-                        }elseif (isset($item[$key])){
+                        }elseif (isset($item[$key]) && !isset(self ::$statsCountUniqItems[$key])){
                             $stats[$stat_key][$value] = 1;
-                        }else{
+                        }elseif (isset($item[$key]) && isset(self ::$statsCountUniqItems[$key])){
+                            $stats[$stat_key][$value][$item['dpid']] = 1;
+                        }elseif(!isset(self ::$statsCountUniqItems[$key])){
                             $stats[$stat_key][$value] = 0;
                         }
                     }
                 }
+            }
+        }
+        foreach ($stats as &$stat) {
+            foreach (self ::$statsCountUniqItems as $key=>$value) {
+                if (isset($stat[$value]))  $stat[$value] = count($stat[$value]);
+                else $stat[$value] = 0;
             }
         }
         return $stats;
