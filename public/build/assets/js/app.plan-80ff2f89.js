@@ -264,7 +264,11 @@ App.Plan = (function ($) {
                         dataType: 'json',
                         data: function (params) {
                             return {
-                                device:  $('#device').val(),
+                                device: $('#device').val(),
+                                group: $('#group').val(),
+                                classify_id: ($('#classify_id').val()||[]).join(','),
+                                classify_id_1: ($('#classify_sub_id').val()||[]).join(','),
+                                classify_id_3: ($('#classify_grandson_id').val()||[]).join(','),
                                 q: params
                             };
                         },

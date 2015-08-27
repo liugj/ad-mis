@@ -37,8 +37,21 @@ class Media extends Model
                     } else {
                     $search->setQuery($q);
          }
-          if ($request->input('device')) {
+         if ($request->input('device')) {
               $search->addQueryString('device_id:'. Device:: getDeviceIdByName($request->input('device')));
+         }
+         if ($request->input('group')) {
+              $search->addQueryString('group:'. $request->input('group'));
+         }
+         foreach (['classify_id', 'classify_id_1', 'classify_id_3'] as $classify) {
+             if ($request->input($classify)) {
+                $items = explode(',', $request->input($classify));
+                $s    = [];
+                foreach ($items as $item ){
+                    $s [] = sprintf('%s:%s', $classify, $item);
+                }
+                $search->addQueryString(implode(' OR ', $s));
+             }
          }
          // set sort
          if (($pos = strrpos($s, '_')) !== false) {
