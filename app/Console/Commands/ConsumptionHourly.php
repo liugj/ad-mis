@@ -43,6 +43,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                                'cost'     => 'cost'
                             ];
     static $statsCountUniqItems = [ 
+                               'click'    => 'click_total', 
                                'download' => 'download_total',
                                'open'     => 'open_total', 
                                'install'  => 'install_total', 
