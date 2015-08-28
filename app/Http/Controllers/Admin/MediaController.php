@@ -26,9 +26,18 @@ class MediaController extends Controller
         return view('admin.media.index');
     }
     function lists(Request $request) {
-        $medias = Media :: with(['devices','classify_1','classify', 'classify_3'])->orderBy ('updated_at', 'DESC')
-            ->paginate($request->input('size', 20))
-            ->toArray();
+        if ($request->input('q')) {
+            $mediasIds = Media :: search($request);
+            $medias = Media :: with(['devices','classify_1','classify', 'classify_3'])
+                ->whereIn('medias.id', array_column($mediasIds, 'id'))
+            //    ->orderBy ('updated_at', 'DESC')
+                ->paginate($request->input('size', 20))
+                ->toArray();
+        }else{
+            $medias = Media :: with(['devices','classify_1','classify', 'classify_3'])->orderBy ('updated_at', 'DESC')
+                ->paginate($request->input('size', 20))
+                ->toArray();
+        }
         $medias['rows'] = $medias['data'];
         unset($medias['data']);
         return $medias;

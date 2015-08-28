@@ -10,7 +10,7 @@ Admin.Media = (function ($) {
             if (event.keyCode == 13) {
                 var value = $.trim($(this).val());
                 if (value.length > 0) {
-                    $("#pageMediaBt").pager("load", { name: value });
+                    $("#pageMediaBt").pager("load", { q: value });
                 } else {
                     $("#pageMediaBt").pager("load");
                 }

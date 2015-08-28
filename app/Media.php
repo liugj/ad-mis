@@ -17,7 +17,7 @@ class Media extends Model
         return $this->morphMany('App\ConsumptionDaily', 'consumable');
     }
     static function search($request) {
-        $__ = array('q', 'm', 'f', 's', 'p', 'ie', 'oe', 'syn', 'xml');
+        $__ = array('q', 'm', 'f', 's', 'p', 'ie', 'oe', 'syn', 'xml','size');
         foreach ($__ as $_) {
             $$_ = $request->input($_, '');
         }
@@ -62,16 +62,16 @@ class Media extends Model
 
          // set offset, limit
          $p = max(1, intval($p));
-         $n = XSSearch::PAGE_SIZE;
+         $n = $size ?: XSSearch::PAGE_SIZE;
          $search->setLimit($n, ($p - 1) * $n);
          $docs = $search->search();
          $results = [];
          foreach ($docs as $doc) {
-            $result = [];
-            $result['id']    = $doc->media_id;
-            $result['text']  = $doc->name;
-            $results[] = $result;
-        }
+             $result = [];
+             $result['id']    = $doc->media_id;
+             $result['text']  = $doc->name;
+             $results[] = $result;
+         }
         return $results;
 
   }
