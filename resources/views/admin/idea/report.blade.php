@@ -51,6 +51,7 @@
                                 @foreach (App\ConsumptionDaily :: $Types as $key=>$value)
                                     <option value="{{$key}}">{{$value}}</option>
                                 @endforeach
+                                    <option value="App\Flow">流量分组</option>
                                     <!--
                                     <option value="App\Industry">行业</option>
                                     <option value="App\Os">操作系统</option>

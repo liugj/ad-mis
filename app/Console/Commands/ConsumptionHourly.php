@@ -31,6 +31,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                           'App\Device'         => 'device_type', 
                           'App\Network'        => 'network',
                           'App\Media'          => 'media', 
+                          'App\Flow'            => 'flow', 
                           'App\Manufacturer'   => 'manufacturer'
                           ];
     static $statsCountItems = ['show'     => 'exhibition_total', 
