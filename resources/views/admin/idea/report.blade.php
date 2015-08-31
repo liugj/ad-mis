@@ -85,6 +85,7 @@
                                   <th>安装数</th>
                                   <th>转化数</th>
                                   <th>转化率</th>
+                                            <th>竞价(元)</th>
                                             <th>消费金额(元)</th>
                                             <th>成本(元)</th>
                                         </tr>
@@ -105,6 +106,7 @@
                              <td class="text-right">{install_total}</td>
                              <td class="text-right">{open_total}</td>
                              <td class="text-right">{convert_rate}</td>
+                             <td class="text-right">{bid_total}</td>
                              <td class="text-right">{consumption_total}</td>
                              <td class="text-right">{cost}</td>
         </tr>

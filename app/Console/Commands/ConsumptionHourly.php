@@ -40,10 +40,11 @@ class ConsumptionHourly extends Command implements SelfHandling
                                'open'     => 'open_total', 
                                'install'  => 'install_total', 
                                'price'    => 'consumption_total', 
-                               'cost'     => 'cost'
+                               'cost'     => 'cost',
+                               'bid'      => 'bid_total'
                             ];
     static $statsCountUniqItems = [ 
-                               'click'    => 'click_total', 
+                               //'click'    => 'click_total', 
                                'download' => 'download_total',
                                'open'     => 'open_total', 
                                'install'  => 'install_total', 
@@ -144,14 +145,35 @@ class ConsumptionHourly extends Command implements SelfHandling
             }
             fclose($fp);
         }
+        $flows = DB :: table('flow_idea')->join('flows',  'flows.id', '=', 'flow_idea.flow_id')
+                    //->select('flows.*', 'flow_idea.idea_id', 'flow_idea.price', 'flows.id as flow_id')
+                    ->get();
+        $score2flows = [];
+        foreach ($flows as $flow) {
+            if (!isset($score2flows[$flow->idea_id])) {
+                $score2flows[$flow->idea_id] =  [$flow];
+            }else{
+                array_push($score2flows[$flow->idea_id],  $flow);
+            }
+        }
 
         if (1) {
             foreach ($items as $sessionId => &$item) {
                 if (!isset($item['idea_id'])) continue;
                 if (!isset($item['dpid'])) $item['dpid'] = '';
+                if (!isset($item['flow'])) $item['flow'] = '0';
                 list($item['price'], $item['cost']) = $this->_charge2($item['idea_id'], $sessionId);
-                //   list($item['price'], $item['cost1']) = $this->_charge2($item['idea_id'], $sessionId);
+                $score = $item['flow'];
+                $item['flow'] = 0;
+                if (isset($score2flows[$flow->idea_id])) {
+                    foreach ($score2flows[$flow->idea_id]  as $flow) {
+                        if ($flow->min <=$score && $flow->max > $score) {
+                            $item['flow'] = $flow->flow_id;
+                        }
+                    }
+                }
             }
+
         }else{
             $charges = $this->_charge($hour);
             foreach ($charges as $sessionId =>$price) {
@@ -182,7 +204,7 @@ class ConsumptionHourly extends Command implements SelfHandling
 
                 if (isset($stats[$stat_key])) {
                     foreach (self :: $statsCountItems  as $key=>$value) {
-                        if (isset($item[$key]) && ($key == 'price' || $key=='cost')) {
+                        if (isset($item[$key]) && ($key == 'price' || $key=='cost' || $key == 'bid')) {
                             $stats[$stat_key][$value] += $item[$key];
                         }elseif (isset($item[$key]) && !isset(self ::$statsCountUniqItems[$key])){
                             $stats[$stat_key][$value] += 1;
@@ -204,7 +226,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                     }
 
                     foreach (self :: $statsCountItems  as $key=>$value) {
-                        if (isset($item[$key]) && ($key == 'price' || $key == 'cost')) {
+                        if (isset($item[$key]) && ($key == 'price' || $key == 'cost' || $key == 'bid')) {
                             $stats[$stat_key][$value] = $item[$key];
                         }elseif (isset($item[$key]) && !isset(self ::$statsCountUniqItems[$key])){
                             $stats[$stat_key][$value] = 1;

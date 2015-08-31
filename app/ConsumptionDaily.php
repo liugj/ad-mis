@@ -8,7 +8,7 @@ class ConsumptionDaily extends Model
 {
     //
     protected $fillable= ['idea_id', 'plan_id', 'user_id', 'datetime', 'date', 'consumable_type', 
-              'consumable_id', 'consumption_total', 'click_total', 'install_total', 
+              'consumable_id', 'consumption_total', 'click_total', 'install_total', 'bid_total',
               'open_total', 'download_total', 'exhibition_total', 'parent_id', 'cost'
                   ];
     protected $table = 'consumptions_daily';

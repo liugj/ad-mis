@@ -58,16 +58,18 @@ class IdeaController extends Controller
                         DB::raw('sum(click_total) as click_total'), 
                         DB::raw('sum(exhibition_total) as exhibition_total'),
                         DB::raw('sum(cost) as cost'),
+                        DB::raw('sum(bid_total) as bid_total'),
                         DB::raw('sum(consumption_total) as consumption_total')
                         )
                 ->orderBy('exhibition_total', 'DESC')
                 ->get();
-            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 'install_total'=>0, 'cost'=>0);
+            $total  =array('exhibition_total'=>0, 'click_total'=>0, 'open_total'=>0, 'consumption_total'=>0, 'download_total'=>0, 'install_total'=>0, 'cost'=>0, 'bid_total'=>0);
             foreach ($rows as $row) {
                 $result = $row->toArray();
                 $result['consumable'] = $row->consumable ?$row->consumable->name: '未知';
                 $result['consumption_total'] /= 1000; 
                 $result['cost'] /= 1000; 
+                $result['bid_total'] /= 1*(1000*10000); 
                 $result['click_rate'] =0;
                 $result['convert_rate']  =0;
                 if ($result['exhibition_total'] >0) {
@@ -76,6 +78,7 @@ class IdeaController extends Controller
                 }
                 $result['consumption_total'] = sprintf('%.3f', $result['consumption_total']); 
                 $result['cost'] = sprintf('%.2f', $result['cost']); 
+                $result['bid_total'] = sprintf('%.2f', $result['bid_total']); 
                 foreach ($total as $key=>$value){
                     $total[$key] += $row[$key];
                 }
@@ -88,6 +91,7 @@ class IdeaController extends Controller
                 $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
                 $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
                 $total['cost'] = sprintf('%.2f', $total['cost']/1000); 
+                $total['bid_total'] = sprintf('%.2f', $total['bid_total']/(1000*10000)); 
                 $results[] = $total; 
             }
             return ['total'=>$rows->count(), 'rows'=> $results];    
