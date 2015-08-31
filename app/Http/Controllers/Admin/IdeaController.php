@@ -75,7 +75,7 @@ class IdeaController extends Controller
                 if ($result['exhibition_total'] >0) {
                     $result['click_rate'] = sprintf('%.2f', $result['click_total'] *1.0 / $result['exhibition_total'] *100). '%';
                     $result['convert_rate'] = sprintf('%.2f', $result['open_total'] *1.0/ $result['exhibition_total'] *100) .'%';
-                    $result['bid_total'] = sprintf('%.2f', $result['bid_total']*100*1.0/ $result['exhibition_total']); 
+                    $result['bid_total'] = sprintf('%.4f', $result['bid_total']*100*1.0/ $result['exhibition_total']/1000); 
                 }
                 $result['consumption_total'] = sprintf('%.3f', $result['consumption_total']); 
                 $result['cost'] = sprintf('%.2f', $result['cost']); 
@@ -91,7 +91,7 @@ class IdeaController extends Controller
                 $total['convert_rate'] = sprintf('%.4f', $total['open_total'] *1.0/ $total['exhibition_total'] *100) .'%';
                 $total['consumption_total'] = sprintf('%.2f', $total['consumption_total']); 
                 $total['cost'] = sprintf('%.2f', $total['cost']/1000); 
-                $total['bid_total'] = sprintf('%.2f', $total['bid_total']/10000 *100/$total['exhibition_total']); 
+                $total['bid_total'] = sprintf('%.4f', $total['bid_total']/10000 *100/$total['exhibition_total'] /1000); 
                 $results[] = $total; 
             }
             return ['total'=>$rows->count(), 'rows'=> $results];    
