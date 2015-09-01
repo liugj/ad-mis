@@ -67,7 +67,7 @@ class UserController extends Controller
         //
         $id      = $request->input('id', 0) ;
         $validator = [
-            'email'    => 'required|max:64|email|unique:administrators,email,' .($id>0?$id: 'NULL') . ',id',
+            'email'    => 'required|max:64|email|unique:users,email,' .($id>0?$id: 'NULL') . ',id',
             'name'     => 'required|min:2|max:64',
             'password'   => 'required|min:6|max:32|confirmed',
             'company'   =>'required|min:2|max:128',
