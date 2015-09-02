@@ -39,18 +39,27 @@ class UserController extends Controller
     }
     public function lists(Request $request) {
         $status = $request->input('status', 0);
-        $users = User ::with('basic')
-            ->where('administrator_id',  Auth :: admin()->get()->id)
-            ->where('status', $status)
-            ->orderBy ('updated_at', 'DESC')
-            ->paginate(10)
-            ->toArray();
+        if (Auth :: admin()->get() ->role == 'admin') {
+            $users = User ::with('basic')
+            //    ->where('administrator_id',  Auth :: admin()->get()->id)
+                ->where('status', $status)
+                ->orderBy ('updated_at', 'DESC')
+                ->paginate(10)
+                ->toArray();
+        }else{
+            $users = User ::with('basic')
+                ->where('administrator_id',  Auth :: admin()->get()->id)
+                ->where('status', $status)
+                ->orderBy ('updated_at', 'DESC')
+                ->paginate(10)
+                ->toArray();
+        }
         $users['rows'] = $users['data'];
         foreach ($users['rows'] as &$row){
             $row['basic']['consume'] = Basic :: find($row['id'])->consumeTotal();
             if (Auth:: admin()->get()->role =='admin') {
-                  $cost= Basic :: find($row['id'])->costTotal();
-                  $row['basic']['consume'] = sprintf('%s(%s)',  $row['basic']['consume'], $cost);
+                $cost= Basic :: find($row['id'])->costTotal();
+                $row['basic']['consume'] = sprintf('%s(%s)',  $row['basic']['consume'], $cost);
             }
         }
         unset($users['data']);
