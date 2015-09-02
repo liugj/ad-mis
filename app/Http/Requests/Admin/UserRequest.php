@@ -15,7 +15,7 @@ class UserRequest extends Request
     public function authorize()
     {
         $userId = $this->route('id') ?: $this->input('id');
-        if ($userId > 0 ) {
+        if ($userId > 0  &&Auth::admin()->get()->role !='admin') {
             return User::where('id', $userId)
                 ->where('administrator_id', Auth::admin()->get()->id)->exists();
         }
