@@ -115,6 +115,9 @@ class ConsumptionHourly extends Command implements SelfHandling
                     if (preg_match('#GET /track.gif\?(.*?)HTTP#i', $matches[4], $matches1)){
                         $item = array();
                         foreach (explode('$$$', $matches1[1]) as $s){
+                            if (($pos = strpos($s, '&')) !== false){
+                                $s = substr($s, $pos);
+                            }
                             if (strpos($s, '*') === false||$s[strlen($s)-1] == '*' ) continue;
                             $s = trim($s);
                             $s = trim($s, '&');
