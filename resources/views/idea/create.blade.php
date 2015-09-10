@@ -73,7 +73,8 @@
                 <?php if($type->name_en=='banner_text') continue;  ?>
                 <div class="{{$type->name_en}}_{{$type->platform_id}}">
                    @foreach($type->sizes()->get() as $size)
-                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" @if ($idea->size_id == $size->id) checked @endif /><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
+                   <?php if ($size->is_icon == 'Y') continue;  ?>
+                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" @if ($idea->size_id == $size->id) checked @endif ><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
                   @endforeach
                 </div>
                @endforeach
@@ -85,11 +86,52 @@
             </div>
             <div class="field form-inline">
                 <input type="text" id="imgUpload" name="src" class="input" readonly="readonly" size="40" value="{{$idea->src}}" data-val="true" data-val-required="图片文件不能为空" />
-                <button class="button" type="button" onclick="App.Plan.upload();">上传图片</button>
+                <button class="button" type="button" onclick="App.Plan.upload('imgUpload');">上传图片</button>
                 <div class="input-help">GIF动画不支持裁剪</div>
             </div>
         </div>
-
+        <div class="form-group native">
+            <div class="label">
+                <label for="title">标题</label>
+            </div>
+            <div class="field">
+                <input name="title" class="input" data-val="true" data-val-required="标题不能为空" value="{{$idea->title}}">
+            </div>
+        </div>
+        <div class="form-group native">
+            <div class="label">
+                <label for="description">描述</label>
+            </div>
+            <div class="field">
+                <textarea name="description" class="input" data-val="true" data-val-required="描述不能为空">{{$idea->description}}</textarea>
+            </div>
+        </div>
+        <div class="form-group native">
+            <div class="label">
+                <label for="icon_size_id">图标尺寸</label>
+            </div>
+            <div class="field" id="ideaIconSize">
+               @foreach($types as $type)
+                <?php if($type->name_en=='banner_text') continue;  ?>
+                <div class="{{$type->name_en}}_{{$type->platform_id}}">
+                   @foreach($type->sizes()->get() as $size)
+                   <?php if ($size->is_icon == 'N') continue;  ?>
+                    <label class="i-radio"><input type="radio" name="icon_size_id" value="{{$size->id}}" @if ($idea->icon_size_id == $size->id) checked @endif ><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
+                  @endforeach
+                </div>
+               @endforeach
+            </div>
+        </div>
+        <div class="form-group native">
+            <div class="label">
+                <label for="icon">图标</label>
+            </div>
+            <div class="field form-inline">
+                <input type="text" id="iconUpload" name="icon" class="input" readonly="readonly" size="40" value="{{$idea->icon}}" data-val="true" data-val-required="图标文件不能为空" />
+                <button class="button" type="button" onclick="App.Plan.upload('iconUpload');">上传图标</button>
+                <div class="input-help">GIF动画不支持裁剪</div>
+            </div>
+        </div>
         <div class="form-group text">
             <div class="label">
                 <label for="text">文字</label>

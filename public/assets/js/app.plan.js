@@ -310,7 +310,6 @@ App.Plan = (function ($) {
         $("#ideaSize div:not(." + type + ")").hide();
 
         var showDiv = $("#ideaSize div." + type).show();
-
         if (showDiv.find(":radio:checked").length){
            showDiv.find(":radio:checked").prop("checked", true);
         }else{
@@ -320,15 +319,28 @@ App.Plan = (function ($) {
         if (type == "banner_text") {
             $(".form-group.text").show();
             $(".form-group.img").hide();
-        } else {
+            $(".form-group.native").hide();
+        } else if ($("#group").select2("val") == 'native'){
+            $("#ideaIconSize div:not(." + type + ")").hide();
+            var showIconDiv = $("#ideaIconSize div." + type).show();
+            if (showIconDiv.find(":radio:checked").length){
+                showIconDiv.find(":radio:checked").prop("checked", true);
+            }else{
+                showIconDiv.find(":radio:first").prop("checked", true);
+            }
             $(".form-group.text").hide();
+            $(".form-group.native").show();
+            $(".form-group.img").show();
+        }else{
+            $(".form-group.text").hide();
+            $(".form-group.native").hide();
             $(".form-group.img").show();
         }
         if ($('#formUnit input:radio[name="platform"]:checked').val() ==0){
             $(".form-group.platform").show();
         }else{
             $(".form-group.platform").hide();
-            }
+        }
     }
 
     function changePlaceholder() {
@@ -346,12 +358,12 @@ App.Plan = (function ($) {
     }
 
     var cropper;
-    var initCropper = function () {
+    var initCropper = function (outputUrlId) {
         cropper = new Croppic("croppic", {
             uploadUrl: urlUpload,
             cropUrl: urlCrop,
             zoomFactor: 10,
-            outputUrlId: "imgUpload",
+            outputUrlId: outputUrlId,
             doubleZoomControls: false,
             onAfterImgCrop: function () {
                 $("#dialogImage").dialog("close");
@@ -359,8 +371,12 @@ App.Plan = (function ($) {
         });
     }
 
-    var upload = function () {
-        var size_id = $("#setp-1 input[name='size_id']:checked").parent().text();
+    var upload = function (outputUrlId) {
+        if (outputUrlId == 'imgUpload') {
+            var size_id = $("#setp-1 input[name='size_id']:checked").parent().text();
+        }else{
+            var size_id = $("#setp-1 input[name='icon_size_id']:checked").parent().text();
+        }
         var ss = size_id.split("x");
         var width = parseInt(ss[0]);
         var height = parseInt(ss[1]);
@@ -430,7 +446,6 @@ App.Plan = (function ($) {
             initPlanList();
             loadPlanList();
             initDialog();
-            initCropper();
         },
 
         editPlan: function (id) {
@@ -451,8 +466,9 @@ App.Plan = (function ($) {
         deleteIdea: function (id) {
             deleteIdea(id);
         },
-        upload: function () {
-            upload();
+        upload: function (outputUrlId) {
+            initCropper(outputUrlId);
+            upload(outputUrlId);
         },
         gotoSetp: gotoSetp, 
         preview: preview

@@ -116,7 +116,7 @@ class ConsumptionHourly extends Command implements SelfHandling
                         $item = array();
                         foreach (explode('$$$', $matches1[1]) as $s){
                             if (($pos = strpos($s, '&')) !== false){
-                                $s = substr($s, $pos);
+                                $s = substr($s, 0, $pos);
                             }
                             if (strpos($s, '*') === false||$s[strlen($s)-1] == '*' ) continue;
                             $s = trim($s);
