@@ -321,8 +321,8 @@ App.Plan = (function ($) {
             $(".form-group.img").hide();
             $(".form-group.native").hide();
         } else if ($("#group").select2("val") == 'native'){
-            $("#ideaIconSize div:not(." + type + ")").hide();
-            var showIconDiv = $("#ideaIconSize div." + type).show();
+            $("#ideaIconSize div:not(.icon_" + type + ")").hide();
+            var showIconDiv = $("#ideaIconSize div.icon_" + type).show();
             if (showIconDiv.find(":radio:checked").length){
                 showIconDiv.find(":radio:checked").prop("checked", true);
             }else{

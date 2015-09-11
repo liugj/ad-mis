@@ -74,7 +74,7 @@
                 <div class="{{$type->name_en}}_{{$type->platform_id}}">
                    @foreach($type->sizes()->get() as $size)
                    <?php if ($size->is_icon == 'Y') continue;  ?>
-                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" @if ($idea->size_id == $size->id) checked @endif ><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
+                    <label class="i-radio"><input type="radio" name="size_id" value="{{$size->id}}" @if ($idea->size_id == $size->id && $type->name_en  == $idea->type) checked @endif ><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
                   @endforeach
                 </div>
                @endforeach
@@ -113,10 +113,10 @@
             <div class="field" id="ideaIconSize">
                @foreach($types as $type)
                 <?php if($type->name_en=='banner_text') continue;  ?>
-                <div class="{{$type->name_en}}_{{$type->platform_id}}">
+                <div class="icon_{{$type->name_en}}_{{$type->platform_id}}">
                    @foreach($type->sizes()->get() as $size)
                    <?php if ($size->is_icon == 'N') continue;  ?>
-                    <label class="i-radio"><input type="radio" name="icon_size_id" value="{{$size->id}}" @if ($idea->icon_size_id == $size->id) checked @endif ><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
+                    <label class="i-radio"><input type="radio" name="icon_size_id" value="{{$size->id}}" @if ($idea->icon_size_id == $size->id && $idea->type == $type->name_en) checked @endif ><i></i>{{$size->width}}x{{$size->height}}</label><span>{{$size->comment}}</span>
                   @endforeach
                 </div>
                @endforeach
