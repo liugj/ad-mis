@@ -143,7 +143,6 @@ class IdeaController extends Controller
                 if ($idea->alt != $request->input('alt') ||$idea->src != $request->input('src') || $idea->link != $request->input('link')){
                     $status = 1;
                 }
-                var_dump($request->all());
                 return  response()->json(['success' => $idea->update([
                                           'status'  => $status, 'media'=> $media, 
                                           'device'  => $device, 'type' => $type,
