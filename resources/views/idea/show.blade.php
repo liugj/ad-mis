@@ -24,11 +24,25 @@
                 @if($idea->type) 
                 <label>类型：</label>
                 <span> {{$idea->type}}</span>
+                @endif
                 <label>内容：</label>
                 @if ($idea->type == 'banner_text') 
                 <span>{{$idea->alt}} </span>
-                @else 
-                <span> <a href="{{$idea->src}}" style="color:#438eb9;" target="_ablank">图片{{$idea->size->width}}x{{$idea->size->height}}</a> @endif</span>
+                @elseif($idea->group == 'native')
+                <span> <a href="{{$idea->src}}" style="color:#438eb9;" target="_ablank">图片{{$idea->size->width}}x{{$idea->size->height}}</a></span>
+                @if ($idea->title)
+                <label>标题：</label>
+                <span>{{$idea->title}}</span>
+                @endif
+                @if ($idea->description)
+                <label>描述：</label>
+                <span>{{$idea->description}}</span>
+                @endif
+                <label>图标：</label>
+                <span> <a href="{{$idea->icon}}" style="color:#438eb9;" target="_ablank">图标{{$idea->IconSize->width}}x{{$idea->Iconsize->height}}</a></span>
+
+                @else
+                <span> <a href="{{$idea->src}}" style="color:#438eb9;" target="_ablank">图片{{$idea->size->width}}x{{$idea->size->height}}</a></span>
                 @endif
                 <label>点击类型：</label>
                 <span>{{$idea->click_action->name}}</span>

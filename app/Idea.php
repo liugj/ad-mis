@@ -184,6 +184,9 @@ class Idea extends Model
     public function  size(){
         return $this->belongsTo('App\Size');
     }
+    public function  Iconsize(){
+        return $this->belongsTo('App\Size', 'icon_size_id');
+    }
     public  function consumeTotalByDate($date)
     {
         $consumption =  \App\ConsumptionDaily ::  where ('idea_id', $this->id)
