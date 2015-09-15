@@ -191,6 +191,8 @@ class IdeaController extends Controller
         $ext =  substr($imgUrl, strrpos($imgUrl, '.') + 1);
         if (!in_array(strtolower($ext), array('gif'))) {
             $imagick = new \Imagick(public_path(). $imgUrl);
+            $imagick->resizeImage($imgW, $imgH, \Imagick::FILTER_CATROM,0.9, false);
+            $imagick->setImagePage(0, 0, 0, 0);
             $imagick->cropImage($cropW, $cropH, $imgX1, $imgY1);
             $cropFileName  = str_replace('/images/', '/resizeImages/', public_path() . $imgUrl);
             $cropPath = substr($cropFileName, 0, strrpos($cropFileName, '/'));
